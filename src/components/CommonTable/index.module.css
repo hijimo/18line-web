@@ -1,0 +1,19 @@
+.table .ant-table-wrapper .ant-table-cell {
+  padding: 9px;
+}
+
+.table .ant-table-wrapper .ant-table-thead > tr > th {
+  padding: 12px 16px;
+  background: #f2f3f5;
+  border-start-start-radius: 0px !important;
+  border-start-end-radius: 0px !important;
+}
+
+.table .ant-table-wrapper .ant-table-container {
+  border-start-start-radius: 0px !important;
+  border-start-end-radius: 0px !important;
+}
+
+.table .ant-table-wrapper .ant-table.ant-table-bordered > .ant-table-container {
+  border-color: #edf0f5 !important;
+}

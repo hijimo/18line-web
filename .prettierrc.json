@@ -1,0 +1,53 @@
+{
+  "singleQuote": true,
+  "trailingComma": "all",
+  "printWidth": 100,
+  "proseWrap": "never",
+  "endOfLine": "lf",
+  "overrides": [
+    {
+      "files": ".prettierrc",
+      "options": {
+        "parser": "json"
+      }
+    },
+    {
+      "files": "document.ejs",
+      "options": {
+        "parser": "html"
+      }
+    }
+  ],
+  "organizeImportsSkipDestructiveCodeActions": false,
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports"
+  ],
+  "importOrder": [
+    "^@(?!/)",
+    "<THIRD_PARTY_MODULES>",
+    "^react$",
+    "^@/components/(.*)$",
+    "^@/hooks",
+    "^@/hooks/(.*)$",
+    "^@/store",
+    "^@/store/(.*)$",
+    "^@/theme",
+    "^@/theme/(.*)$",
+    "^@/authProvider",
+    "^@/authProvider/(.*)$",
+    "^@/variables",
+    "^@/variables/(.*)$",
+    "^@/pages/(.*)$",
+    "^@/configurify/(.*)$",
+    "^@/enums",
+    "^@/enums/(.*)$",
+    "^@/utils/(.*)$",
+    "^@/utils",
+    "^@/services/(.*)$",
+    "^@/types/(.*)$",
+    "^@/types",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
+}

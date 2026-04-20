@@ -1,0 +1,47 @@
+/* 创建租户抽屉样式 */
+
+.createDrawer :global(.ant-drawer-header) {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 20px 24px;
+}
+
+.createDrawer :global(.ant-drawer-body) {
+  padding: 24px;
+}
+
+.createDrawer :global(.ant-form-item-label > label) {
+  font-weight: 500;
+  color: #1f2937;
+}
+
+.createDrawer :global(.ant-input),
+.createDrawer :global(.ant-input-textarea) {
+  border-radius: 6px;
+}
+
+.createDrawer :global(.ant-input:focus),
+.createDrawer :global(.ant-input-textarea:focus) {
+  border-color: #1890ff;
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.createDrawer :global(.ant-btn-primary) {
+  border-radius: 6px;
+  font-weight: 500;
+  height: 44px;
+}
+
+/* 响应式布局 - 移动端 */
+@media (max-width: 768px) {
+  .createDrawer :global(.ant-drawer) {
+    width: 100% !important;
+  }
+
+  .createDrawer :global(.ant-drawer-body) {
+    padding: 16px;
+  }
+
+  .createDrawer :global(.ant-form-item) {
+    margin-bottom: 20px;
+  }
+}

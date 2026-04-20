@@ -1,0 +1,72 @@
+/* 创建用户抽屉样式 */
+.createDrawer {
+  /* 抽屉容器样式 */
+}
+
+.createDrawer :global(.ant-drawer-header) {
+  border-bottom: 1px solid #f0f0f0;
+  padding: 16px 24px;
+}
+
+.createDrawer :global(.ant-drawer-title) {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.createDrawer :global(.ant-form-item-label > label) {
+  font-size: 14px;
+  height: auto;
+  margin-bottom: 4px;
+}
+
+.createDrawer :global(.ant-form-item) {
+  margin-bottom: 24px;
+}
+
+.createDrawer :global(.ant-form-item:last-of-type) {
+  margin-bottom: 0;
+}
+
+.createDrawer :global(.ant-input),
+.createDrawer :global(.ant-input-password),
+.createDrawer :global(.ant-select-selector),
+.createDrawer :global(.ant-input-textarea) {
+  border-radius: 6px;
+  transition: all 0.3s ease;
+}
+
+.createDrawer :global(.ant-input:focus),
+.createDrawer :global(.ant-input-password:focus),
+.createDrawer :global(.ant-select-focused .ant-select-selector),
+.createDrawer :global(.ant-input-textarea:focus) {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.1);
+}
+
+.createDrawer :global(.ant-btn-primary) {
+  border-radius: 6px;
+  height: 44px;
+  font-size: 16px;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.createDrawer :global(.ant-btn-primary:hover) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+/* 优化抽屉动画 */
+.createDrawer :global(.ant-drawer-content-wrapper) {
+  transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 表单字段间距优化 */
+.createDrawer :global(.ant-form-vertical .ant-form-item-label) {
+  padding-bottom: 4px;
+}
+
+/* Radio 和 Select 组件间距优化 */
+.createDrawer :global(.ant-radio-group),
+.createDrawer :global(.ant-select) {
+  width: 100%;
+}

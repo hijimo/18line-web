@@ -1,0 +1,219 @@
+/**
+ * 登录页面自定义样式
+ * 包含 Tailwind CSS 无法实现的动画效果
+ */
+
+/* 淡入动画 */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 从下往上滑入动画 */
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 从上往下滑入动画 */
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 缩放淡入动画 */
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* 背景渐变动画 */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 登录页面容器 - 淡入动画 */
+.loginContainer {
+  animation: fadeIn 0.6s ease-out;
+}
+
+/* 登录卡片 - 滑入并缩放动画 */
+.loginCard {
+  animation: scaleIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* 页面头部 - 从上往下滑入 */
+.loginHeader {
+  animation: slideDown 0.6s ease-out;
+}
+
+/* 登录表单 - 从下往上滑入，延迟 0.1 秒 */
+.loginForm {
+  animation: slideUp 0.6s ease-out 0.1s both;
+}
+
+/* 页面底部 - 从下往上滑入，延迟 0.2 秒 */
+.loginFooter {
+  animation: slideUp 0.6s ease-out 0.2s both;
+}
+
+/* 背景渐变动画（可选） */
+.animatedBackground {
+  background-size: 200% 200%;
+  animation: gradientShift 15s ease infinite;
+}
+
+/* 输入框聚焦时的发光效果 */
+.inputGlow:focus-within {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  transition: box-shadow 0.3s ease;
+}
+
+/* 按钮悬停时的提升效果 */
+.buttonLift {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.buttonLift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.buttonLift:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 链接悬停时的下划线动画 */
+.linkUnderline {
+  position: relative;
+  transition: color 0.3s ease;
+}
+
+.linkUnderline::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: currentColor;
+  transition: width 0.3s ease;
+}
+
+.linkUnderline:hover::after {
+  width: 100%;
+}
+
+/* 错误提示抖动动画 */
+@keyframes shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  10%,
+  30%,
+  50%,
+  70%,
+  90% {
+    transform: translateX(-5px);
+  }
+  20%,
+  40%,
+  60%,
+  80% {
+    transform: translateX(5px);
+  }
+}
+
+.errorShake {
+  animation: shake 0.5s ease;
+}
+
+/* 加载状态的脉冲动画 */
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.loadingPulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* 成功状态的弹跳动画 */
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.successBounce {
+  animation: bounce 0.6s ease;
+}
+
+/* 响应式调整 */
+@media (max-width: 640px) {
+  /* 移动端减少动画时长，提升性能 */
+  .loginCard {
+    animation-duration: 0.4s;
+  }
+
+  .loginHeader,
+  .loginForm,
+  .loginFooter {
+    animation-duration: 0.4s;
+  }
+}
+
+/* 减少动画偏好设置 */
+@media (prefers-reduced-motion: reduce) {
+  /* 为有动画偏好的用户禁用动画 */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

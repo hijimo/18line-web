@@ -1,0 +1,60 @@
+/* 租户管理页面样式 */
+
+.tenantsPage {
+  min-height: 100%;
+  background-color: #ffffff;
+}
+
+/* 页面容器内边距优化 */
+.tenantsPage :global(.ant-pro-page-container) {
+  padding: 0;
+}
+
+.tenantsPage :global(.ant-pro-page-container-children-content) {
+  padding: 24px;
+}
+
+/* 响应式布局 - 移动端 */
+@media (max-width: 768px) {
+  .tenantsPage :global(.ant-pro-page-container-children-content) {
+    padding: 16px;
+  }
+
+  /* 移动端搜索表单优化 */
+  .tenantsPage :global(.ant-pro-table-search) {
+    padding: 16px !important;
+  }
+
+  /* 移动端工具栏优化 */
+  .tenantsPage :global(.ant-pro-table-list-toolbar) {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .tenantsPage :global(.ant-pro-table-list-toolbar-container) {
+    flex-direction: column;
+    align-items: stretch !important;
+  }
+
+  .tenantsPage :global(.ant-pro-table-list-toolbar-right) {
+    width: 100%;
+  }
+
+  .tenantsPage :global(.ant-pro-table-list-toolbar-right button) {
+    width: 100%;
+  }
+}
+
+/* 响应式布局 - 平板 */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .tenantsPage :global(.ant-pro-page-container-children-content) {
+    padding: 20px;
+  }
+}
+
+/* 响应式布局 - 桌面 */
+@media (min-width: 1025px) {
+  .tenantsPage :global(.ant-pro-page-container-children-content) {
+    padding: 24px;
+  }
+}

@@ -1,0 +1,129 @@
+# 用户管理实现任务列表
+
+- [x] 1. 创建用户管理页面结构和类型定义
+  - 创建 `src/pages/users/index.tsx` 主页面文件
+  - 创建 `src/pages/users/index.module.css` 样式文件
+  - 创建 `src/pages/users/types.ts` 类型定义文件，包含 UserTableProps、UserCreateDrawerRef、UserEditDrawerRef 等接口
+  - 创建必要的目录结构：`components/Drawer/`、`components/Table/`
+  - _需求: 1.1, 1.2_
+
+- [x] 2. 实现用户表格列配置
+  - 创建 `src/configurify/columns/userColumns.tsx` 文件
+  - 实现 userEmail 列（固定左侧，支持搜索）
+  - 实现 userDisplayName 列
+  - 实现 userPhone 列
+  - 实现 userRoles 列（使用 Tag 组件显示角色）
+  - 实现 userStatus 列（使用 Badge 组件显示启用/禁用状态）
+  - 实现 userTenant 列（显示所属租户，仅平台管理员可见）
+  - 实现 userIsAdmin 列（使用 Tag 组件显示是否管理员）
+  - 实现 userCreateTime 列
+  - 实现 userCreatorName 列
+  - 配置 option 操作列（编辑、启用/禁用、删除）
+  - 导出 userColumns 配置对象
+  - _需求: 1.2, 1.3, 2.3, 6.1, 6.2, 7.4_
+
+- [x] 3. 实现用户表格组件
+  - 创建 `src/pages/users/components/Table/UserTable/index.tsx` 文件
+  - 创建 `src/pages/users/components/Table/UserTable/index.module.css` 样式文件
+  - 使用 useRef 管理 ActionType 和 Drawer 的 ref
+  - 使用 useTableRequest hook 实现数据获取功能，调用 getUsers API
+  - 使用 useMutation 实现删除用户功能，调用 deleteUsersId API
+  - 使用 useMutation 实现更新用户状态功能，调用 patchUsersIdStatus API
+  - 实现 handleEdit 函数，打开编辑抽屉
+  - 实现 handleDelete 函数，显示确认对话框并删除用户
+  - 实现 handleToggleStatus 函数，显示确认对话框并切换用户状态
+  - 实现 handleCreate 函数，打开创建抽屉
+  - 实现 handleSuccess 回调函数，刷新表格数据
+  - 使用 useMemo 配置表格列，包含操作列的渲染逻辑
+  - 使用 CommonTable 组件渲染表格，配置分页、工具栏等
+  - 渲染 UserCreateDrawer 和 UserEditDrawer 组件
+  - _需求: 1.1, 1.2, 1.3, 1.4, 2.1, 2.2, 2.3, 2.4, 2.5, 5.1, 5.2, 5.3, 5.4, 5.5, 5.6, 6.1, 6.2, 6.3, 6.4, 6.5, 6.6, 6.7, 6.8, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 10.1, 10.6, 10.7_
+
+- [x] 4. 实现创建用户抽屉组件
+  - 创建 `src/pages/users/components/Drawer/UserCreateDrawer/index.tsx` 文件
+  - 创建 `src/pages/users/components/Drawer/UserCreateDrawer/index.module.css` 样式文件
+  - 使用 forwardRef 和 useImperativeHandle 暴露 open/close 方法
+  - 使用 useState 管理抽屉打开状态
+  - 使用 Form.useForm() 管理表单状态
+  - 使用 useMutation 实现创建用户功能，调用 postUsers API
+  - 实现表单字段：邮箱（必填，邮箱格式验证）
+  - 实现表单字段：密码（必填，最少 8 个字符）
+  - 实现表单字段：显示名称（可选）
+  - 实现表单字段：手机号（可选）
+  - 实现表单字段：租户选择（平台管理员必填，租户管理员隐藏）
+  - 实现表单字段：是否管理员（可选，Radio 组件）
+  - 实现表单字段：角色（可选，Select 多选组件）
+  - 实现表单字段：元数据（可选，TextArea，JSON 格式）
+  - 实现表单提交处理，包含元数据 JSON 解析和验证
+  - 实现成功和错误处理，显示相应的消息提示
+  - 实现表单重置逻辑
+  - 配置 Drawer 组件属性（宽度、样式、destroyOnClose 等）
+  - _需求: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 7.3, 7.4, 8.1, 8.2, 8.3, 8.4, 8.5, 8.6, 8.7, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 10.1, 10.2, 10.3, 10.4, 10.5_
+
+- [x] 5. 实现编辑用户抽屉组件
+  - 创建 `src/pages/users/components/Drawer/UserEditDrawer/index.tsx` 文件
+  - 创建 `src/pages/users/components/Drawer/UserEditDrawer/index.module.css` 样式文件
+  - 使用 forwardRef 和 useImperativeHandle 暴露 open/close 方法
+  - 使用 useState 管理抽屉打开状态和当前编辑的用户信息
+  - 使用 Form.useForm() 管理表单状态
+  - 使用 useMutation 实现更新用户功能，调用 putUsersId API
+  - 实现 open 方法，接收用户数据并预填充表单
+  - 实现租户信息只读显示（使用 Badge 组件）
+  - 实现表单字段：邮箱（可选，邮箱格式验证）
+  - 实现表单字段：显示名称（可选）
+  - 实现表单字段：手机号（可选）
+  - 实现表单字段：用户状态（可选，Radio 组件）
+  - 实现表单字段：是否管理员（可选，Radio 组件）
+  - 实现表单字段：角色（可选，Select 多选组件）
+  - 实现表单字段：元数据（可选，TextArea，JSON 格式）
+  - 实现表单提交处理，包含元数据 JSON 解析和验证
+  - 实现元数据对象到 JSON 字符串的转换（用于显示）
+  - 实现成功和错误处理，显示相应的消息提示
+  - 实现表单重置逻辑
+  - 配置 Drawer 组件属性（宽度、样式、destroyOnClose 等）
+  - _需求: 4.1, 4.2, 4.3, 4.4, 4.5, 4.6, 4.7, 8.4, 8.5, 8.6, 8.7, 9.1, 9.2, 9.3, 9.4, 9.5, 9.6, 9.7, 10.1, 10.2, 10.3, 10.4, 10.5_
+
+- [x] 6. 实现用户管理主页面
+  - 在 `src/pages/users/index.tsx` 中实现主页面组件
+  - 使用 PageContainer 组件提供统一的页面布局
+  - 渲染 UserTable 组件
+  - 添加必要的样式类名
+  - _需求: 1.1_
+
+- [x] 7. 配置路由和导航
+  - 在路由配置中添加用户管理页面路由
+  - 在导航菜单中添加用户管理入口
+  - 配置路由权限控制（如需要）
+  - _需求: 1.1, 7.1, 7.2_
+
+- [x] 8. 实现权限控制逻辑
+  - 在 UserTable 中根据用户角色显示/隐藏租户筛选功能
+  - 在 UserCreateDrawer 中根据用户角色显示/隐藏租户选择字段
+  - 在表格列配置中根据用户角色显示/隐藏租户列
+  - 实现租户管理员创建用户时自动使用当前租户 ID 的逻辑
+  - _需求: 1.5, 1.6, 2.4, 3.4, 7.1, 7.2, 7.3, 7.4, 7.5_
+
+- [x] 9. 优化用户体验
+  - 在所有异步操作中添加加载状态指示器
+  - 优化抽屉打开/关闭动画过渡
+  - 确保表格支持横向和纵向滚动
+  - 优化表单字段的布局和间距
+  - 添加表单字段的 placeholder 提示
+  - 优化错误消息的显示方式
+  - 确保操作成功后及时显示反馈消息
+  - _需求: 10.1, 10.2, 10.3, 10.4, 10.5, 10.6, 10.7_
+
+- [x] 10. 集成测试和验证
+  - 测试用户列表查看功能
+  - 测试用户搜索和筛选功能
+  - 测试创建用户功能（包含表单验证）
+  - 测试编辑用户功能（包含表单验证）
+  - 测试删除用户功能（包含确认对话框）
+  - 测试启用/禁用用户功能（包含确认对话框）
+  - 测试平台管理员和租户管理员的权限控制
+  - 测试元数据 JSON 格式验证
+  - 测试各种错误场景的处理
+  - 测试响应式布局在不同屏幕尺寸下的表现
+  - 验证所有用户可见文本使用中文
+  - 验证代码注释使用中文
+  - _需求: 1.1, 1.2, 1.3, 1.4, 1.5, 1.6, 2.1, 2.2, 2.3, 2.4, 2.5, 3.1-3.10, 4.1-4.7, 5.1-5.6, 6.1-6.8, 7.1-7.5, 8.1-8.7, 9.1-9.7, 10.1-10.7_

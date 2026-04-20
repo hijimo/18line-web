@@ -1,0 +1,55 @@
+.userTable {
+  /* 用户表格容器样式 */
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 表格滚动优化 */
+.userTable :global(.ant-table-wrapper) {
+  flex: 1;
+  overflow: hidden;
+}
+
+.userTable :global(.ant-table-body) {
+  overflow-x: auto !important;
+  overflow-y: auto !important;
+}
+
+/* 表格加载状态优化 */
+.userTable :global(.ant-spin-nested-loading) {
+  height: 100%;
+}
+
+.userTable :global(.ant-spin-container) {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 操作按钮悬停效果 */
+.userTable :global(.ant-btn-primary) {
+  transition: all 0.3s ease;
+}
+
+.userTable :global(.ant-btn-primary:hover) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.3);
+}
+
+/* 表格行悬停效果优化 */
+.userTable :global(.ant-table-tbody > tr:hover > td) {
+  background-color: #f5f5f5;
+  transition: background-color 0.2s ease;
+}
+
+/* 分页器样式优化 */
+.userTable :global(.ant-pagination) {
+  margin-top: 16px;
+  padding: 16px 0;
+}
+
+/* 确保表格内容不会被截断 */
+.userTable :global(.ant-table-cell) {
+  white-space: nowrap;
+}
