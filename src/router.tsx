@@ -17,15 +17,9 @@ import {
 import { AuthProvider } from './components/AuthProvider';
 import Layout from './components/Layout/Layout';
 import { ResourceContextProvider } from './contexts/resource';
-import Chat from './pages/chat';
 import Index from './pages/Index';
-import KnowledgeEntries from './pages/knowledge/entries';
-import KnowledgeSpaces from './pages/knowledge/spaces';
 import Login from './pages/Login';
-import ModelSettings from './pages/model-settings';
 import Notfound from './pages/Notfound';
-import Tenants from './pages/tenants';
-import Users from './pages/users';
 import type { ResourceProps } from './types/resource';
 
 /**
@@ -139,30 +133,7 @@ const router = createBrowserRouter([
               </Layout>
             ),
           },
-          {
-            path: '/chat',
-            element: <Chat />,
-          },
-          {
-            path: '/tenants',
-            element: <Tenants />,
-          },
-          {
-            path: '/users',
-            element: <Users />,
-          },
-          {
-            path: '/model-settings',
-            element: <ModelSettings />,
-          },
-          {
-            path: '/knowledge/spaces',
-            element: <KnowledgeSpaces />,
-          },
-          {
-            path: '/knowledge/spaces/:spaceId',
-            element: <KnowledgeEntries />,
-          },
+
           {
             path: '*',
             element: (
