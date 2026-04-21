@@ -7,7 +7,7 @@ import { getFileIcon, isImage, isVideo } from './utils/file';
 import type { XMLHttpRequestExtend } from './utils/Uploader';
 import Uploader from './utils/Uploader';
 
-import styles from './Upload.less';
+import styles from './Upload.module.less';
 
 export interface UploadProps {
   className?: string;

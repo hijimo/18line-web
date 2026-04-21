@@ -1,9 +1,19 @@
-import * as path from 'path'
-import react from '@vitejs/plugin-react-swc'
-import { defineConfig } from 'vite'
+import * as path from 'path';
+import react from '@vitejs/plugin-react-swc';
+import { defineConfig } from 'vite';
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    modules: {
+      localsConvention: 'camelCase',
+    },
+    preprocessorOptions: {
+      less: {
+        javascriptEnabled: true,
+      },
+    },
+  },
   build: {
     sourcemap: true,
   },
@@ -21,13 +31,13 @@ export default defineConfig({
     proxy: {
       '/api/': {
         // 要代理的地址
-        target: 'http://localhost:8080',
+        target: 'http://8.136.229.208:8080',
         // target: 'https://dev-droplet.jushuitan.com',
         // 配置了这个可以从 http 代理到 https
         // 依赖 origin 的功能可能需要这个，比如 cookie
         changeOrigin: true,
         // secure: true,
-        // rewrite: (path) => path.replace(/^\/api/, ''), // ✅
+        rewrite: (path) => path.replace(/^\/api/, ''), // ✅
       },
     },
   },
@@ -36,4 +46,4 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src'),
     },
   },
-})
+});

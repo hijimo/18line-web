@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx playwright *)",
+      "Bash(pnpm add *)",
+      "Bash(pnpm dev *)",
+      "Bash(curl -s http://localhost:3000 -o /dev/null -w \"%{http_code}\")",
+      "Bash(curl -s -X POST http://localhost:3000/api/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"admin123\",\"rememberMe\":false}')",
+      "Bash(git pull *)",
+      "Bash(git stash *)",
+      "Bash(pnpm install *)"
+    ]
+  }
+}

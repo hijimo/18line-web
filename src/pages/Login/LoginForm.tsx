@@ -1,23 +1,20 @@
-import { Button, Checkbox, Form, Input } from 'antd'
-import { LockOutlined, UserOutlined } from '@ant-design/icons'
-import type { LoginFormProps, LoginFormValues } from './types'
+import { LockOutlined, UserOutlined } from '@ant-design/icons';
+import { Button, Checkbox, Form, Input } from 'antd';
+import type { LoginFormProps, LoginFormValues } from './types';
 
 /**
  * 登录表单组件
  * 使用 Ant Design Form 实现用户登录表单
  */
-export const LoginForm: React.FC<LoginFormProps> = ({
-  onSubmit,
-  loading = false,
-}) => {
-  const [form] = Form.useForm<LoginFormValues>()
+export const LoginForm: React.FC<LoginFormProps> = ({ onSubmit, loading = false }) => {
+  const [form] = Form.useForm<LoginFormValues>();
 
   /**
    * 处理表单提交
    */
   const handleFinish = async (values: LoginFormValues) => {
-    await onSubmit(values)
-  }
+    await onSubmit(values);
+  };
 
   return (
     <Form
@@ -25,7 +22,7 @@ export const LoginForm: React.FC<LoginFormProps> = ({
       name="login"
       layout="vertical"
       initialValues={{
-        username: 'admin@system.local',
+        username: 'admin',
       }}
       onFinish={handleFinish}
       autoComplete="off"
@@ -84,5 +81,5 @@ export const LoginForm: React.FC<LoginFormProps> = ({
         </Button>
       </Form.Item>
     </Form>
-  )
-}
+  );
+};

@@ -2,13 +2,19 @@
 // 同时兼容antd 的customRequest
 
 // import { message } from 'antd';
-import { getOssSign } from '@/services/common';
-import moment from 'moment';
+import { get as getCommonApi } from '@/services/api/通用/通用';
+import dayjs from 'dayjs';
 import { genUniqueFileName } from './file';
 import { getUploadSign, setUploadSign } from './ls';
 
+const commonApi = getCommonApi();
+
+const getOssSign = async () => {
+  return commonApi.uploadFile();
+};
+
 const genKey = (dir: string, filename: string) => {
-  return `${dir}/${moment(new Date()).format('YYYYMM')}/${genUniqueFileName(filename)}`;
+  return `${dir}/${dayjs(new Date()).format('YYYYMM')}/${genUniqueFileName(filename)}`;
 };
 const genFileUrl = (host: string, key: string) => {
   return `${host}/${key}`;

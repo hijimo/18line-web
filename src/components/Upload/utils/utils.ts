@@ -1,7 +1,7 @@
 import type { File } from '@/types';
 import { FileUploadStateEnums, orginFileSymbol } from '@/types/file';
-import _get from 'lodash/get';
-import _isObject from 'lodash/isObject';
+import _get from 'lodash-es/get';
+import _isObject from 'lodash-es/isObject';
 import { getFileMIME } from './file';
 
 export const getMaxSize = (file: File, maxSize: any | number) =>
