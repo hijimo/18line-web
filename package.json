@@ -41,7 +41,7 @@
     "@tanstack/react-query": "^5.80.0",
     "ahooks": "^3.8.4",
     "antd": "^5.24.7",
-    "axios": "^1.9.0",
+    "axios": "^1.15.2",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
