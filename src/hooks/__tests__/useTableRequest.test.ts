@@ -6,15 +6,9 @@ describe('useTableRequest', () => {
   const mockDataLoader = vi.fn();
   const mockPaginatedResponse: ResponsePaginationData = {
     code: 200,
-    message: 'success',
-    data: {
-      data: [{ id: 1, name: 'test' }],
-      pageNo: 1,
-      pageSize: 10,
-      totalCount: 1,
-      totalPage: 1,
-    },
-    sessionId: 'mock-session',
+    msg: 'success',
+    total: 1,
+    rows: [{ id: 1, name: 'test' }],
   };
 
   beforeEach(() => {
@@ -61,7 +55,7 @@ describe('useTableRequest', () => {
       const errorResponse: ResponsePaginationData = {
         ...mockPaginatedResponse,
         code: 500,
-        message: 'error',
+        msg: 'error',
       };
       mockDataLoader.mockResolvedValue(errorResponse);
       const request = useTableRequest(mockDataLoader);

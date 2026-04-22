@@ -1,33 +1,16 @@
+/** RuoYi AjaxResult: {code, msg, data?} */
 export interface ResponseData<T = any> {
   code: number;
-  message: string;
-  result: {
-    data: T;
-  };
-  sessionId: string;
-}
-export interface ResponseData2<T = any> {
-  code: number;
-  message: string;
-  result: T;
-  sessionId: string;
+  msg: string;
+  data?: T;
 }
 
-export interface ResponseData3<T = any> {
+/** RuoYi TableDataInfo: {code, msg, total, rows} */
+export interface ResponsePaginationData<T = any> {
   code: number;
-  message: string;
-  data: T;
-}
-
-export interface ResponsePaginationData<T = any> extends ResponseData<T> {
-  data: {
-    data: T;
-    pageNo: number;
-    pageSize: number;
-    totalCount: number;
-    totalPage: number;
-  };
-  sessionId: string;
+  msg: string;
+  total: number;
+  rows: T[];
 }
 
 export interface PaginationParams {

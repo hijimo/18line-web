@@ -1,0 +1,20 @@
+[     193ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[     262ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[     367ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[     368ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[     368ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/login @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[     368ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[     370ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[     395ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[     410ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[     410ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56
+[   86725ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[   86743ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[   86813ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[   86813ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[   86813ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/login @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[   86813ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[   86813ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[   86817ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   86818ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[   86818ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56

@@ -1,5 +1,5 @@
 import { Space, theme, Typography } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import React from 'react';
 import type { LayoutThemedTitleProps } from '../types';
 

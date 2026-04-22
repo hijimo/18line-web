@@ -8,7 +8,27 @@
       "Bash(curl -s -X POST http://localhost:3000/api/login -H \"Content-Type: application/json\" -d '{\"username\":\"admin\",\"password\":\"admin123\",\"rememberMe\":false}')",
       "Bash(git pull *)",
       "Bash(git stash *)",
-      "Bash(pnpm install *)"
+      "Bash(pnpm install *)",
+      "Bash(curl -s http://localhost:3000/login)",
+      "Bash(kill 53637)",
+      "Bash(npm run *)",
+      "Bash(curl -s http://localhost:3000)",
+      "Bash(awk '{print $2}')",
+      "Bash(xargs kill *)",
+      "Bash(curl -sI http://localhost:3000/login)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_snapshot",
+      "mcp__playwright__browser_close",
+      "Bash(npx tsc *)",
+      "mcp__playwright__browser_evaluate",
+      "mcp__playwright__browser_console_messages",
+      "mcp__playwright__browser_run_code",
+      "Bash(curl -s 'http://8.136.229.208:8080/travel18/tourist/list?pageNo=1&pageSize=10')",
+      "Bash(curl -s 'http://8.136.229.208:8080/login' -X POST -H 'Content-Type: application/json' -d '{\"username\":\"admin\",\"password\":\"admin123\"}')",
+      "Bash(curl *)",
+      "Bash(npx vitest *)",
+      "Bash(kill 84471)",
+      "Bash(kill 97323)"
     ]
   }
 }

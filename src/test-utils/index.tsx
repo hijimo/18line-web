@@ -88,15 +88,9 @@ export { customRender as render };
 export function createMockPaginatedResponse<T>(data: T[], total = data.length) {
   return {
     code: 200,
-    message: 'success',
-    data: {
-      data,
-      pageNo: 1,
-      pageSize: 10,
-      totalCount: total,
-      totalPage: Math.ceil(total / 10),
-    },
-    sessionId: 'mock-session',
+    msg: 'success',
+    total,
+    rows: data,
   };
 }
 

@@ -26,16 +26,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data: userResponse, isError } = useCurrentUser(shouldFetchUser);
 
   useEffect(() => {
-    // 如果获取用户信息成功，更新认证状态
-    if (userResponse?.data) {
-      updateUser(userResponse.data);
-      // 确保认证状态为 true
+    // RuoYi response: {code, msg, roles, posts, ...}
+    if (userResponse?.code === 200) {
+      const user = { roles: userResponse.roles, posts: userResponse.posts };
+      updateUser(user);
       if (!isAuthenticated && token) {
-        login(token, userResponse.data, rememberMe);
+        login(token, user, rememberMe);
       }
     }
 
-    // 如果获取用户信息失败（如 token 过期），清除认证状态并跳转到登录页
     if (isError && shouldFetchUser) {
       logout();
       navigate('/login', { replace: true, state: { from: location } });

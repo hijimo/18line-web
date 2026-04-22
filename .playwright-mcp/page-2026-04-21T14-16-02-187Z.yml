@@ -1,0 +1,16 @@
+- generic [ref=e3]:
+  - button "bars" [ref=e4] [cursor=pointer]:
+    - img "bars" [ref=e6]:
+      - img [ref=e7]
+  - generic [ref=e9]:
+    - banner [ref=e10]:
+      - button "U" [ref=e15] [cursor=pointer]:
+        - generic [ref=e17]: U
+    - main [ref=e18]:
+      - main [ref=e20]:
+        - generic [ref=e21]:
+          - text: "12312"
+          - generic [ref=e22]:
+            - heading "I'm REACT_APP_TEXT from .234" [level=1] [ref=e23]
+            - img "react-logo"
+          - 'button "count is: 0" [ref=e25]'

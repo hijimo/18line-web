@@ -84,7 +84,7 @@ request.interceptors.request.use((config) => {
 
 request.interceptors.response.use(
   (res) => {
-    const { message: messageStr, code, result } = (res.data as unknown as ResponseData) || {};
+    const { msg: msgStr, code } = (res.data as unknown as ResponseData) || {};
 
     if (code === 401 || code === 403) {
       // 认证失败或无权限，自动登出
@@ -98,13 +98,12 @@ request.interceptors.response.use(
 
       // 跳转到登录页
       window.location.href = '/login';
-      return Promise.reject(new Error(messageStr || '认证失败'));
+      return Promise.reject(new Error(msgStr || '认证失败'));
     }
     if (code !== 200) {
       // 创建业务错误
-      const error = new Error(messageStr || '业务处理失败');
+      const error = new Error(msgStr || '业务处理失败');
       (error as any).code = code;
-      (error as any).result = result;
 
       errorHandler(error, `API 业务错误: ${res.config?.url}`);
       throw error;

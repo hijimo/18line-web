@@ -1,0 +1,10 @@
+[     337ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[     372ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts?t=1776779701542:6
+[     430ms] [ERROR] Warning: [antd: Menu] `children` is deprecated. Please use `items` instead. @ http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:1476
+[     496ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[     496ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[     496ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/ @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[     496ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[     497ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[     508ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[     508ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56

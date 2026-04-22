@@ -5,11 +5,11 @@ import type { ResponsePaginationData } from '@/types';
 
 const transformDataToProTable = (result: ResponsePaginationData) => {
   return {
-    data: (result as ResponsePaginationData).data.data,
-    total: (result as ResponsePaginationData)?.data.totalCount,
+    data: result.rows,
+    total: result.total,
     success: result?.code === 200,
-    pageSize: result?.data.pageSize,
-    current: result?.data.pageNo,
+    pageSize: result?.pageSize,
+    current: result?.pageNo,
   };
 };
 

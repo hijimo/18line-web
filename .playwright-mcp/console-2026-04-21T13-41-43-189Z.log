@@ -1,0 +1,59 @@
+[      84ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[     108ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[     168ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[     169ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[     169ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/login @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[     169ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[     169ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[     175ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[     177ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[     177ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56
+[   25238ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[   25259ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[   25288ms] [ERROR] Warning: [antd: Menu] `children` is deprecated. Please use `items` instead. @ http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:1476
+[   25428ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[   25428ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[   25428ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/attractions @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[   25428ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[   25428ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[   25455ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[   25455ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56
+[   25523ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[   25536ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[   25557ms] [ERROR] Warning: [antd: Menu] `children` is deprecated. Please use `items` instead. @ http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:1476
+[   25648ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[   25648ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[   25648ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/attractions @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[   25648ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[   25649ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[   25663ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[   25663ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56
+[   25810ms] [ERROR] Warning: [antd: message] Static function can not consume context like dynamic theme. Please use 'App' component instead. @ http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:1476
+[   25810ms] [ERROR] Warning: [antd: compatible] antd v5 support React is 16 ~ 18. see https://u.ant.design/v5-for-19 for compatible. @ http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:1476
+[   25839ms] Error: Error: 认证失败
+    at _callee$ (http://localhost:3000/node_modules/.vite/deps/@ant-design_pro-components.js?v=7b73f731:50655:19)
+    at http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:11615:19
+    at Generator.<anonymous> (http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:11460:54)
+    at Generator.throw (http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:11412:21)
+    at asyncGeneratorStep (http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:11644:18)
+    at _throw (http://localhost:3000/node_modules/.vite/deps/chunk-OFGGFTHW.js?v=7b73f731:11659:9)
+[   25864ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[   25876ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[   25915ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[   25915ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[   25916ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/login @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[   25916ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[   25916ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[   25917ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   25919ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[   25919ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56
+[   36308ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://localhost:3000/node_modules/.vite/deps/react-dom_client.js?v=7b73f731:20102
+[   36325ms] [LOG] import.meta.env.VITE_API_BASE_URL {BASE_URL: /, DEV: true, MODE: development, PROD: false, SSR: false} @ http://localhost:3000/src/utils/request.ts:6
+[   36370ms] [LOG] [ContentScript] 📦 脚本文件已执行 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8742
+[   36370ms] [LOG] [ContentScript] 🚀 Content script 已加载 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7663
+[   36370ms] [LOG] [ContentScript] 当前页面: http://localhost:3000/login @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7664
+[   36370ms] [LOG] [ContentScript] 是否在 iframe 中: false @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:7665
+[   36370ms] [LOG] [ContentScript] ✅ 初始化完成，等待用户操作 @ chrome-extension://eiokdlknikeeicboobfegaimahaonpln/contentScript.js:8739
+[   36373ms] [VERBOSE] [DOM] Input elements should have autocomplete attributes (suggested: "current-password"): (More info: https://goo.gl/9p2vKq) %o @ http://localhost:3000/login:0
+[   36375ms] [LOG] [RPA Extension] ✅ __rpaCaptureElement 已注入 @ :33
+[   36375ms] [LOG] [RPA Extension] ✅ __rpaAddElement 已注入 @ :56

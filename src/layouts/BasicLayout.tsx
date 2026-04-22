@@ -1,7 +1,7 @@
 import { DashboardOutlined, UserOutlined } from '@ant-design/icons';
 import { ProLayout } from '@ant-design/pro-components';
 import { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 
 const BasicLayout = ({ children }: { children: React.ReactElement }) => {
   const navigate = useNavigate();

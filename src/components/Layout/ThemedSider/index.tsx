@@ -6,7 +6,7 @@ import {
   UnorderedListOutlined,
 } from '@ant-design/icons';
 import { Button, ConfigProvider, Drawer, Grid, Layout, Menu, theme } from 'antd';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 import React from 'react';
 import { useMenu, type TreeMenuItem } from '@/hooks/menu';
 import { useThemedLayoutContext } from '../hooks/useThemedLayoutContext';

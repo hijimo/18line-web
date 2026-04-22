@@ -72,7 +72,9 @@ test.describe('登录流程', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           code: 200,
-          data: { id: 1, username: 'admin', email: 'admin@system.local' },
+          msg: '操作成功',
+          roles: [{ roleKey: 'common', roleName: '普通角色' }],
+          posts: [{ postCode: 'ceo', postName: '董事长' }],
         }),
       })
     })
@@ -102,10 +104,8 @@ test.describe('登录流程', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           code: 200,
-          data: {
-            accessToken: 'mock-token-123',
-            user: { id: 1, username: 'admin', email: 'admin@system.local', tenantId: 'mock-tenant' },
-          },
+          msg: '操作成功',
+          token: 'mock-token-123',
         }),
       })
     })
@@ -142,7 +142,7 @@ test.describe('登录流程', () => {
         contentType: 'application/json',
         body: JSON.stringify({
           code: 401,
-          message: '用户名或密码错误',
+          msg: '用户名或密码错误',
         }),
       })
     })

@@ -7,27 +7,20 @@
 
 import { http, HttpResponse } from 'msw';
 
-function createPaginatedResponse(data: Record<string, unknown>[], pageNo = 1, pageSize = 10) {
+function createPaginatedResponse(data: Record<string, unknown>[]) {
   return HttpResponse.json({
     code: 200,
-    message: 'success',
-    data: {
-      data,
-      pageNo,
-      pageSize,
-      totalCount: data.length,
-      totalPage: Math.ceil(data.length / pageSize),
-    },
-    sessionId: 'test-session',
+    msg: 'success',
+    total: data.length,
+    rows: data,
   });
 }
 
 function createSuccessResponse(data?: Record<string, unknown>) {
   return HttpResponse.json({
     code: 200,
-    message: '操作成功',
+    msg: '操作成功',
     ...(data ? { data } : {}),
-    sessionId: 'test-session',
   });
 }
 

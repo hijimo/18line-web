@@ -1,45 +1,32 @@
 import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Select, Space, Tag, message } from 'antd';
+import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
-// ActionType inferred from ProTable usage
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
+import { DarkLevelLabel, SpecialStarOptions, SeasonalLabel, ReservationLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getDishApi } from '@/services/api/菜品管理/菜品管理';
 import UploadList from '@/components/Upload';
 
 const dishApi = getDishApi();
 
-const DARKNESS_OPTIONS = [
-  { label: '特黑', value: '特黑' },
-  { label: '浅黑', value: '浅黑' },
-  { label: '正常', value: '正常' },
-];
-
-const STAR_OPTIONS = [
-  { label: '1星', value: 1 },
-  { label: '2星', value: 2 },
-  { label: '3星', value: 3 },
-  { label: '4星', value: 4 },
-  { label: '5星', value: 5 },
-];
-
-const YES_NO = [{ label: '是', value: '是' }, { label: '否', value: '否' }];
-
-type DrawerMode = 'add' | 'edit' | 'detail';
+const YES_NO_OPTIONS = Object.entries(SeasonalLabel).map(([value, label]) => ({ label, value }));
+const darkLevelOptions = Object.entries(DarkLevelLabel).map(([value, label]) => ({ label, value }));
+const darkLevelValueEnum = Object.fromEntries(Object.entries(DarkLevelLabel).map(([v, text]) => [v, { text }]));
+const specialStarValueEnum = Object.fromEntries(SpecialStarOptions.map(o => [o.value, { text: o.label }]));
+const seasonalValueEnum = Object.fromEntries(Object.entries(SeasonalLabel).map(([k, v]) => [k, { text: v }]));
+const reservationValueEnum = Object.fromEntries(Object.entries(ReservationLabel).map(([k, v]) => [k, { text: v }]));
 
 const Dishes: React.FC = () => {
   const actionRef = useRef<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [drawerMode, setDrawerMode] = useState<DrawerMode>('add');
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
   const [fileList, setFileList] = useState<any[]>([]);
 
   const request = useTableRequest(dishApi.list3 as any);
 
-  const openDrawer = (mode: DrawerMode, record?: any) => {
-    setDrawerMode(mode);
+  const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue(record);
@@ -55,12 +42,12 @@ const Dishes: React.FC = () => {
     const values = await form.validateFields();
     const params = { ...values, images: fileList.map((f) => f.url) };
     try {
-      if (drawerMode === 'add') {
-        await dishApi.addSave3(params as any);
-        message.success('新增成功');
-      } else {
+      if (currentRecord) {
         await dishApi.editSave3({ ...params, dishId: currentRecord.dishId } as any);
         message.success('编辑成功');
+      } else {
+        await dishApi.addSave3(params as any);
+        message.success('新增成功');
       }
       setDrawerOpen(false);
       actionRef.current?.reload();
@@ -70,42 +57,47 @@ const Dishes: React.FC = () => {
   };
 
   const handleToggleStatus = async (record: any) => {
-    const newStatus = record.status === '上架' ? '下架' : '上架';
+    const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
       await dishApi.editSave3({ dishId: record.dishId, status: newStatus } as any);
-      message.success(`${newStatus}成功`);
+      message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
       message.error('操作失败');
     }
   };
 
-  const isReadOnly = drawerMode === 'detail';
+  const handleDelete = async (record: any) => {
+    try {
+      await dishApi.remove5({ ids: record.dishId } as any);
+      message.success('删除成功');
+      actionRef.current?.reload();
+    } catch {
+      message.error('删除失败');
+    }
+  };
 
   const columns = [
     key,
-    { title: '菜品名称', dataIndex: 'name', ellipsis: true },
-    {
-      title: '黑暗程度',
-      dataIndex: 'darknessLevel',
-      search: false,
-      valueEnum: DARKNESS_OPTIONS.reduce((acc, opt) => ({ ...acc, [opt.value]: { text: opt.label } }), {}),
-    },
-    { title: '特色星级', dataIndex: 'specialtyStars', search: false, render: (v: number) => v ? `${v}星` : '--' },
+    { title: '菜品名称', dataIndex: 'dishName', ellipsis: true },
+    { title: '黑暗程度', dataIndex: 'darkLevel', search: false, valueEnum: darkLevelValueEnum },
+    { title: '特色星级', dataIndex: 'specialStar', search: false, valueEnum: specialStarValueEnum },
     { title: '价格', dataIndex: 'price', search: false, render: (v: number) => v ? `${v}元` : '--' },
-    { title: '是否时令菜', dataIndex: 'isSeasonal', search: false, render: (v: string) => v === '是' ? <Tag color="green">是</Tag> : <Tag>否</Tag> },
-    { title: '提前预约', dataIndex: 'advanceBooking', search: false, render: (v: string) => v === '是' ? <Tag color="orange">是</Tag> : <Tag>否</Tag> },
+    { title: '是否时令菜', dataIndex: 'seasonal', search: false, valueEnum: seasonalValueEnum },
+    { title: '提前预约', dataIndex: 'reservation', search: false, valueEnum: reservationValueEnum },
     {
       ...option,
       render: (_: any, record: any) => (
         <Space>
-          <a onClick={() => openDrawer('detail', record)}>详情</a>
-          {record.status === '上架' ? (
+          <a onClick={() => openDrawer(record)}>编辑</a>
+          <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
+            <a>删除</a>
+          </Popconfirm>
+          {record.status === StatusEnum.NORMAL ? (
             <a onClick={() => handleToggleStatus(record)}>下架</a>
           ) : (
             <a onClick={() => handleToggleStatus(record)}>上架</a>
           )}
-          <a onClick={() => openDrawer('edit', record)}>编辑</a>
         </Space>
       ),
     },
@@ -118,7 +110,7 @@ const Dishes: React.FC = () => {
         request={request as any}
         columns={columns as any}
         toolBarRender={() => [
-          <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer('add')}>
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             +新增
           </Button>,
         ]}
@@ -126,38 +118,38 @@ const Dishes: React.FC = () => {
       />
 
       <Drawer
-        title={drawerMode === 'add' ? '新增菜品' : drawerMode === 'edit' ? '编辑菜品' : '菜品详情'}
+        title={currentRecord ? '编辑菜品' : '新增菜品'}
         width={640}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
-        extra={isReadOnly ? null : (
+        extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
             <Button type="primary" onClick={handleSubmit}>确定</Button>
           </Space>
-        )}
+        }
       >
-        <Form form={form} layout="vertical" disabled={isReadOnly}>
-          <Form.Item name="name" label="菜品名称" rules={[{ required: true, message: '请输入菜品名称' }]}>
+        <Form form={form} layout="vertical">
+          <Form.Item name="dishName" label="菜品名称" rules={[{ required: true, message: '请输入菜品名称' }]}>
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item name="description" label="描述">
+          <Form.Item name="dishDesc" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
-          <Form.Item name="darknessLevel" label="黑暗程度">
-            <Select placeholder="请选择" options={DARKNESS_OPTIONS} />
+          <Form.Item name="darkLevel" label="黑暗程度">
+            <Select placeholder="请选择" options={darkLevelOptions} />
           </Form.Item>
           <Form.Item name="price" label="价格">
             <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="specialtyStars" label="特色星级">
-            <Select placeholder="请选择" options={STAR_OPTIONS} />
+          <Form.Item name="specialStar" label="特色星级">
+            <Select placeholder="请选择" options={SpecialStarOptions} />
           </Form.Item>
-          <Form.Item name="isSeasonal" label="时令菜">
-            <Select placeholder="请选择" options={YES_NO} />
+          <Form.Item name="seasonal" label="时令菜">
+            <Select placeholder="请选择" options={YES_NO_OPTIONS} />
           </Form.Item>
-          <Form.Item name="advanceBooking" label="提前预约">
-            <Select placeholder="请选择" options={YES_NO} />
+          <Form.Item name="reservation" label="提前预约">
+            <Select placeholder="请选择" options={YES_NO_OPTIONS} />
           </Form.Item>
           <Form.Item label="上传图片">
             <UploadList

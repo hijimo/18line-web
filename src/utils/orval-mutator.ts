@@ -12,11 +12,17 @@ import request from '@/utils/request'
 export const orvalMutator = async <T = any>(
   config: AxiosRequestConfig,
 ): Promise<T> => {
-  const { url, ...restConfig } = config
+  const { url, method, params, ...restConfig } = config
 
   if (!url) {
     throw new Error('请求 URL 不能为空')
   }
 
-  return request<T>(url, restConfig)
+  // Backend expects JSON body for add/edit/list, but query params for remove
+  const isRemove = url.includes('/remove')
+  const resolvedConfig = method === 'POST' && !isRemove
+    ? { ...restConfig, method, data: params }
+    : { ...restConfig, method, params }
+
+  return request<T>(url, resolvedConfig)
 }
