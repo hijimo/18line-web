@@ -1,10 +1,11 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ConfigProvider } from 'antd';
+import { App as AntdApp, ConfigProvider } from 'antd';
 import { RouterProvider } from 'react-router';
 import React from 'react';
 import useTheme, { ThemeProvider } from '@/hooks/useTheme';
 import { getThemeConfig } from '@/theme';
 import ErrorBoundary from './components/ErrorBoundary';
+import { AntdStaticProvider } from './components/AntdStaticProvider';
 import router from './router';
 
 // 创建QueryClient实例
@@ -31,7 +32,11 @@ const App: React.FC = () => {
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
         <ConfigProvider theme={getThemeConfig(themeMode, colorName)}>
-          <RouterProvider router={router} />
+          <AntdApp>
+            <AntdStaticProvider>
+              <RouterProvider router={router} />
+            </AntdStaticProvider>
+          </AntdApp>
         </ConfigProvider>
       </QueryClientProvider>
     </ErrorBoundary>

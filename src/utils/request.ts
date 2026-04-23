@@ -1,4 +1,4 @@
-import { message } from 'antd';
+import { messageInstance } from '@/utils/antdStatic';
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import cookies from 'js-cookie';
 import { useAuthStore } from '@/stores/authStore';
@@ -36,22 +36,22 @@ const errorHandler = (error: AxiosError | Error, context?: string): void => {
   // 根据错误类型显示不同的提示
   switch (errorInfo.type) {
     case 'network':
-      message.error({
+      messageInstance.error({
         content: '网络连接失败，请检查网络连接',
         duration: 4,
       });
       break;
-    case 'api':
+    case 'api': {
       const axiosErr = error as AxiosError;
       const messageStr = (axiosErr.response?.data as any)?.message;
-      message.error({
+      messageInstance.error({
         content: messageStr || errorInfo.message || '服务器响应异常',
         duration: 4,
       });
-
       break;
+    }
     default:
-      message.error({
+      messageInstance.error({
         content: errorInfo.message || '请求失败，请稍后重试',
         duration: 4,
       });
@@ -91,7 +91,7 @@ request.interceptors.response.use(
       const { logout } = useAuthStore.getState();
       logout();
 
-      message.error({
+      messageInstance.error({
         content: code === 401 ? '登录已过期，请重新登录' : '无权限访问',
         duration: 3,
       });
@@ -119,6 +119,18 @@ request.interceptors.response.use(
 
 // 自定义 request 函数，返回正确的类型
 const customRequest = async <T = any>(url: string, config?: AxiosRequestConfig): Promise<T> => {
+  // 如果 data 中包含 pageNo/pageSize，提取到 URL 参数中（后端 list 接口需要 query 参数）
+  const { data, ...restConfig } = config || {};
+  if (data && typeof data === 'object' && ('pageNo' in data || 'pageSize' in data)) {
+    const { pageNo, pageSize, ...restData } = data as Record<string, any>;
+    const sep = url.includes('?') ? '&' : '?';
+    const paging = [];
+    if (pageSize != null) paging.push(`pageSize=${pageSize}`);
+    if (pageNo != null) paging.push(`pageNum=${pageNo}`);
+    const newUrl = paging.length ? `${url}${sep}${paging.join('&')}` : url;
+    const response = await request(newUrl, { ...restConfig, data: restData });
+    return response as T;
+  }
   const response = await request(url, config);
   return response as T;
 };
