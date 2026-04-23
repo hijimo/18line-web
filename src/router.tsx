@@ -185,105 +185,101 @@ const router = createBrowserRouter([
           {
             path: '/',
             element: (
-              <Layout>
+              
                 <Index />
-              </Layout>
+              
             ),
           },
           {
             path: '/attractions',
             element: (
-              <Layout>
+              
                 <Attractions />
-              </Layout>
+              
             ),
           },
           {
             path: '/checkin',
             element: (
-              <Layout>
+              
                 <CheckinPoints />
-              </Layout>
+              
             ),
           },
           {
             path: '/local-dishes',
             element: (
-              <Layout>
+              
                 <LocalDishes />
-              </Layout>
+              
             ),
           },
           {
             path: '/accommodation',
             element: (
-              <Layout>
+              
                 <Accommodation />
-              </Layout>
+              
             ),
           },
           {
             path: '/dining',
             element: (
-              <Layout>
+              
                 <Dining />
-              </Layout>
+              
             ),
           },
           {
             path: '/dishes',
             element: (
-              <Layout>
                 <Dishes />
-              </Layout>
             ),
           },
           {
             path: '/photography',
             element: (
-              <Layout>
+              
                 <Photography />
-              </Layout>
+              
             ),
           },
           {
             path: '/chartered-car',
             element: (
-              <Layout>
+              
                 <CharteredCar />
-              </Layout>
+              
             ),
           },
           {
             path: '/users',
             element: (
-              <Layout>
+              
                 <Users />
-              </Layout>
+              
             ),
           },
           {
             path: '/routes',
             element: (
-              <Layout>
+              
                 <Routes />
-              </Layout>
+              
             ),
           },
           {
             path: '/easter-egg',
             element: (
-              <Layout>
                 <EasterEgg />
-              </Layout>
             ),
           },
           {
             path: '*',
             element: (
-              <Layout>
+              
                 <Notfound />
-              </Layout>
+              
             ),
           },
         ],
