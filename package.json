@@ -81,7 +81,7 @@
     "eslint-plugin-react-hooks": "^5.2.0",
     "jsdom": "^29.0.2",
     "less": "^4.4.0",
-    "msw": "^2.7.5",
+    "msw": "^2.13.5",
     "orval": "^8.8.1",
     "playwright": "^1.59.1",
     "postcss": "^8.5.6",
