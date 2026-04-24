@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Switch, Space, message } from 'antd';
+import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
@@ -7,6 +7,7 @@ import { key, option } from '@/configurify/columns/baseColumns';
 import { DiningNatureLabel, DiningRecommendRatingOptions, PetFriendlyLabel, ParkingAvailableLabel, StatusEnum, StatusLabel, YesNoLabel } from '@/enums';
 import { get as getDiningApi } from '@/services/api/餐饮管理/餐饮管理';
 import UploadList from '@/components/Upload';
+import RegionSelect from '@/components/RegionSelect';
 
 const diningApi = getDiningApi();
 
@@ -25,7 +26,7 @@ const Dining: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue(record);
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district } });
       setFileList(record.images || []);
     } else {
       form.resetFields();
@@ -36,7 +37,8 @@ const Dining: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const params = { ...values, images: fileList.map((f) => f.url) };
+    const { region, ...rest } = values;
+    const params = { ...rest, ...region, images: fileList.map((f) => f.url) };
     try {
       if (currentRecord) {
         await diningApi.editSave4({ ...params, diningId: currentRecord.diningId } as any);
@@ -78,11 +80,10 @@ const Dining: React.FC = () => {
     { title: '名称', dataIndex: 'diningName', ellipsis: true },
     { title: '性质', dataIndex: 'diningNature', search: false, valueEnum: DiningNatureLabel },
     { title: '人均', dataIndex: 'avgCost', search: false, render: (v: number) => v ? `${v}元/位` : '--' },
+    { title: '口碑评分', dataIndex: 'recommendRating', search: false, valueEnum: Object.fromEntries(DiningRecommendRatingOptions.map(({ value, label }) => [value, { text: label }])) },
     { title: '宠物友好', dataIndex: 'petFriendly', search: false, valueEnum: PetFriendlyLabel },
     { title: '停车位', dataIndex: 'parkingAvailable', search: false, valueEnum: ParkingAvailableLabel },
-    { title: '电话', dataIndex: 'contactInfo', search: false },
     { title: '地址', dataIndex: 'address', search: false, ellipsis: true },
-    { title: '地点', dataIndex: 'location', search: false },
     {
       ...option,
       render: (_: any, record: any) => (
@@ -131,6 +132,9 @@ const Dining: React.FC = () => {
           <Form.Item name="diningName" label="餐厅名称" rules={[{ required: true, message: '请输入餐厅名称' }]}>
             <Input placeholder="请输入" />
           </Form.Item>
+          <Form.Item name="region" label="地区">
+            <RegionSelect />
+          </Form.Item>
           <Form.Item name="diningNature" label="餐饮性质">
             <Select placeholder="请选择" options={diningNatureOptions} />
           </Form.Item>
@@ -140,6 +144,14 @@ const Dining: React.FC = () => {
           <Form.Item name="address" label="地址">
             <Input placeholder="请输入" />
           </Form.Item>
+          <Space style={{ width: '100%' }} size="middle">
+            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
           <Form.Item name="petFriendly" label="宠物友好">
             <Select placeholder="请选择" options={YES_NO} />
           </Form.Item>

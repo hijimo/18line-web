@@ -1,33 +1,32 @@
 import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Space, message } from 'antd';
+import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { StatusEnum, StatusLabel } from '@/enums';
-import { get as getRouteApi } from '@/services/api/线路管理/线路管理';
-import UploadList from '@/components/Upload';
+import { StaminaLabel, YesNoLabel, StatusEnum, StatusLabel } from '@/enums';
+import { get as getTemplateApi } from '@/services/api/行程模板管理/行程模板管理';
 import RegionSelect from '@/components/RegionSelect';
 
-const routeApi = getRouteApi();
+const templateApi = getTemplateApi();
 
-const Routes: React.FC = () => {
+const STAMINA_OPTIONS = Object.entries(StaminaLabel).map(([value, label]) => ({ label, value }));
+const YES_NO_OPTIONS = Object.entries(YesNoLabel).map(([value, label]) => ({ label, value }));
+
+const Template: React.FC = () => {
   const actionRef = useRef<any>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
 
-  const request = useTableRequest(routeApi.list2 as any);
+  const request = useTableRequest(templateApi.list12 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district } });
-      setFileList(record.images || []);
     } else {
       form.resetFields();
-      setFileList([]);
     }
     setDrawerOpen(true);
   };
@@ -35,13 +34,13 @@ const Routes: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const { region, ...rest } = values;
-    const params = { ...rest, ...region, images: fileList.map((f) => f.url) };
+    const params = { ...rest, ...region };
     try {
       if (currentRecord) {
-        await routeApi.editSave2({ ...params, lineId: currentRecord.lineId } as any);
+        await templateApi.edit13({ ...params, templateId: currentRecord.templateId } as any);
         message.success('编辑成功');
       } else {
-        await routeApi.addSave2(params as any);
+        await templateApi.add1(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -54,7 +53,7 @@ const Routes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await routeApi.editSave2({ lineId: record.lineId, status: newStatus } as any);
+      await templateApi.edit13({ templateId: record.templateId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -64,7 +63,7 @@ const Routes: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await routeApi.remove4({ ids: record.lineId } as any);
+      await templateApi.remove1(String(record.templateId));
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -74,8 +73,11 @@ const Routes: React.FC = () => {
 
   const columns = [
     key,
-    { title: '名称', dataIndex: 'lineName', ellipsis: true },
+    { title: '名称', dataIndex: 'templateName', ellipsis: true },
     { title: '地点', dataIndex: 'location', search: false },
+    { title: '体力等级', dataIndex: 'staminaLevel', valueEnum: StaminaLabel },
+    { title: '基准天数', dataIndex: 'baseDays', search: false },
+    { title: '天数范围', dataIndex: 'minDays', search: false, render: (_: any, record: any) => `${record.minDays ?? '--'} ~ ${record.maxDays ?? '--'}` },
     {
       ...option,
       render: (_: any, record: any) => (
@@ -102,14 +104,14 @@ const Routes: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +线路
+            +新增
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}
       />
 
       <Drawer
-        title={currentRecord ? '编辑线路' : '新增线路'}
+        title={currentRecord ? '编辑行程模板' : '新增行程模板'}
         width={640}
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
@@ -121,23 +123,40 @@ const Routes: React.FC = () => {
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="lineName" label="线路名称" rules={[{ required: true, message: '请输入线路名称' }]}>
+          <Form.Item name="templateName" label="模板名称" rules={[{ required: true, message: '请输入模板名称' }]}>
             <Input placeholder="请输入" />
+          </Form.Item>
+          <Form.Item name="templateDesc" label="模板描述">
+            <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
           <Form.Item name="region" label="地区">
             <RegionSelect />
           </Form.Item>
-          <Form.Item name="remark" label="备注">
-            <Input.TextArea placeholder="请输入" rows={3} />
+          <Form.Item name="baseDays" label="基准天数">
+            <InputNumber placeholder="请输入" addonAfter="天" style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item label="上传图片">
-            <UploadList
-              fileList={fileList}
-              onChange={setFileList as any}
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
+          <Space style={{ width: '100%' }} size="middle">
+            <Form.Item name="minDays" label="最小天数" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" addonAfter="天" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="maxDays" label="最大天数" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" addonAfter="天" style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
+          <Form.Item name="staminaLevel" label="体力等级">
+            <Select placeholder="请选择" options={STAMINA_OPTIONS} />
+          </Form.Item>
+          <Form.Item name="travelTags" label="旅行标签">
+            <Input placeholder="逗号分隔" />
+          </Form.Item>
+          <Form.Item name="includePhotography" label="含跟拍">
+            <Select placeholder="请选择" options={YES_NO_OPTIONS} />
+          </Form.Item>
+          <Form.Item name="includeCar" label="含包车">
+            <Select placeholder="请选择" options={YES_NO_OPTIONS} />
+          </Form.Item>
+          <Form.Item name="version" label="版本号" initialValue={1}>
+            <InputNumber placeholder="请输入" style={{ width: '100%' }} />
           </Form.Item>
         </Form>
       </Drawer>
@@ -145,4 +164,4 @@ const Routes: React.FC = () => {
   );
 };
 
-export default Routes;
+export default Template;

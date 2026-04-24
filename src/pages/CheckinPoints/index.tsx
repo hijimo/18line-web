@@ -1,13 +1,15 @@
 import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Switch, Checkbox, DatePicker, Space, Tag, message } from 'antd';
+import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Switch, Checkbox, TimePicker, Space, Tag, message } from 'antd';
+import dayjs from 'dayjs';
 import { PlusOutlined } from '@ant-design/icons';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { get as getCheckinApi } from '@/services/api/打卡点管理/打卡点管理';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
-import { FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFactorsLabel, StatusEnum, StatusLabel } from '@/enums';
+import { FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFactorsLabel, BlindStatusLabel, StatusEnum, StatusLabel } from '@/enums';
 import UploadList from '@/components/Upload';
+import RegionSelect from '@/components/RegionSelect';
 
 const checkinApi = getCheckinApi();
 const attractionApi = getAttractionApi();
@@ -16,6 +18,8 @@ const leisureRatingValueEnum = Object.fromEntries(Object.entries(LeisureRatingLa
 const indoorOutdoorOptions = Object.entries(IndoorOutdoorLabel).map(([value, label]) => ({ label, value }));
 const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({ label, value }));
 const classicRatingValueEnum = Object.fromEntries(ClassicRatingOptions.map(({ value, label }) => [value, { text: label }]));
+const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({ label, value }));
+const leisureRatingOptions = Object.entries(LeisureRatingLabel).map(([value, label]) => ({ label, value }));
 
 const CheckinPoints: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -34,7 +38,10 @@ const CheckinPoints: React.FC = () => {
       setAttractionOptions((res as any).rows || []);
     } catch {}
     if (record) {
-      form.setFieldsValue(record);
+      const openTimeValue = record.openTime
+        ? record.openTime.split(' - ').map((t: string) => dayjs(t, 'HH:mm'))
+        : undefined;
+      form.setFieldsValue({ ...record, openTime: openTimeValue, region: { province: record.province, city: record.city, district: record.district } });
       setFileList(record.images || []);
     } else {
       form.resetFields();
@@ -45,7 +52,8 @@ const CheckinPoints: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const params = { ...values, images: fileList.map((f) => f.url) };
+    const { region, ...rest } = values;
+    const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', images: fileList.map((f) => f.url) };
     try {
       if (currentRecord) {
         await checkinApi.editSave5({ ...params, checkinId: currentRecord.checkinId } as any);
@@ -89,9 +97,11 @@ const CheckinPoints: React.FC = () => {
     { title: '休闲指数', dataIndex: 'leisureRating', search: false, valueEnum: leisureRatingValueEnum },
     { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}分钟` : '--' },
     { title: '地点', dataIndex: 'location', search: false },
+    { title: '是否全盲', dataIndex: 'blindStatus', search: false, valueEnum: Object.fromEntries(Object.entries(BlindStatusLabel).map(([k, v]) => [k, { text: v }])) },
     { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => v === '1' ? <Tag color="blue">{FamilyFriendlyLabel[v]}</Tag> : <Tag>{FamilyFriendlyLabel[v]}</Tag> },
     { title: '经典指数', dataIndex: 'classicRating', search: false, valueEnum: classicRatingValueEnum },
-    { title: '门票', dataIndex: 'ticketPriceA', search: false, render: (v: number) => v ? `${v}元` : '--' },
+    { title: '门票(成人)', dataIndex: 'ticketPriceA', search: false, render: (v: number) => v ? `${v}元` : '--' },
+    { title: '门票(儿童)', dataIndex: 'ticketPriceC', search: false, render: (v: number) => v ? `${v}元` : '--' },
     {
       ...option,
       render: (_: any, record: any) => (
@@ -152,6 +162,29 @@ const CheckinPoints: React.FC = () => {
           <Form.Item name="checkinBlurb" label="推荐理由">
             <Input placeholder="请输入" />
           </Form.Item>
+          <Form.Item name="region" label="地区">
+            <RegionSelect />
+          </Form.Item>
+          <Space style={{ width: '100%' }} size="middle">
+            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
+          <Form.Item name="blindStatus" label="是否全盲">
+            <Select placeholder="请选择" options={blindStatusOptions} />
+          </Form.Item>
+          <Form.Item name="classicRating" label="经典指数">
+            <Select placeholder="请选择" options={ClassicRatingOptions} />
+          </Form.Item>
+          <Form.Item name="leisureRating" label="休闲指数">
+            <Select placeholder="请选择" options={leisureRatingOptions} />
+          </Form.Item>
+          <Form.Item name="openTime" label="开放时间">
+            <TimePicker.RangePicker format="HH:mm" style={{ width: '100%' }} />
+          </Form.Item>
           <Form.Item name="visitDuration" label="游玩时间">
             <InputNumber placeholder="请输入" addonAfter="分钟" style={{ width: '100%' }} />
           </Form.Item>
@@ -164,11 +197,28 @@ const CheckinPoints: React.FC = () => {
           <Form.Item name="perCost" label="人均消费">
             <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="ticketPriceA" label="门票价格">
-            <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
-          </Form.Item>
+          <Space style={{ width: '100%' }} size="middle">
+            <Form.Item name="ticketPriceA" label="门票价格(成人)" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="ticketPriceC" label="门票价格(儿童)" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
           <Form.Item name="familyFriendly" label="亲子游" valuePropName="checked" normalize={(v) => v ? '1' : '0'}>
             <Switch />
+          </Form.Item>
+          <Form.Item name="reservationRequired" label="提前预约">
+            <Input placeholder="请输入预约渠道" />
+          </Form.Item>
+          <Form.Item name="closedDay" label="固定闭馆日期">
+            <Input placeholder="如：周一" />
+          </Form.Item>
+          <Form.Item name="sortOrder" label="排序序号">
+            <InputNumber placeholder="请输入" min={0} style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="checkinNotes" label="注意事项">
+            <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
           <Form.Item label="上传图片">
             <UploadList

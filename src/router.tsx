@@ -2,12 +2,15 @@ import {
   BookOutlined,
   CarOutlined,
   CameraOutlined,
+  CalendarOutlined,
   GiftOutlined,
   HomeOutlined,
+  SettingOutlined,
   UserOutlined,
   EnvironmentOutlined,
   BankOutlined,
   CoffeeOutlined,
+  ShopOutlined,
 } from '@ant-design/icons';
 import { createBrowserRouter, Outlet } from 'react-router';
 import Header from '@/components/Header';
@@ -34,6 +37,8 @@ import CharteredCar from './pages/CharteredCar';
 import Users from './pages/Users';
 import Routes from './pages/Routes';
 import EasterEgg from './pages/EasterEgg';
+import AlgorithmConfig from './pages/AlgorithmConfig';
+import Template from './pages/Template';
 import type { ResourceProps } from './types/resource';
 
 const resources: ResourceProps[] = [
@@ -59,7 +64,6 @@ const resources: ResourceProps[] = [
     meta: {
       label: '打卡点',
       icon: <EnvironmentOutlined />,
-      parent: 'attractions',
     },
   },
   {
@@ -71,36 +75,19 @@ const resources: ResourceProps[] = [
     },
   },
   {
+    name: 'local-service',
+    meta: {
+      label: '本地服务',
+      icon: <ShopOutlined />,
+    },
+  },
+  {
     name: 'accommodation',
     list: '/accommodation',
     meta: {
       label: '住宿',
       icon: <BankOutlined />,
-    },
-  },
-  {
-    name: 'dining',
-    list: '/dining',
-    meta: {
-      label: '餐饮',
-      icon: <BankOutlined />,
-    },
-  },
-  {
-    name: 'dishes',
-    list: '/dishes',
-    meta: {
-      label: '菜品',
-      icon: <CoffeeOutlined />,
-      parent: 'dining',
-    },
-  },
-  {
-    name: 'photography',
-    list: '/photography',
-    meta: {
-      label: '跟拍',
-      icon: <CameraOutlined />,
+      parent: 'local-service',
     },
   },
   {
@@ -109,6 +96,34 @@ const resources: ResourceProps[] = [
     meta: {
       label: '包车',
       icon: <CarOutlined />,
+      parent: 'local-service',
+    },
+  },
+  {
+    name: 'photography',
+    list: '/photography',
+    meta: {
+      label: '跟拍',
+      icon: <CameraOutlined />,
+      parent: 'local-service',
+    },
+  },
+  {
+    name: 'dishes',
+    list: '/dishes',
+    meta: {
+      label: '菜品',
+      icon: <CoffeeOutlined />,
+      parent: 'local-service',
+    },
+  },
+  {
+    name: 'dining',
+    list: '/dining',
+    meta: {
+      label: '餐饮',
+      icon: <BankOutlined />,
+      parent: 'local-service',
     },
   },
   {
@@ -133,6 +148,22 @@ const resources: ResourceProps[] = [
     meta: {
       label: '彩蛋',
       icon: <GiftOutlined />,
+    },
+  },
+  {
+    name: 'algorithm-config',
+    list: '/algorithm-config',
+    meta: {
+      label: '算法配置',
+      icon: <SettingOutlined />,
+    },
+  },
+  {
+    name: 'template',
+    list: '/template',
+    meta: {
+      label: '行程模板',
+      icon: <CalendarOutlined />,
     },
   },
 ];
@@ -273,6 +304,14 @@ const router = createBrowserRouter([
             element: (
                 <EasterEgg />
             ),
+          },
+          {
+            path: '/algorithm-config',
+            element: <AlgorithmConfig />,
+          },
+          {
+            path: '/template',
+            element: <Template />,
           },
           {
             path: '*',

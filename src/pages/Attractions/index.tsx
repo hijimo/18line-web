@@ -6,6 +6,7 @@ import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
 import UploadList from '@/components/Upload';
+import RegionSelect from '@/components/RegionSelect';
 import { BlindStatusLabel, FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, BadFactorsLabel, StatusEnum, StatusLabel } from '@/enums';
 
 const attractionApi = getAttractionApi();
@@ -26,7 +27,10 @@ const Attractions: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue(record);
+      form.setFieldsValue({
+        ...record,
+        region: { province: record.province, city: record.city, district: record.district },
+      });
       setFileList(record.images || []);
     } else {
       form.resetFields();
@@ -37,7 +41,8 @@ const Attractions: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const params = { ...values, images: fileList.map((f) => f.url) };
+    const { region, ...rest } = values;
+    const params = { ...rest, ...region, images: fileList.map((f) => f.url) };
     try {
       if (currentRecord) {
         await attractionApi.editSave7({ ...params, attractionId: currentRecord.attractionId } as any);
@@ -136,6 +141,9 @@ const Attractions: React.FC = () => {
           </Form.Item>
           <Form.Item name="attractionShortName" label="简称">
             <Input placeholder="请输入" />
+          </Form.Item>
+          <Form.Item name="region" label="地区">
+            <RegionSelect />
           </Form.Item>
           <Space style={{ width: '100%' }} size="middle">
             <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
