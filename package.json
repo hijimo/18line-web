@@ -84,7 +84,7 @@
     "msw": "^2.13.5",
     "orval": "^8.9.0",
     "playwright": "^1.59.1",
-    "postcss": "^8.5.6",
+    "postcss": "^8.5.12",
     "prettier": "^3.5.3",
     "typescript": "^5.8.3",
     "vite": "^8.0.10",
