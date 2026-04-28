@@ -47,7 +47,7 @@
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.13",
-    "immer": "^10.1.1",
+    "immer": "^11.1.4",
     "js-cookie": "^3.0.5",
     "lodash-es": "^4.17.21",
     "lucide-react": "^1.11.0",
