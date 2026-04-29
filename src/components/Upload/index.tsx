@@ -28,6 +28,8 @@ export interface UploadListProps extends UploadProps {
   maxSize?: number;
   // 最大上传数量
   maxLength?: number;
+  // 附件用途标识
+  purpose?: string;
   // before上传，返回false会终止后面动作。
   onBeforeUpload?: (fileList: File[]) => Promise<boolean> | undefined;
   // 当文件进度发生变更、文件数量、上传状态等 发生变更
@@ -45,6 +47,7 @@ const UploadList: React.FC<UploadListProps> = ({
   fileList,
   capture,
   multiple,
+  purpose,
   uploadText = '上传',
   maxSize = 30240,
   // 最大文件上传数量
@@ -63,10 +66,17 @@ const UploadList: React.FC<UploadListProps> = ({
     handleFiles(fileList || []);
   }, [fileList]);
 
+  /** 触发 onChange，自动为每个文件注入 purpose */
+  const emitChange = (list: File[]) => {
+    if (!onChange) return;
+    const tagged = purpose ? list.map((f) => ({ ...f, purpose })) : list;
+    onChange(tagged);
+  };
+
   const appendToList = (orginFiles: File[]) => {
     const newAry = [...files, ...orginFiles];
     handleFiles(newAry);
-    onChange?.(newAry);
+    emitChange(newAry);
   };
   const update = (file: File) => {
     const idx = _findIndex(files, (f: File) => f.uid === file.uid);
@@ -75,7 +85,7 @@ const UploadList: React.FC<UploadListProps> = ({
       files.splice(idx, 1, { ...file });
       const newAry = [...files];
       handleFiles(newAry);
-      onChange?.(newAry);
+      emitChange(newAry);
     }
   };
 

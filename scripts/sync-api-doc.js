@@ -16,7 +16,7 @@ const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
 // 配置
-const API_DOC_URL = 'http://localhost:8080/swagger/doc.yaml'
+const API_DOC_URL = 'http://8.136.229.208:8080/v3/api-docs.yaml'
 const OUTPUT_DIR = path.join(__dirname, '../docs/api')
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'doc.yaml')
 

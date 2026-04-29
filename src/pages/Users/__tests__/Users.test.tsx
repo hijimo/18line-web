@@ -6,22 +6,21 @@ import { ConfigProvider } from 'antd';
 import { MemoryRouter } from 'react-router';
 import Users from '@/pages/Users';
 
-vi.mock('@/services/api/游客管理/游客管理', () => ({
+vi.mock('@/services/api/用户管理/用户管理', () => ({
   get: () => ({
-    list11: vi.fn().mockResolvedValue({
+    list15: vi.fn().mockResolvedValue({
       code: 200,
-      data: {
-        data: [
-          { touristId: 103818, nickname: '白晶晶', phone: '13957185819', gender: '女', birthYear: 1992, registerTime: '2019-09-17', physicalStrength: '强', recentRoute: '松阳', travelDate: '2025-10-16', travelMode: '全明' },
-        ],
-        pageNo: 1,
-        pageSize: 10,
-        totalCount: 1,
-      },
+      total: 1,
+      rows: [
+        { userId: 1, userName: 'admin', nickName: '管理员', phonenumber: '13800138000', email: 'admin@test.com', sex: '0', status: '0', dept: { deptName: '研发部' }, createTime: '2024-01-01' },
+      ],
     }),
-    getInfo2: vi.fn().mockResolvedValue({ code: 200 }),
-    edit1: vi.fn().mockResolvedValue({ code: 200 }),
-    remove12: vi.fn().mockResolvedValue({ code: 200 }),
+    add3: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    edit3: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    getInfo15: vi.fn().mockResolvedValue({ code: 200 }),
+    remove14: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    changeStatus: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    resetPwd: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
   }),
 }));
 
@@ -29,7 +28,7 @@ const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
 });
 
-const renderUsers = () =>
+const renderPage = () =>
   render(
     <QueryClientProvider client={queryClient}>
       <ConfigProvider>
@@ -37,33 +36,52 @@ const renderUsers = () =>
           <Users />
         </MemoryRouter>
       </ConfigProvider>
-    </QueryClientProvider>
+    </QueryClientProvider>,
   );
 
-describe('Users Page', () => {
+describe('用户管理 (Users) Page', () => {
   beforeEach(() => {
     queryClient.clear();
   });
 
-  it('renders the table', async () => {
-    renderUsers();
+  it('有新增按钮', async () => {
+    renderPage();
     await waitFor(() => {
-      expect(screen.getByText('昵称')).toBeInTheDocument();
-      expect(screen.getByText('会员ID')).toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /新增/ })).toBeInTheDocument();
     });
   });
 
-  it('has no add button (detail only)', async () => {
-    renderUsers();
+  it('点击新增打开新增抽屉', async () => {
+    const user = userEvent.setup();
+    renderPage();
     await waitFor(() => {
-      expect(screen.queryByText('+新增')).not.toBeInTheDocument();
+      expect(screen.getByRole('button', { name: /新增/ })).toBeInTheDocument();
+    });
+    await user.click(screen.getByRole('button', { name: /新增/ }));
+    await waitFor(() => {
+      expect(screen.getByText('新增用户')).toBeInTheDocument();
     });
   });
 
-  it('opens detail drawer when clicking detail', async () => {
-    renderUsers();
+  it('操作列包含编辑、删除、停用、重置密码', async () => {
+    renderPage();
     await waitFor(() => {
-      expect(screen.getByText('昵称')).toBeInTheDocument();
+      expect(screen.getByText('编辑')).toBeInTheDocument();
+      expect(screen.getByText('删除')).toBeInTheDocument();
+      expect(screen.getByText('停用')).toBeInTheDocument();
+      expect(screen.getByText('重置密码')).toBeInTheDocument();
+    });
+  });
+
+  it('点击编辑打开编辑抽屉', async () => {
+    const user = userEvent.setup();
+    renderPage();
+    await waitFor(() => {
+      expect(screen.getByText('编辑')).toBeInTheDocument();
+    });
+    await user.click(screen.getByText('编辑'));
+    await waitFor(() => {
+      expect(screen.getByText('编辑用户')).toBeInTheDocument();
     });
   });
 });

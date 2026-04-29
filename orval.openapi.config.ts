@@ -3,7 +3,10 @@ import { defineConfig } from 'orval'
 export default defineConfig({
   api: {
     input: {
-      target: './docs/api/18line-api-cleaned.yaml',
+      target: './docs/api/doc.yaml',
+      override: {
+        transformer: './scripts/openapi-transformer.cjs',
+      },
     },
     output: {
       target: './src/services/api',

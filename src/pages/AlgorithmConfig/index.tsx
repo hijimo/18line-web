@@ -6,6 +6,8 @@ import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { RegionLevelLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getAlgoApi } from '@/services/api/算法配置管理/算法配置管理';
+import UploadList from '@/components/Upload';
+import { parseAttachments, stringifyAttachments } from '@/types/common';
 
 const algoApi = getAlgoApi();
 
@@ -22,7 +24,7 @@ const AlgorithmConfig: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue(record);
+      form.setFieldsValue({ ...record, attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
     } else {
       form.resetFields();
     }
@@ -31,12 +33,14 @@ const AlgorithmConfig: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
+    const { attachments: attachmentFiles, ...rest } = values;
+    const params = { ...rest, attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
     try {
       if (currentRecord) {
-        await algoApi.edit14({ ...values, configId: currentRecord.configId } as any);
+        await algoApi.edit14({ ...params, configId: currentRecord.configId } as any);
         message.success('编辑成功');
       } else {
-        await algoApi.add2(values as any);
+        await algoApi.add2(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -167,6 +171,14 @@ const AlgorithmConfig: React.FC = () => {
           </Form.Item>
           <Form.Item name="periodLimitEvening" label="晚上时段上限" initialValue={180}>
             <InputNumber placeholder="请输入" addonAfter="分钟" style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="attachments" label="附件" valuePropName="fileList">
+            <UploadList
+              purpose="detail"
+              maxLength={9}
+              uploadText="上传附件"
+              accept="image/png,image/jpeg,image/gif,application/pdf"
+            />
           </Form.Item>
         </Form>
       </Drawer>

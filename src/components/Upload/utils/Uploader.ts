@@ -1,30 +1,27 @@
 // 使用于阿里云oss直传的自定义 ckEditor UploadAdapter
 // 同时兼容antd 的customRequest
 
-// import { message } from 'antd';
-import { get as getCommonApi } from '@/services/api/通用/通用';
-import dayjs from 'dayjs';
+import { getOssSign } from '@/services/common';
+import type { OssSignData } from '@/types/oss';
 import { genUniqueFileName } from './file';
 import { getUploadSign, setUploadSign } from './ls';
 
-const commonApi = getCommonApi();
-
-const getOssSign = async () => {
-  return commonApi.uploadFile();
+/** 生成 OSS 对象 key */
+const genKey = (uploadDir: string, filename: string) => {
+  return `${uploadDir}${genUniqueFileName(filename)}`;
 };
 
-const genKey = (dir: string, filename: string) => {
-  return `${dir}/${dayjs(new Date()).format('YYYYMM')}/${genUniqueFileName(filename)}`;
-};
+/** 生成文件访问 URL（使用 host 域名） */
 const genFileUrl = (host: string, key: string) => {
   return `${host}/${key}`;
 };
+
 const defaultHeaders = (filename: string) => ({
   'Cache-Control': 'max-age=31536000',
   'Content-Disposition': `filename="${filename}"`,
 });
 
-const assignHeaders = (xhr: XMLHttpRequestExtend, headers: any, file: File) => {
+const assignHeaders = (xhr: XMLHttpRequestExtend, headers: Record<string, string> | undefined, file: File) => {
   const { name: filename } = file;
   const headerOptions = { ...headers, ...defaultHeaders(filename) };
   Object.keys(headerOptions).forEach((header: string) => {
@@ -35,38 +32,47 @@ const assignHeaders = (xhr: XMLHttpRequestExtend, headers: any, file: File) => {
 export interface XMLHttpRequestExtend extends XMLHttpRequest {
   fileUrl?: string;
 }
-class Uploader {
-  opts: any = null;
 
-  sign: any = null;
+interface UploaderOpts {
+  file?: globalThis.File;
+  name?: string;
+  data?: Record<string, string>;
+  headers?: Record<string, string>;
+  withCredentials?: boolean;
+  onError?: (error: unknown) => void;
+  onProgress?: (percent: number) => void;
+  onSuccess?: (xhr: XMLHttpRequestExtend) => void;
+}
+
+class Uploader {
+  opts: UploaderOpts;
+
+  sign: (OssSignData & { creator?: number }) | null = null;
 
   xhr: XMLHttpRequestExtend | null = null;
 
-  constructor(opts: any) {
+  constructor(opts: UploaderOpts) {
     this.opts = opts;
   }
 
-  async getUploadSignInfo() {
+  async getUploadSignInfo(): Promise<(OssSignData & { creator?: number }) | null> {
     const { onError } = this.opts;
 
     const sign = this.sign || getUploadSign();
-    // 以秒为单位
+    // 以秒为单位，检查签名是否仍有效（提前 30 分钟过期）
     if (sign) {
-      const t = Math.floor(new Date().valueOf() / 1000) + 30 * 60;
-      if (new Date(sign.expire).valueOf() / 1000 >= t) {
+      const t = Math.floor(Date.now() / 1000) + 30 * 60;
+      if (new Date(sign.expiration).valueOf() / 1000 >= t) {
         return sign;
       }
     }
 
     try {
-      const { code, result } = await getOssSign();
-      const success = code === 0;
-
-      if (success) {
-        const { data } = result;
-        data.creator = Math.floor(new Date().valueOf() / 1000);
-        setUploadSign(data);
-        return data;
+      const { code, data } = await getOssSign();
+      if (code === 200 && data) {
+        const signData = { ...data, creator: Math.floor(Date.now() / 1000) };
+        setUploadSign(signData);
+        return signData;
       }
     } catch (error) {
       // 如果获取证书失败，直接返回文件上传失败
@@ -83,15 +89,13 @@ class Uploader {
       this.initRequest(f);
       this.initListeners();
       this.sendRequest(f);
-    } else {
-      // message.error('file upload fail');
     }
   }
 
   initRequest(file: globalThis.File) {
     this.xhr = new XMLHttpRequest();
     const { xhr } = this;
-    const { host } = this.sign;
+    const { host } = this.sign!;
     const { headers, withCredentials = false } = this.opts;
     xhr.open('POST', host, true);
     xhr.responseType = 'json';
@@ -105,31 +109,23 @@ class Uploader {
 
     if (xhr !== null) {
       xhr.addEventListener('error', (e) => {
-        if (onError) {
-          onError(e);
-        }
+        onError?.(e);
       });
       xhr.addEventListener('abort', (e) => {
-        if (onError) {
-          onError(e);
-        }
+        onError?.(e);
       });
       xhr.addEventListener('load', () => {
-        if (xhr.status !== 200 && onError) {
-          onError(xhr || '');
-        }
-
-        if (xhr.status === 200 && onSuccess) {
-          onSuccess(xhr);
+        if (xhr.status !== 200) {
+          onError?.(xhr);
+        } else {
+          onSuccess?.(xhr);
         }
       });
     }
 
     if (xhr?.upload) {
       xhr.upload.addEventListener('progress', ({ loaded, total }) => {
-        if (onProgress) {
-          onProgress(parseFloat(((loaded / total) * 100).toFixed(2)));
-        }
+        onProgress?.(parseFloat(((loaded / total) * 100).toFixed(2)));
       });
     }
   }
@@ -138,10 +134,10 @@ class Uploader {
     const { name = 'file', data } = this.opts;
     const fd = new FormData();
 
-    const { OSSAccessKeyId, dir, policy, signature, host } = this.sign;
-    const key = genKey(dir, file.name);
-    const oss = {
-      OSSAccessKeyId,
+    const { accessKeyId, uploadDir, policy, signature, host } = this.sign!;
+    const key = genKey(uploadDir, file.name);
+    const oss: Record<string, string> = {
+      OSSAccessKeyId: accessKeyId,
       success_action_status: '200',
       policy,
       signature,
@@ -149,7 +145,6 @@ class Uploader {
     };
 
     const otherData = { ...(data || {}), ...oss };
-
     Object.keys(otherData).forEach((objectKey) => {
       fd.append(objectKey, otherData[objectKey]);
     });

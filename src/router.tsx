@@ -5,7 +5,9 @@ import {
   CalendarOutlined,
   GiftOutlined,
   HomeOutlined,
+  HeartOutlined,
   SettingOutlined,
+  TeamOutlined,
   UserOutlined,
   EnvironmentOutlined,
   BankOutlined,
@@ -35,8 +37,10 @@ import Dishes from './pages/Dishes';
 import Photography from './pages/Photography';
 import CharteredCar from './pages/CharteredCar';
 import Users from './pages/Users';
+import Tourists from './pages/Tourists';
+import TouristPreferences from './pages/TouristPreferences';
 import Routes from './pages/Routes';
-import EasterEgg from './pages/EasterEgg';
+// import EasterEgg from './pages/EasterEgg';
 import AlgorithmConfig from './pages/AlgorithmConfig';
 import Template from './pages/Template';
 import type { ResourceProps } from './types/resource';
@@ -132,6 +136,22 @@ const resources: ResourceProps[] = [
     meta: {
       label: '用户管理',
       icon: <UserOutlined />,
+    },
+  },
+  {
+    name: 'tourists',
+    list: '/tourists',
+    meta: {
+      label: '游客管理',
+      icon: <TeamOutlined />,
+    },
+  },
+  {
+    name: 'tourist-preferences',
+    list: '/tourist-preferences',
+    meta: {
+      label: '游客喜好',
+      icon: <HeartOutlined />,
     },
   },
   {
@@ -292,6 +312,14 @@ const router = createBrowserRouter([
             ),
           },
           {
+            path: '/tourists',
+            element: <Tourists />,
+          },
+          {
+            path: '/tourist-preferences',
+            element: <TouristPreferences />,
+          },
+          {
             path: '/routes',
             element: (
               
@@ -299,12 +327,12 @@ const router = createBrowserRouter([
               
             ),
           },
-          {
-            path: '/easter-egg',
-            element: (
-                <EasterEgg />
-            ),
-          },
+          // {
+          //   path: '/easter-egg',
+          //   element: (
+          //       <EasterEgg />
+          //   ),
+          // },
           {
             path: '/algorithm-config',
             element: <AlgorithmConfig />,

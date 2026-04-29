@@ -8,6 +8,7 @@ import { get as getAttractionApi } from '@/services/api/景点管理/景点管�
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
 import { BlindStatusLabel, FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, BadFactorsLabel, StatusEnum, StatusLabel } from '@/enums';
+import { parseAttachments, stringifyAttachments } from '@/types/common';
 
 const attractionApi = getAttractionApi();
 
@@ -20,7 +21,6 @@ const Attractions: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
 
   const request = useTableRequest(attractionApi.list7 as any);
 
@@ -30,19 +30,24 @@ const Attractions: React.FC = () => {
       form.setFieldsValue({
         ...record,
         region: { province: record.province, city: record.city, district: record.district },
+        images: record.images || [],
+        attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })),
       });
-      setFileList(record.images || []);
     } else {
       form.resetFields();
-      setFileList([]);
     }
     setDrawerOpen(true);
   };
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { region, ...rest } = values;
-    const params = { ...rest, ...region, images: fileList.map((f) => f.url) };
+    const { region, images, attachments: attachmentFiles, ...rest } = values;
+    const params = {
+      ...rest,
+      ...region,
+      images: (images || []).map((f: any) => f.url),
+      attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))),
+    };
     try {
       if (currentRecord) {
         await attractionApi.editSave7({ ...params, attractionId: currentRecord.attractionId } as any);
@@ -194,13 +199,20 @@ const Attractions: React.FC = () => {
           <Form.Item name="reservationRequired" label="提前预约">
             <Input placeholder="请输入预约渠道" />
           </Form.Item>
-          <Form.Item label="上传图片">
+          <Form.Item name="images" label="上传图片" valuePropName="fileList">
             <UploadList
-              fileList={fileList}
-              onChange={setFileList as any}
+              purpose="cover"
               maxLength={9}
               uploadText="上传"
               accept="image/png,image/jpeg,image/gif"
+            />
+          </Form.Item>
+          <Form.Item name="attachments" label="附件" valuePropName="fileList">
+            <UploadList
+              purpose="detail"
+              maxLength={9}
+              uploadText="上传附件"
+              accept="image/png,image/jpeg,image/gif,application/pdf"
             />
           </Form.Item>
         </Form>

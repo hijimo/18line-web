@@ -5,6 +5,7 @@ import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { GenderLabel, PhotographyRecommendRatingOptions, StatusEnum, StatusLabel } from '@/enums';
+import { parseAttachments, stringifyAttachments } from '@/types/common';
 import { get as getCarApi } from '@/services/api/包车管理/包车管理';
 import UploadList from '@/components/Upload';
 
@@ -19,25 +20,23 @@ const CharteredCar: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
 
   const request = useTableRequest(carApi.list6 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue(record);
-      setFileList(record.images || []);
+      form.setFieldsValue({ ...record, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
     } else {
       form.resetFields();
-      setFileList([]);
     }
     setDrawerOpen(true);
   };
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const params = { ...values, images: fileList.map((f) => f.url) };
+    const { images, attachments: attachmentFiles, ...rest } = values;
+    const params = { ...rest, images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
     try {
       if (currentRecord) {
         await carApi.editSave6({ ...params, carId: currentRecord.carId } as any);
@@ -156,13 +155,20 @@ const CharteredCar: React.FC = () => {
           <Form.Item name="recommendRating" label="评分">
             <Select placeholder="请选择" options={PhotographyRecommendRatingOptions} />
           </Form.Item>
-          <Form.Item label="上传图片">
+          <Form.Item name="images" label="上传图片" valuePropName="fileList">
             <UploadList
-              fileList={fileList}
-              onChange={setFileList as any}
+              purpose="cover"
               maxLength={9}
               uploadText="上传"
               accept="image/png,image/jpeg,image/gif"
+            />
+          </Form.Item>
+          <Form.Item name="attachments" label="附件" valuePropName="fileList">
+            <UploadList
+              purpose="detail"
+              maxLength={9}
+              uploadText="上传附件"
+              accept="image/png,image/jpeg,image/gif,application/pdf"
             />
           </Form.Item>
         </Form>

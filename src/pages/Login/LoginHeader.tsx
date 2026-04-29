@@ -5,7 +5,7 @@ import type { LoginHeaderProps } from './types'
  * 显示品牌标识和应用名称
  */
 export const LoginHeader: React.FC<LoginHeaderProps> = ({
-  title = '子梅的AI空间',
+  title = '18线',
   subtitle = '欢迎回来，请登录您的账号',
 }) => {
   return (
