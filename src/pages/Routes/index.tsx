@@ -5,7 +5,7 @@ import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { StatusEnum, StatusLabel } from '@/enums';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+
 import { get as getRouteApi } from '@/services/api/线路管理/线路管理';
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
@@ -23,7 +23,7 @@ const Routes: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -32,8 +32,8 @@ const Routes: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { region, images, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const { region, attachments: attachmentFiles, ...rest } = values;
+    const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await routeApi.editSave2({ ...params, lineId: currentRecord.lineId } as any);
@@ -127,14 +127,6 @@ const Routes: React.FC = () => {
           </Form.Item>
           <Form.Item name="remark" label="备注">
             <Input.TextArea placeholder="请输入" rows={3} />
-          </Form.Item>
-          <Form.Item name="images" label="上传图片" valuePropName="fileList">
-            <UploadList
-              purpose="cover"
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
           </Form.Item>
           <Form.Item name="attachments" label="附件" valuePropName="fileList">
             <UploadList

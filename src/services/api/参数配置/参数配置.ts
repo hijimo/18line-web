@@ -37,7 +37,7 @@ const edit11 = (
   /**
  * @summary 新增参数配置
  */
-const add11 = (
+const add12 = (
     sysConfig: SysConfig,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -115,9 +115,9 @@ const refreshCache2 = (
     },
       );
     }
-  return {edit11,add11,export13,getInfo23,list23,getConfigKey,remove22,refreshCache2}};
+  return {edit11,add12,export13,getInfo23,list23,getConfigKey,remove22,refreshCache2}};
 export type Edit11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit11']>>>
-export type Add11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add11']>>>
+export type Add12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add12']>>>
 export type Export13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export13']>>>
 export type GetInfo23Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo23']>>>
 export type List23Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list23']>>>

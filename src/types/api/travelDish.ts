@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelDishParams } from './travelDishParams';
+import type { TravelDishAttachmentsItem } from './travelDishAttachmentsItem';
 
 export interface TravelDish {
   createBy?: string;
@@ -25,5 +26,5 @@ export interface TravelDish {
   reservation?: string;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelDishAttachmentsItem[];
 }

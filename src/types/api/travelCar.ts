@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelCarParams } from './travelCarParams';
+import type { TravelCarAttachmentsItem } from './travelCarAttachmentsItem';
 
 export interface TravelCar {
   createBy?: string;
@@ -25,5 +26,5 @@ export interface TravelCar {
   drivingYears?: number;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelCarAttachmentsItem[];
 }

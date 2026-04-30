@@ -7,6 +7,7 @@
  */
 import type { TravelTemplateParams } from './travelTemplateParams';
 import type { TravelTemplateDay } from './travelTemplateDay';
+import type { TravelTemplateAttachmentsItem } from './travelTemplateAttachmentsItem';
 
 export interface TravelTemplate {
   createBy?: string;
@@ -32,5 +33,5 @@ export interface TravelTemplate {
   status?: string;
   delFlag?: string;
   days?: TravelTemplateDay[];
-  attachments?: string;
+  attachments?: TravelTemplateAttachmentsItem[];
 }

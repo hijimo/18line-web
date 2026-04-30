@@ -5,7 +5,8 @@ import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { GenderLabel, PhotographyRecommendRatingOptions, StatusEnum, StatusLabel } from '@/enums';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+import type { AttachmentPurpose } from '@/types/common';
+import { toAttachments } from '@/types/common';
 import { get as getPhotographyApi } from '@/services/api/跟拍管理/跟拍管理';
 import UploadList from '@/components/Upload';
 
@@ -13,6 +14,12 @@ const photographyApi = getPhotographyApi();
 
 const genderOptions = Object.entries(GenderLabel).map(([value, label]) => ({ label, value }));
 const recommendRatingValueEnum = PhotographyRecommendRatingOptions.reduce((acc, opt) => { acc[opt.value] = { text: opt.label }; return acc; }, {} as Record<number, string>);
+
+/** 跟拍服务的上传分类配置 */
+const PHOTOGRAPHY_UPLOAD_FIELDS: { name: string; label: string; purpose: AttachmentPurpose }[] = [
+  { name: 'portfolioFiles', label: '作品集', purpose: 'portfolio' },
+  { name: 'photographerPhotoFiles', label: '摄影师照片', purpose: 'photographer_photo' },
+];
 
 const Photography: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -25,7 +32,14 @@ const Photography: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      const allAttachments: any[] = record.attachments || [];
+      const fieldValues: Record<string, { url: string; name: string }[]> = {};
+      for (const { name, purpose } of PHOTOGRAPHY_UPLOAD_FIELDS) {
+        fieldValues[name] = allAttachments
+          .filter(a => a.purpose === purpose)
+          .map(a => ({ url: a.url, name: a.name }));
+      }
+      form.setFieldsValue({ ...record, ...fieldValues });
     } else {
       form.resetFields();
     }
@@ -34,8 +48,14 @@ const Photography: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { images, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const rest = { ...values };
+    // 从各上传字段收集附件，按 purpose 合并
+    const allAttachments = PHOTOGRAPHY_UPLOAD_FIELDS.flatMap(({ name, purpose }) => {
+      const files = rest[name] || [];
+      delete rest[name];
+      return toAttachments(files, purpose);
+    });
+    const params = { ...rest, attachments: allAttachments };
     try {
       if (currentRecord) {
         await photographyApi.editSave1({ ...params, photographyId: currentRecord.photographyId } as any);
@@ -147,22 +167,16 @@ const Photography: React.FC = () => {
           <Form.Item name="recommendRating" label="专业评分">
             <Select placeholder="请选择" options={PhotographyRecommendRatingOptions} />
           </Form.Item>
-          <Form.Item name="images" label="作品集" valuePropName="fileList">
-            <UploadList
-              purpose="cover"
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
-          </Form.Item>
-          <Form.Item name="attachments" label="附件" valuePropName="fileList">
-            <UploadList
-              purpose="detail"
-              maxLength={9}
-              uploadText="上传附件"
-              accept="image/png,image/jpeg,image/gif,application/pdf"
-            />
-          </Form.Item>
+          {PHOTOGRAPHY_UPLOAD_FIELDS.map(({ name, label, purpose }) => (
+            <Form.Item key={name} name={name} label={label} valuePropName="fileList">
+              <UploadList
+                purpose={purpose}
+                maxLength={9}
+                uploadText={`上传${label}`}
+                accept="image/png,image/jpeg,image/gif"
+              />
+            </Form.Item>
+          ))}
         </Form>
       </Drawer>
     </>

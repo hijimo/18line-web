@@ -42,7 +42,7 @@ const edit4 = (
   /**
  * @summary 新增角色
  */
-const add4 = (
+const add5 = (
     sysRole: SysRole,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -207,9 +207,9 @@ const remove15 = (
     },
       );
     }
-  return {edit4,add4,dataScope,changeStatus1,selectAuthUserAll,cancelAuthUser,cancelAuthUserAll,export9,getInfo16,optionselect,list16,deptTree1,unallocatedList,allocatedList,remove15}};
+  return {edit4,add5,dataScope,changeStatus1,selectAuthUserAll,cancelAuthUser,cancelAuthUserAll,export9,getInfo16,optionselect,list16,deptTree1,unallocatedList,allocatedList,remove15}};
 export type Edit4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit4']>>>
-export type Add4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add4']>>>
+export type Add5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add5']>>>
 export type DataScopeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['dataScope']>>>
 export type ChangeStatus1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['changeStatus1']>>>
 export type SelectAuthUserAllResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['selectAuthUserAll']>>>

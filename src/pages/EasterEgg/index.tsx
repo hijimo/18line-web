@@ -28,7 +28,6 @@ const EasterEgg: React.FC = () => {
   const [drawerMode, setDrawerMode] = useState<DrawerMode>('add');
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
-  const [fileList, setFileList] = useState<any[]>([]);
   const [prizeFileList, setPrizeFileList] = useState<any[]>([]);
 
   const request = useTableRequest(easterEggApi.list as any);
@@ -38,11 +37,9 @@ const EasterEgg: React.FC = () => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue(record);
-      setFileList(record.images || []);
       setPrizeFileList(record.prizeImage ? [record.prizeImage] : []);
     } else {
       form.resetFields();
-      setFileList([]);
       setPrizeFileList([]);
     }
     setDrawerOpen(true);
@@ -52,7 +49,6 @@ const EasterEgg: React.FC = () => {
     const values = await form.validateFields();
     const params = {
       ...values,
-      images: fileList.map((f) => f.url),
       prizeImage: prizeFileList.length > 0 ? prizeFileList[0].url : '',
     };
     try {
@@ -161,15 +157,6 @@ const EasterEgg: React.FC = () => {
               fileList={prizeFileList}
               onChange={setPrizeFileList as any}
               maxLength={1}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
-          </Form.Item>
-          <Form.Item label="上传图片">
-            <UploadList
-              fileList={fileList}
-              onChange={setFileList as any}
-              maxLength={9}
               uploadText="上传"
               accept="image/png,image/jpeg,image/gif"
             />

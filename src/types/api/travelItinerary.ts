@@ -7,6 +7,7 @@
  */
 import type { TravelItineraryParams } from './travelItineraryParams';
 import type { TravelItineraryDay } from './travelItineraryDay';
+import type { TravelItineraryAttachmentsItem } from './travelItineraryAttachmentsItem';
 
 export interface TravelItinerary {
   createBy?: string;
@@ -33,5 +34,5 @@ export interface TravelItinerary {
   daysList?: TravelItineraryDay[];
   statusLabel?: string;
   createFromLabel?: string;
-  attachments?: string;
+  attachments?: TravelItineraryAttachmentsItem[];
 }

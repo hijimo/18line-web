@@ -43,6 +43,7 @@ import Routes from './pages/Routes';
 // import EasterEgg from './pages/EasterEgg';
 import AlgorithmConfig from './pages/AlgorithmConfig';
 import Template from './pages/Template';
+import DictType from './pages/DictType';
 import type { ResourceProps } from './types/resource';
 
 const resources: ResourceProps[] = [
@@ -184,6 +185,14 @@ const resources: ResourceProps[] = [
     meta: {
       label: '行程模板',
       icon: <CalendarOutlined />,
+    },
+  },
+  {
+    name: 'dict-type',
+    list: '/dict-type',
+    meta: {
+      label: '数据字典',
+      icon: <BookOutlined />,
     },
   },
 ];
@@ -340,6 +349,10 @@ const router = createBrowserRouter([
           {
             path: '/template',
             element: <Template />,
+          },
+          {
+            path: '/dict-type',
+            element: <DictType />,
           },
           {
             path: '*',

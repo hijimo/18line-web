@@ -40,6 +40,7 @@ export const useTableRequest = (
         // current: undefined,
         order_by: transformOrderBy(sort),
         pageNo: params.current as number,
+        pageNum: params.current as number,
         pageSize: params.pageSize as number,
         ...defaultParams, // 合并默认参数
         ...getParams?.(params),

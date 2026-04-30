@@ -25,7 +25,7 @@ import { orvalMutator } from '../../../utils/orval-mutator';
 /**
  * @summary 新增算法配置
  */
-const add2 = (
+const add3 = (
     travelAlgorithmConfig: TravelAlgorithmConfig,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -118,8 +118,8 @@ const getEffectiveConfig = (
     },
       );
     }
-  return {add2,remove10,edit14,getInfo12,list14,history,historyList,getEffectiveConfig}};
-export type Add2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add2']>>>
+  return {add3,remove10,edit14,getInfo12,list14,history,historyList,getEffectiveConfig}};
+export type Add3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add3']>>>
 export type Remove10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove10']>>>
 export type Edit14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit14']>>>
 export type GetInfo12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo12']>>>

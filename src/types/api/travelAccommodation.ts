@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelAccommodationParams } from './travelAccommodationParams';
+import type { TravelAccommodationAttachmentsItem } from './travelAccommodationAttachmentsItem';
 
 export interface TravelAccommodation {
   createBy?: string;
@@ -31,5 +32,5 @@ export interface TravelAccommodation {
   priceMax?: number;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelAccommodationAttachmentsItem[];
 }

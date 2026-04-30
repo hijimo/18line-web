@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelCheckinParams } from './travelCheckinParams';
+import type { TravelCheckinAttachmentsItem } from './travelCheckinAttachmentsItem';
 
 export interface TravelCheckin {
   createBy?: string;
@@ -43,5 +44,5 @@ export interface TravelCheckin {
   sortOrder?: number;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelCheckinAttachmentsItem[];
 }

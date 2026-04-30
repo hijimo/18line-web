@@ -37,7 +37,7 @@ const edit9 = (
   /**
  * @summary 新增字典类型
  */
-const add9 = (
+const add10 = (
     sysDictData: SysDictData,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -104,9 +104,9 @@ const remove20 = (
     },
       );
     }
-  return {edit9,add9,export12,getInfo21,dictType,list21,remove20}};
+  return {edit9,add10,export12,getInfo21,dictType,list21,remove20}};
 export type Edit9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit9']>>>
-export type Add9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add9']>>>
+export type Add10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add10']>>>
 export type Export12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export12']>>>
 export type GetInfo21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo21']>>>
 export type DictTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['dictType']>>>

@@ -36,7 +36,7 @@ const edit8 = (
   /**
  * @summary 新增字典类型
  */
-const add8 = (
+const add9 = (
     sysDictType: SysDictType,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -114,9 +114,9 @@ const refreshCache1 = (
     },
       );
     }
-  return {edit8,add8,export11,getInfo20,optionselect2,list20,remove19,refreshCache1}};
+  return {edit8,add9,export11,getInfo20,optionselect2,list20,remove19,refreshCache1}};
 export type Edit8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit8']>>>
-export type Add8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add8']>>>
+export type Add9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add9']>>>
 export type Export11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export11']>>>
 export type GetInfo20Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo20']>>>
 export type Optionselect2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['optionselect2']>>>

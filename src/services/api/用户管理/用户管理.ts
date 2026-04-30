@@ -40,7 +40,7 @@ const edit3 = (
   /**
  * @summary 新增用户
  */
-const add3 = (
+const add4 = (
     sysUser: SysUser,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -191,9 +191,9 @@ const remove14 = (
     },
       );
     }
-  return {edit3,add3,resetPwd,changeStatus,insertAuthRole,importTemplate,importData,export8,list15,deptTree,authRole,getInfo14,getInfo15,remove14}};
+  return {edit3,add4,resetPwd,changeStatus,insertAuthRole,importTemplate,importData,export8,list15,deptTree,authRole,getInfo14,getInfo15,remove14}};
 export type Edit3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit3']>>>
-export type Add3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add3']>>>
+export type Add4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add4']>>>
 export type ResetPwdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['resetPwd']>>>
 export type ChangeStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['changeStatus']>>>
 export type InsertAuthRoleResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['insertAuthRole']>>>

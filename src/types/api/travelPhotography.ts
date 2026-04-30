@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelPhotographyParams } from './travelPhotographyParams';
+import type { TravelPhotographyAttachmentsItem } from './travelPhotographyAttachmentsItem';
 
 export interface TravelPhotography {
   createBy?: string;
@@ -24,5 +25,5 @@ export interface TravelPhotography {
   equipment?: string;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelPhotographyAttachmentsItem[];
 }

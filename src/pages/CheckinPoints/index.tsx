@@ -8,7 +8,7 @@ import { key, option } from '@/configurify/columns/baseColumns';
 import { get as getCheckinApi } from '@/services/api/打卡点管理/打卡点管理';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
 import { FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFactorsLabel, BlindStatusLabel, StatusEnum, StatusLabel } from '@/enums';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
 
@@ -41,7 +41,7 @@ const CheckinPoints: React.FC = () => {
       const openTimeValue = record.openTime
         ? record.openTime.split(' - ').map((t: string) => dayjs(t, 'HH:mm'))
         : undefined;
-      form.setFieldsValue({ ...record, openTime: openTimeValue, region: { province: record.province, city: record.city, district: record.district }, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      form.setFieldsValue({ ...record, openTime: openTimeValue, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -50,8 +50,8 @@ const CheckinPoints: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { region, images, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const { region, attachments: attachmentFiles, ...rest } = values;
+    const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await checkinApi.editSave5({ ...params, checkinId: currentRecord.checkinId } as any);
@@ -217,14 +217,6 @@ const CheckinPoints: React.FC = () => {
           </Form.Item>
           <Form.Item name="checkinNotes" label="注意事项">
             <Input.TextArea placeholder="请输入" rows={3} />
-          </Form.Item>
-          <Form.Item name="images" label="上传图片" valuePropName="fileList">
-            <UploadList
-              purpose="cover"
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
           </Form.Item>
           <Form.Item name="attachments" label="附件" valuePropName="fileList">
             <UploadList

@@ -7,6 +7,7 @@
  */
 import type { TravelAttractionParams } from './travelAttractionParams';
 import type { TravelLine } from './travelLine';
+import type { TravelAttractionAttachmentsItem } from './travelAttractionAttachmentsItem';
 
 export interface TravelAttraction {
   createBy?: string;
@@ -45,5 +46,5 @@ export interface TravelAttraction {
   attractionType?: string;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelAttractionAttachmentsItem[];
 }

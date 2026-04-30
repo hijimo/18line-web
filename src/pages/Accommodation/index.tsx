@@ -5,7 +5,8 @@ import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { AccommodationTypeLabel, BreakfastIncludedLabel, PetFriendlyLabel, StatusEnum, StatusLabel, YesNoLabel } from '@/enums';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+import type { AttachmentPurpose } from '@/types/common';
+import { toAttachments } from '@/types/common';
 import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
 import UploadList from '@/components/Upload';
 
@@ -13,6 +14,14 @@ const stayApi = getStayApi();
 
 const TYPE_OPTIONS = Object.entries(AccommodationTypeLabel).map(([value, label]) => ({ label, value }));
 const YES_NO = Object.entries(YesNoLabel).map(([value, label]) => ({ label, value }));
+
+/** 住宿管理的上传分类配置 */
+const ACCOMMODATION_UPLOAD_FIELDS: { name: string; label: string; purpose: AttachmentPurpose }[] = [
+  { name: 'roomFiles', label: '房间', purpose: 'room' },
+  { name: 'lobbyFiles', label: '大厅', purpose: 'lobby' },
+  { name: 'bathroomFiles', label: '卫生间', purpose: 'bathroom' },
+  { name: 'publicAreaFiles', label: '公共区域', purpose: 'public_area' },
+];
 
 const Accommodation: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -25,7 +34,14 @@ const Accommodation: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      const allAttachments: any[] = record.attachments || [];
+      const fieldValues: Record<string, { url: string; name: string }[]> = {};
+      for (const { name, purpose } of ACCOMMODATION_UPLOAD_FIELDS) {
+        fieldValues[name] = allAttachments
+          .filter(a => a.purpose === purpose)
+          .map(a => ({ url: a.url, name: a.name }));
+      }
+      form.setFieldsValue({ ...record, ...fieldValues });
     } else {
       form.resetFields();
     }
@@ -34,8 +50,14 @@ const Accommodation: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { images, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const rest = { ...values };
+    // 从各上传字段收集附件，按 purpose 合并
+    const allAttachments = ACCOMMODATION_UPLOAD_FIELDS.flatMap(({ name, purpose }) => {
+      const files = rest[name] || [];
+      delete rest[name];
+      return toAttachments(files, purpose);
+    });
+    const params = { ...rest, attachments: allAttachments };
     try {
       if (currentRecord) {
         await stayApi.editSave8({ ...params, accommodationId: currentRecord.accommodationId } as any);
@@ -156,22 +178,16 @@ const Accommodation: React.FC = () => {
               <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
             </Form.Item>
           </Space>
-          <Form.Item name="images" label="上传图片" valuePropName="fileList">
-            <UploadList
-              purpose="cover"
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
-          </Form.Item>
-          <Form.Item name="attachments" label="附件" valuePropName="fileList">
-            <UploadList
-              purpose="detail"
-              maxLength={9}
-              uploadText="上传附件"
-              accept="image/png,image/jpeg,image/gif,application/pdf"
-            />
-          </Form.Item>
+          {ACCOMMODATION_UPLOAD_FIELDS.map(({ name, label, purpose }) => (
+            <Form.Item key={name} name={name} label={label} valuePropName="fileList">
+              <UploadList
+                purpose={purpose}
+                maxLength={9}
+                uploadText={`上传${label}`}
+                accept="image/png,image/jpeg,image/gif"
+              />
+            </Form.Item>
+          ))}
         </Form>
       </Drawer>
     </>

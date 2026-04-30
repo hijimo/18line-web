@@ -5,7 +5,7 @@ import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { DiningNatureLabel, DiningRecommendRatingOptions, PetFriendlyLabel, ParkingAvailableLabel, StatusEnum, StatusLabel, YesNoLabel } from '@/enums';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+
 import { get as getDiningApi } from '@/services/api/餐饮管理/餐饮管理';
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
@@ -26,7 +26,7 @@ const Dining: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -35,8 +35,8 @@ const Dining: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { region, images, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const { region, attachments: attachmentFiles, ...rest } = values;
+    const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await diningApi.editSave4({ ...params, diningId: currentRecord.diningId } as any);
@@ -164,14 +164,6 @@ const Dining: React.FC = () => {
           </Form.Item>
           <Form.Item name="recommendRating" label="口碑评分">
             <Select placeholder="请选择" options={DiningRecommendRatingOptions} style={{ width: '100%' }} />
-          </Form.Item>
-          <Form.Item name="images" label="上传图片" valuePropName="fileList">
-            <UploadList
-              purpose="cover"
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
           </Form.Item>
           <Form.Item name="attachments" label="附件" valuePropName="fileList">
             <UploadList

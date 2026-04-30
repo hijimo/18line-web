@@ -22,7 +22,7 @@ import { orvalMutator } from '../../../utils/orval-mutator';
 /**
  * @summary 新增行程模板
  */
-const add1 = (
+const add2 = (
     travelTemplate: TravelTemplate,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -94,8 +94,8 @@ const list12 = (
     },
       );
     }
-  return {add1,remove1,generate,edit13,getInfo3,list12}};
-export type Add1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add1']>>>
+  return {add2,remove1,generate,edit13,getInfo3,list12}};
+export type Add2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add2']>>>
 export type Remove1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove1']>>>
 export type GenerateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['generate']>>>
 export type Edit13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit13']>>>

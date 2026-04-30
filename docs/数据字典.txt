@@ -1,0 +1,14 @@
+字段你需要使用这个select来渲染组件
+
+菜点管理
+- 黑暗程度	travel_dark_level
+餐饮管理
+- 餐饮性质	travel_dining_nature
+景点管理
+- 休闲指数 travel_leisure
+游客喜好管理
+- 体力等级  travel_stamina
+- 旅游喜好 travel_tourist_like
+- 美食喜好 travel_food_like
+- 住宿偏好 travel_stay_pref
+- 健康标签 travel_health_tag

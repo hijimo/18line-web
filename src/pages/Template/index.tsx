@@ -8,7 +8,7 @@ import { StaminaLabel, YesNoLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getTemplateApi } from '@/services/api/行程模板管理/行程模板管理';
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+
 
 const templateApi = getTemplateApi();
 
@@ -26,7 +26,7 @@ const Template: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, travelTags: record.travelTags ? record.travelTags.split(',').map((s: string) => s.trim()).filter(Boolean) : [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, travelTags: record.travelTags ? record.travelTags.split(',').map((s: string) => s.trim()).filter(Boolean) : [], attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -36,7 +36,7 @@ const Template: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const { region, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await templateApi.edit13({ ...params, templateId: currentRecord.templateId } as any);

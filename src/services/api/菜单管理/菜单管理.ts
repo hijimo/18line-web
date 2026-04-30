@@ -37,7 +37,7 @@ const edit7 = (
   /**
  * @summary 新增菜单
  */
-const add7 = (
+const add8 = (
     sysMenu: SysMenu,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -117,9 +117,9 @@ const list19 = (
     },
       );
     }
-  return {edit7,add7,updateSort,getInfo19,remove18,treeselect,roleMenuTreeselect,list19}};
+  return {edit7,add8,updateSort,getInfo19,remove18,treeselect,roleMenuTreeselect,list19}};
 export type Edit7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit7']>>>
-export type Add7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add7']>>>
+export type Add8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add8']>>>
 export type UpdateSortResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['updateSort']>>>
 export type GetInfo19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo19']>>>
 export type Remove18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove18']>>>

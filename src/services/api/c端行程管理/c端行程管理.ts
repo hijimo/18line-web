@@ -171,6 +171,19 @@ const autoGenerate = (
       );
     }
   /**
+ * @summary 手动创建行程
+ */
+const add1 = (
+    travelItinerary: TravelItinerary,
+ ) => {
+      return orvalMutator<AjaxResult>(
+      {url: `/wx/itinerary/add`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: travelItinerary
+    },
+      );
+    }
+  /**
  * @summary 查询行程详情
  */
 const getInfo1 = (
@@ -192,7 +205,7 @@ const list10 = (
     },
       );
     }
-  return {addPhotography,updateDayDining,updateDayAttractions,updateDayAccommodation,addCar,remove,edit12,copy,confirm,confirmStatus,autoGenerate,getInfo1,list10}};
+  return {addPhotography,updateDayDining,updateDayAttractions,updateDayAccommodation,addCar,remove,edit12,copy,confirm,confirmStatus,autoGenerate,add1,getInfo1,list10}};
 export type AddPhotographyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['addPhotography']>>>
 export type UpdateDayDiningResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['updateDayDining']>>>
 export type UpdateDayAttractionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['updateDayAttractions']>>>
@@ -204,5 +217,6 @@ export type CopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>[
 export type ConfirmResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['confirm']>>>
 export type ConfirmStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['confirmStatus']>>>
 export type AutoGenerateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['autoGenerate']>>>
+export type Add1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['add1']>>>
 export type GetInfo1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo1']>>>
 export type List10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list10']>>>

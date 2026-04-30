@@ -165,7 +165,7 @@ paths:
       tags:
       - 用户管理
       summary: 新增用户
-      operationId: add_3
+      operationId: add_4
       requestBody:
         content:
           application/json:
@@ -320,7 +320,7 @@ paths:
       tags:
       - 角色管理
       summary: 新增角色
-      operationId: add_4
+      operationId: add_5
       requestBody:
         content:
           application/json:
@@ -468,7 +468,7 @@ paths:
     post:
       tags:
       - sys-post-controller
-      operationId: add_5
+      operationId: add_6
       requestBody:
         content:
           application/json:
@@ -505,7 +505,7 @@ paths:
       tags:
       - 通知公告
       summary: 新增通知公告
-      operationId: add_6
+      operationId: add_7
       requestBody:
         content:
           application/json:
@@ -542,7 +542,7 @@ paths:
       tags:
       - 菜单管理
       summary: 新增菜单
-      operationId: add_7
+      operationId: add_8
       requestBody:
         content:
           application/json:
@@ -600,7 +600,7 @@ paths:
       tags:
       - 字典类型
       summary: 新增字典类型
-      operationId: add_8
+      operationId: add_9
       requestBody:
         content:
           application/json:
@@ -637,7 +637,7 @@ paths:
       tags:
       - 字典数据
       summary: 新增字典类型
-      operationId: add_9
+      operationId: add_10
       requestBody:
         content:
           application/json:
@@ -672,7 +672,7 @@ paths:
     post:
       tags:
       - sys-dept-controller
-      operationId: add_10
+      operationId: add_11
       requestBody:
         content:
           application/json:
@@ -729,7 +729,7 @@ paths:
       tags:
       - 参数配置
       summary: 新增参数配置
-      operationId: add_11
+      operationId: add_12
       requestBody:
         content:
           application/json:
@@ -1028,6 +1028,25 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/add:
+    post:
+      tags:
+      - C端行程管理
+      summary: 手动创建行程
+      operationId: add_1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelItinerary'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /wx/auth/testToken:
     post:
       tags:
@@ -1117,7 +1136,7 @@ paths:
       tags:
       - 行程模板管理
       summary: 新增行程模板
-      operationId: add_1
+      operationId: add_2
       requestBody:
         content:
           application/json:
@@ -1669,7 +1688,7 @@ paths:
   /travel18/checkin/export:
     post:
       tags:
-      - 打卡点��理
+      - 打卡点管理
       summary: 导出打卡点列表
       operationId: export_4
       parameters:
@@ -1906,7 +1925,7 @@ paths:
       tags:
       - 算法配置管理
       summary: 新增算法配置
-      operationId: add_2
+      operationId: add_3
       requestBody:
         content:
           application/json:
@@ -5220,7 +5239,11 @@ components:
         createFromLabel:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelItineraryDay:
       type: object
       properties:
@@ -5359,7 +5382,11 @@ components:
           items:
             $ref: '#/components/schemas/TravelTemplateDay'
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelTemplateDay:
       type: object
       properties:
@@ -5499,7 +5526,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelLine:
       required:
       - lineName
@@ -5537,7 +5568,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelDish:
       required:
       - dishName
@@ -5585,7 +5620,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelDining:
       required:
       - diningName
@@ -5644,7 +5683,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelCheckin:
       required:
       - attractionId
@@ -5729,7 +5772,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelCar:
       required:
       - nickname
@@ -5777,7 +5824,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelAttraction:
       required:
       - attractionName
@@ -5866,7 +5917,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     TravelAlgorithmConfig:
       type: object
       properties:
@@ -6000,7 +6055,11 @@ components:
         delFlag:
           type: string
         attachments:
-          type: string
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
     RegisterBody:
       required:
       - password

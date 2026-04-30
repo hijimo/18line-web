@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelLineParams } from './travelLineParams';
+import type { TravelLineAttachmentsItem } from './travelLineAttachmentsItem';
 
 export interface TravelLine {
   createBy?: string;
@@ -21,5 +22,5 @@ export interface TravelLine {
   district?: string;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelLineAttachmentsItem[];
 }

@@ -6,6 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type { TravelDiningParams } from './travelDiningParams';
+import type { TravelDiningAttachmentsItem } from './travelDiningAttachmentsItem';
 
 export interface TravelDining {
   createBy?: string;
@@ -31,5 +32,5 @@ export interface TravelDining {
   parkingAvailable?: string;
   status?: string;
   delFlag?: string;
-  attachments?: string;
+  attachments?: TravelDiningAttachmentsItem[];
 }

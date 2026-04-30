@@ -5,7 +5,8 @@ import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { GenderLabel, PhotographyRecommendRatingOptions, StatusEnum, StatusLabel } from '@/enums';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+import type { AttachmentPurpose } from '@/types/common';
+import { toAttachments } from '@/types/common';
 import { get as getCarApi } from '@/services/api/包车管理/包车管理';
 import UploadList from '@/components/Upload';
 
@@ -14,6 +15,14 @@ const carApi = getCarApi();
 const genderOptions = Object.entries(GenderLabel).map(([value, label]) => ({ label, value }));
 const genderValueEnum = Object.fromEntries(Object.entries(GenderLabel).map(([k, v]) => [k, { text: v }]));
 const recommendRatingValueEnum = PhotographyRecommendRatingOptions.reduce((acc, opt) => { acc[opt.value] = { text: opt.label }; return acc; }, {} as Record<number, { text: string }>);
+
+/** 包车服务的上传分类配置 */
+const CAR_UPLOAD_FIELDS: { name: string; label: string; purpose: AttachmentPurpose }[] = [
+  { name: 'carExteriorFiles', label: '汽车外观', purpose: 'car_exterior' },
+  { name: 'carInteriorFiles', label: '汽车内饰', purpose: 'car_interior' },
+  { name: 'drivingLicenseFiles', label: '驾照', purpose: 'driving_license' },
+  { name: 'vehicleLicenseFiles', label: '行驶证', purpose: 'vehicle_license' },
+];
 
 const CharteredCar: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -26,7 +35,14 @@ const CharteredCar: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, images: record.images || [], attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      const allAttachments: any[] = record.attachments || [];
+      const fieldValues: Record<string, { url: string; name: string }[]> = {};
+      for (const { name, purpose } of CAR_UPLOAD_FIELDS) {
+        fieldValues[name] = allAttachments
+          .filter(a => a.purpose === purpose)
+          .map(a => ({ url: a.url, name: a.name }));
+      }
+      form.setFieldsValue({ ...record, ...fieldValues });
     } else {
       form.resetFields();
     }
@@ -35,8 +51,14 @@ const CharteredCar: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { images, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, images: (images || []).map((f: any) => f.url), attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const rest = { ...values };
+    // 从各上传字段收集附件，按 purpose 合并
+    const allAttachments = CAR_UPLOAD_FIELDS.flatMap(({ name, purpose }) => {
+      const files = rest[name] || [];
+      delete rest[name];
+      return toAttachments(files, purpose);
+    });
+    const params = { ...rest, attachments: allAttachments };
     try {
       if (currentRecord) {
         await carApi.editSave6({ ...params, carId: currentRecord.carId } as any);
@@ -155,22 +177,16 @@ const CharteredCar: React.FC = () => {
           <Form.Item name="recommendRating" label="评分">
             <Select placeholder="请选择" options={PhotographyRecommendRatingOptions} />
           </Form.Item>
-          <Form.Item name="images" label="上传图片" valuePropName="fileList">
-            <UploadList
-              purpose="cover"
-              maxLength={9}
-              uploadText="上传"
-              accept="image/png,image/jpeg,image/gif"
-            />
-          </Form.Item>
-          <Form.Item name="attachments" label="附件" valuePropName="fileList">
-            <UploadList
-              purpose="detail"
-              maxLength={9}
-              uploadText="上传附件"
-              accept="image/png,image/jpeg,image/gif,application/pdf"
-            />
-          </Form.Item>
+          {CAR_UPLOAD_FIELDS.map(({ name, label, purpose }) => (
+            <Form.Item key={name} name={name} label={label} valuePropName="fileList">
+              <UploadList
+                purpose={purpose}
+                maxLength={9}
+                uploadText={`上传${label}`}
+                accept="image/png,image/jpeg,image/gif"
+              />
+            </Form.Item>
+          ))}
         </Form>
       </Drawer>
     </>

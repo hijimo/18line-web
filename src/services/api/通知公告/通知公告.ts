@@ -37,7 +37,7 @@ const edit6 = (
   /**
  * @summary 新增通知公告
  */
-const add6 = (
+const add7 = (
     sysNotice: SysNotice,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -116,9 +116,9 @@ const remove17 = (
     },
       );
     }
-  return {edit6,add6,markRead,markReadAll,getInfo18,list18,listTop,remove17}};
+  return {edit6,add7,markRead,markReadAll,getInfo18,list18,listTop,remove17}};
 export type Edit6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit6']>>>
-export type Add6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add6']>>>
+export type Add7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add7']>>>
 export type MarkReadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['markRead']>>>
 export type MarkReadAllResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['markReadAll']>>>
 export type GetInfo18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo18']>>>

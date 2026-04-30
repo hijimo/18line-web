@@ -19,11 +19,18 @@ export interface PaginationParams {
 }
 
 /** 附件用途枚举 */
-export type AttachmentPurpose = 'cover' | 'banner' | 'detail' | 'guide' | 'manual' | 'menu' | 'other';
+export type AttachmentPurpose =
+  | 'cover' | 'banner' | 'detail' | 'guide' | 'manual' | 'menu' | 'other'
+  // 包车服务
+  | 'car_exterior' | 'car_interior' | 'driving_license' | 'vehicle_license'
+  // 跟拍服务
+  | 'portfolio' | 'photographer_photo'
+  // 住宿管理
+  | 'room' | 'lobby' | 'bathroom' | 'public_area';
 
 /** 附件对象 */
 export interface Attachment {
-  /** 用途：cover-封面, banner-横幅, detail-详情, guide-导览, manual-手册, menu-菜单, other-其他 */
+  /** 用途 */
   purpose: AttachmentPurpose;
   /** 文件名 */
   name: string;
@@ -33,22 +40,9 @@ export interface Attachment {
   url: string;
 }
 
-/** 将 attachments JSON 字符串反序列化为数组 */
-export const parseAttachments = (attachments: string | undefined | null): Attachment[] => {
-  if (!attachments) return [];
-  try {
-    const parsed = JSON.parse(attachments);
-    if (!Array.isArray(parsed)) return [];
-    return parsed.filter(
-      (item): item is Attachment =>
-        typeof item === 'object' && item !== null && typeof item.url === 'string',
-    );
-  } catch {
-    return [];
-  }
-};
-
-/** 将 attachments 数组序列化为 JSON 字符串 */
-export const stringifyAttachments = (attachments: Attachment[]): string => {
-  return JSON.stringify(attachments);
-};
+/** 将上传组件的文件列表转为 Attachment 数组 */
+export const toAttachments = (
+  files: { url: string; name?: string }[] | undefined,
+  purpose: AttachmentPurpose = 'other',
+): Attachment[] =>
+  (files || []).map((f, i) => ({ purpose, name: f.name || '', sort: i + 1, url: f.url }));

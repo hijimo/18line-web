@@ -7,6 +7,7 @@
  */
 import type {
   AjaxResult,
+  Export4Params,
   GetInfo9PathParameters,
   List5Params,
   Remove7Params,
@@ -39,6 +40,18 @@ const list5 = (
  ) => {
       return orvalMutator<TableDataInfo>(
       {url: `/travel18/checkin/list`, method: 'POST',
+        params
+    },
+      );
+    }
+  /**
+ * @summary 导出打卡点列表
+ */
+const export4 = (
+    params: Export4Params,
+ ) => {
+      return orvalMutator<void>(
+      {url: `/travel18/checkin/export`, method: 'POST',
         params
     },
       );
@@ -80,9 +93,10 @@ const getInfo9 = (
     },
       );
     }
-  return {remove7,list5,editSave5,addSave6,getInfo9}};
+  return {remove7,list5,export4,editSave5,addSave6,getInfo9}};
 export type Remove7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove7']>>>
 export type List5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list5']>>>
+export type Export4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export4']>>>
 export type EditSave5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave5']>>>
 export type AddSave6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave6']>>>
 export type GetInfo9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo9']>>>

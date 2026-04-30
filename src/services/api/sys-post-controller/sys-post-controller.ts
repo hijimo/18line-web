@@ -30,7 +30,7 @@ const edit5 = (
     },
       );
     }
-  const add5 = (
+  const add6 = (
     sysPost: SysPost,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -82,9 +82,9 @@ const edit5 = (
     },
       );
     }
-  return {edit5,add5,export10,getInfo17,optionselect1,list17,remove16}};
+  return {edit5,add6,export10,getInfo17,optionselect1,list17,remove16}};
 export type Edit5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['edit5']>>>
-export type Add5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['add5']>>>
+export type Add6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['add6']>>>
 export type Export10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['export10']>>>
 export type GetInfo17Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['getInfo17']>>>
 export type Optionselect1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['optionselect1']>>>

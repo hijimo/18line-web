@@ -30,7 +30,7 @@ const edit10 = (
     },
       );
     }
-  const add10 = (
+  const add11 = (
     sysDept: SysDept,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -83,9 +83,9 @@ const edit10 = (
     },
       );
     }
-  return {edit10,add10,updateSort1,getInfo22,remove21,list22,excludeChild}};
+  return {edit10,add11,updateSort1,getInfo22,remove21,list22,excludeChild}};
 export type Edit10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['edit10']>>>
-export type Add10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['add10']>>>
+export type Add11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['add11']>>>
 export type UpdateSort1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['updateSort1']>>>
 export type GetInfo22Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['getInfo22']>>>
 export type Remove21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['remove21']>>>

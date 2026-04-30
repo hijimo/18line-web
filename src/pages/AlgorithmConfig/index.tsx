@@ -7,7 +7,7 @@ import { key, option } from '@/configurify/columns/baseColumns';
 import { RegionLevelLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getAlgoApi } from '@/services/api/算法配置管理/算法配置管理';
 import UploadList from '@/components/Upload';
-import { parseAttachments, stringifyAttachments } from '@/types/common';
+
 
 const algoApi = getAlgoApi();
 
@@ -24,7 +24,7 @@ const AlgorithmConfig: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, attachments: parseAttachments(record.attachments).map(a => ({ url: a.url, name: a.name })) });
+      form.setFieldsValue({ ...record, attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -34,7 +34,7 @@ const AlgorithmConfig: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const { attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, attachments: stringifyAttachments((attachmentFiles || []).map((f: any, i: number) => ({ purpose: f.purpose || 'other', name: f.name || '', sort: i + 1, url: f.url }))) };
+    const params = { ...rest, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await algoApi.edit14({ ...params, configId: currentRecord.configId } as any);
