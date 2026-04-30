@@ -3,13 +3,14 @@ import { Button, Drawer, Descriptions, Form, Input, InputNumber, Popconfirm, Sel
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { TouristGenderLabel, StaminaLabel } from '@/enums';
+import { TouristGenderLabel } from '@/enums';
 import { get as getPreferenceApi } from '@/services/api/游客喜好管理/游客喜好管理';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import { useDictMap } from '@/hooks/useDictMap';
 
 const preferenceApi = getPreferenceApi();
 
 const GENDER_OPTIONS = Object.entries(TouristGenderLabel).map(([value, label]) => ({ label, value }));
-const STAMINA_OPTIONS = Object.entries(StaminaLabel).map(([value, label]) => ({ label, value }));
 
 const TouristPreferences: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -19,10 +20,16 @@ const TouristPreferences: React.FC = () => {
   const [form] = Form.useForm();
 
   const request = useTableRequest(preferenceApi.list13 as any);
+  const staminaMap = useDictMap('travel_stamina');
+  const travelLikeMap = useDictMap('travel_tourist_like');
+  const foodLikeMap = useDictMap('travel_food_like');
+  const stayPrefMap = useDictMap('travel_stay_pref');
+  const healthTagMap = useDictMap('travel_health_tag');
 
   const openEdit = (record: any) => {
     setCurrentRecord(record);
-    form.setFieldsValue({ ...record, healthTags: record.healthTags ? record.healthTags.split(',').map((s: string) => s.trim()).filter(Boolean) : [] });
+    const splitField = (v: any) => v ? String(v).split(',').map((s: string) => s.trim()).filter(Boolean) : [];
+    form.setFieldsValue({ ...record, travelLikes: splitField(record.travelLikes), foodLikes: splitField(record.foodLikes), stayPref: splitField(record.stayPref), healthTags: splitField(record.healthTags) });
     setDrawerOpen(true);
   };
 
@@ -33,7 +40,8 @@ const TouristPreferences: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const params = { ...values, healthTags: Array.isArray(values.healthTags) ? values.healthTags.join(',') : values.healthTags };
+    const joinField = (v: unknown) => Array.isArray(v) ? v.join(',') : v;
+    const params = { ...values, travelLikes: joinField(values.travelLikes), foodLikes: joinField(values.foodLikes), stayPref: joinField(values.stayPref), healthTags: joinField(values.healthTags) };
     try {
       await preferenceApi.edit2({ ...params, preferenceId: currentRecord.preferenceId } as any);
       message.success('编辑成功');
@@ -68,16 +76,11 @@ const TouristPreferences: React.FC = () => {
       },
     },
     { title: '出生年', dataIndex: 'birthYear', search: false },
-    {
-      title: '体力',
-      dataIndex: 'stamina',
-      search: false,
-      render: (v: string) => StaminaLabel[v as keyof typeof StaminaLabel] ?? '--',
-    },
-    { title: '旅游喜好', dataIndex: 'travelLikes', search: false, ellipsis: true },
-    { title: '美食喜好', dataIndex: 'foodLikes', search: false, ellipsis: true },
-    { title: '住宿偏好', dataIndex: 'stayPref', search: false, ellipsis: true },
-    { title: '健康标签', dataIndex: 'healthTags', search: false, ellipsis: true },
+    { title: '体力', dataIndex: 'stamina', search: false, render: (_: any, r: any) => staminaMap[r.stamina] ?? r.stamina ?? '--' },
+    { title: '旅游喜好', dataIndex: 'travelLikes', search: false, ellipsis: true, render: (_: any, r: any) => r.travelLikes ? String(r.travelLikes).split(',').map(s => travelLikeMap[s.trim()] ?? s.trim()).join(', ') : '--' },
+    { title: '美食喜好', dataIndex: 'foodLikes', search: false, ellipsis: true, render: (_: any, r: any) => r.foodLikes ? String(r.foodLikes).split(',').map(s => foodLikeMap[s.trim()] ?? s.trim()).join(', ') : '--' },
+    { title: '住宿偏好', dataIndex: 'stayPref', search: false, ellipsis: true, render: (_: any, r: any) => r.stayPref ? String(r.stayPref).split(',').map(s => stayPrefMap[s.trim()] ?? s.trim()).join(', ') : '--' },
+    { title: '健康标签', dataIndex: 'healthTags', search: false, ellipsis: true, render: (_: any, r: any) => r.healthTags ? String(r.healthTags).split(',').map(s => healthTagMap[s.trim()] ?? s.trim()).join(', ') : '--' },
     { title: '创建时间', dataIndex: 'createTime', search: false, width: 180 },
     {
       ...option,
@@ -124,19 +127,19 @@ const TouristPreferences: React.FC = () => {
             <InputNumber placeholder="请输入" style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="stamina" label="体力等级">
-            <Select placeholder="请选择" options={STAMINA_OPTIONS} />
+            <DictSelect code="travel_stamina" />
           </Form.Item>
           <Form.Item name="travelLikes" label="旅游喜好">
-            <Input.TextArea placeholder="请输入" rows={2} />
+            <DictSelect code="travel_tourist_like" mode="multiple" />
           </Form.Item>
           <Form.Item name="foodLikes" label="美食喜好">
-            <Input.TextArea placeholder="请输入" rows={2} />
+            <DictSelect code="travel_food_like" mode="multiple" />
           </Form.Item>
           <Form.Item name="stayPref" label="住宿偏好">
-            <Input.TextArea placeholder="请输入" rows={2} />
+            <DictSelect code="travel_stay_pref" mode="multiple" />
           </Form.Item>
           <Form.Item name="healthTags" label="健康标签">
-            <Select mode="tags" placeholder="请输入标签后回车" />
+            <DictSelect code="travel_health_tag" mode="multiple" />
           </Form.Item>
           <Form.Item name="remark" label="备注">
             <Input.TextArea placeholder="请输入" rows={2} />
@@ -158,11 +161,11 @@ const TouristPreferences: React.FC = () => {
             <Descriptions.Item label="行程ID">{currentRecord.tripId ?? '--'}</Descriptions.Item>
             <Descriptions.Item label="性别">{TouristGenderLabel[currentRecord.gender as keyof typeof TouristGenderLabel] ?? '--'}</Descriptions.Item>
             <Descriptions.Item label="出生年">{currentRecord.birthYear ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="体力等级">{StaminaLabel[currentRecord.stamina as keyof typeof StaminaLabel] ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="旅游喜好" span={2}>{currentRecord.travelLikes ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="美食喜好" span={2}>{currentRecord.foodLikes ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="住宿偏好" span={2}>{currentRecord.stayPref ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="健康标签" span={2}>{currentRecord.healthTags ?? '--'}</Descriptions.Item>
+            <Descriptions.Item label="体力等级">{staminaMap[currentRecord.stamina] ?? currentRecord.stamina ?? '--'}</Descriptions.Item>
+            <Descriptions.Item label="旅游喜好" span={2}>{currentRecord.travelLikes ? String(currentRecord.travelLikes).split(',').map(s => travelLikeMap[s.trim()] ?? s.trim()).join(', ') : '--'}</Descriptions.Item>
+            <Descriptions.Item label="美食喜好" span={2}>{currentRecord.foodLikes ? String(currentRecord.foodLikes).split(',').map(s => foodLikeMap[s.trim()] ?? s.trim()).join(', ') : '--'}</Descriptions.Item>
+            <Descriptions.Item label="住宿偏好" span={2}>{currentRecord.stayPref ? String(currentRecord.stayPref).split(',').map(s => stayPrefMap[s.trim()] ?? s.trim()).join(', ') : '--'}</Descriptions.Item>
+            <Descriptions.Item label="健康标签" span={2}>{currentRecord.healthTags ? String(currentRecord.healthTags).split(',').map(s => healthTagMap[s.trim()] ?? s.trim()).join(', ') : '--'}</Descriptions.Item>
             <Descriptions.Item label="创建时间">{currentRecord.createTime ?? '--'}</Descriptions.Item>
             <Descriptions.Item label="更新时间">{currentRecord.updateTime ?? '--'}</Descriptions.Item>
             <Descriptions.Item label="备注" span={2}>{currentRecord.remark ?? '--'}</Descriptions.Item>

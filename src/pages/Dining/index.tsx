@@ -4,16 +4,17 @@ import { PlusOutlined } from '@ant-design/icons';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { DiningNatureLabel, DiningRecommendRatingOptions, PetFriendlyLabel, ParkingAvailableLabel, StatusEnum, StatusLabel, YesNoLabel } from '@/enums';
+import { DiningRecommendRatingOptions, PetFriendlyLabel, ParkingAvailableLabel, StatusEnum, StatusLabel, YesNoLabel } from '@/enums';
 
 import { get as getDiningApi } from '@/services/api/餐饮管理/餐饮管理';
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import { useDictMap } from '@/hooks/useDictMap';
 
 const diningApi = getDiningApi();
 
 const YES_NO = Object.entries(YesNoLabel).map(([value, label]) => ({ label, value }));
-const diningNatureOptions = Object.entries(DiningNatureLabel).map(([value, label]) => ({ label, value }));
 
 const Dining: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -22,6 +23,7 @@ const Dining: React.FC = () => {
   const [form] = Form.useForm();
 
   const request = useTableRequest(diningApi.list4 as any);
+  const diningNatureMap = useDictMap('travel_dining_nature');
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -76,7 +78,7 @@ const Dining: React.FC = () => {
   const columns = [
     key,
     { title: '名称', dataIndex: 'diningName', ellipsis: true },
-    { title: '性质', dataIndex: 'diningNature', search: false, valueEnum: DiningNatureLabel },
+    { title: '性质', dataIndex: 'diningNature', search: false, render: (_: any, r: any) => diningNatureMap[r.diningNature] ?? r.diningNature ?? '--' },
     { title: '人均', dataIndex: 'avgCost', search: false, render: (v: number) => v ? `${v}元/位` : '--' },
     { title: '口碑评分', dataIndex: 'recommendRating', search: false, valueEnum: Object.fromEntries(DiningRecommendRatingOptions.map(({ value, label }) => [value, { text: label }])) },
     { title: '宠物友好', dataIndex: 'petFriendly', search: false, valueEnum: PetFriendlyLabel },
@@ -134,7 +136,7 @@ const Dining: React.FC = () => {
             <RegionSelect />
           </Form.Item>
           <Form.Item name="diningNature" label="餐饮性质">
-            <Select placeholder="请选择" options={diningNatureOptions} />
+            <DictSelect code="travel_dining_nature" />
           </Form.Item>
           <Form.Item name="avgCost" label="人均消费">
             <InputNumber placeholder="请输入" addonAfter="元/位" style={{ width: '100%' }} />

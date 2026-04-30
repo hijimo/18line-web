@@ -4,16 +4,16 @@ import { PlusOutlined } from '@ant-design/icons';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { DarkLevelLabel, SpecialStarOptions, SeasonalLabel, ReservationLabel, StatusEnum, StatusLabel } from '@/enums';
+import { SpecialStarOptions, SeasonalLabel, ReservationLabel, StatusEnum, StatusLabel } from '@/enums';
 
 import { get as getDishApi } from '@/services/api/菜品管理/菜品管理';
 import UploadList from '@/components/Upload';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import { useDictMap } from '@/hooks/useDictMap';
 
 const dishApi = getDishApi();
 
 const YES_NO_OPTIONS = Object.entries(SeasonalLabel).map(([value, label]) => ({ label, value }));
-const darkLevelOptions = Object.entries(DarkLevelLabel).map(([value, label]) => ({ label, value }));
-const darkLevelValueEnum = Object.fromEntries(Object.entries(DarkLevelLabel).map(([v, text]) => [v, { text }]));
 const specialStarValueEnum = Object.fromEntries(SpecialStarOptions.map(o => [o.value, { text: o.label }]));
 const seasonalValueEnum = Object.fromEntries(Object.entries(SeasonalLabel).map(([k, v]) => [k, { text: v }]));
 const reservationValueEnum = Object.fromEntries(Object.entries(ReservationLabel).map(([k, v]) => [k, { text: v }]));
@@ -25,6 +25,7 @@ const Dishes: React.FC = () => {
   const [form] = Form.useForm();
 
   const request = useTableRequest(dishApi.list3 as any);
+  const darkLevelMap = useDictMap('travel_dark_level');
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -79,7 +80,7 @@ const Dishes: React.FC = () => {
   const columns = [
     key,
     { title: '菜品名称', dataIndex: 'dishName', ellipsis: true },
-    { title: '黑暗程度', dataIndex: 'darkLevel', search: false, valueEnum: darkLevelValueEnum },
+    { title: '黑暗程度', dataIndex: 'darkLevel', search: false, render: (_: any, r: any) => darkLevelMap[r.darkLevel] ?? r.darkLevel ?? '--' },
     { title: '特色星级', dataIndex: 'specialStar', search: false, valueEnum: specialStarValueEnum },
     { title: '价格', dataIndex: 'price', search: false, render: (v: number) => v ? `${v}元` : '--' },
     { title: '是否时令菜', dataIndex: 'seasonal', search: false, valueEnum: seasonalValueEnum },
@@ -136,7 +137,7 @@ const Dishes: React.FC = () => {
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
           <Form.Item name="darkLevel" label="黑暗程度">
-            <Select placeholder="请选择" options={darkLevelOptions} />
+            <DictSelect code="travel_dark_level" />
           </Form.Item>
           <Form.Item name="price" label="价格">
             <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />

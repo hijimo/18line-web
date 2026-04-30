@@ -7,20 +7,20 @@ import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { get as getCheckinApi } from '@/services/api/打卡点管理/打卡点管理';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
-import { FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFactorsLabel, BlindStatusLabel, StatusEnum, StatusLabel } from '@/enums';
+import { FamilyFriendlyLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFactorsLabel, BlindStatusLabel, StatusEnum, StatusLabel } from '@/enums';
 
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import { useDictMap } from '@/hooks/useDictMap';
 
 const checkinApi = getCheckinApi();
 const attractionApi = getAttractionApi();
 
-const leisureRatingValueEnum = Object.fromEntries(Object.entries(LeisureRatingLabel).map(([k, v]) => [k, { text: v }]));
 const indoorOutdoorOptions = Object.entries(IndoorOutdoorLabel).map(([value, label]) => ({ label, value }));
 const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({ label, value }));
 const classicRatingValueEnum = Object.fromEntries(ClassicRatingOptions.map(({ value, label }) => [value, { text: label }]));
 const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({ label, value }));
-const leisureRatingOptions = Object.entries(LeisureRatingLabel).map(([value, label]) => ({ label, value }));
 
 const CheckinPoints: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -30,6 +30,7 @@ const CheckinPoints: React.FC = () => {
   const [attractionOptions, setAttractionOptions] = useState<any[]>([]);
 
   const request = useTableRequest(checkinApi.list5 as any);
+  const leisureMap = useDictMap('travel_leisure');
 
   const openDrawer = async (record?: any) => {
     setCurrentRecord(record || null);
@@ -92,7 +93,7 @@ const CheckinPoints: React.FC = () => {
     key,
     { title: '名称', dataIndex: 'checkinName', ellipsis: true },
     { title: '开放时间', dataIndex: 'openTime', search: false, ellipsis: true },
-    { title: '休闲指数', dataIndex: 'leisureRating', search: false, valueEnum: leisureRatingValueEnum },
+    { title: '休闲指数', dataIndex: 'leisureRating', search: false, render: (_: any, r: any) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--' },
     { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}分钟` : '--' },
     { title: '地点', dataIndex: 'location', search: false },
     { title: '是否全盲', dataIndex: 'blindStatus', search: false, valueEnum: Object.fromEntries(Object.entries(BlindStatusLabel).map(([k, v]) => [k, { text: v }])) },
@@ -178,7 +179,7 @@ const CheckinPoints: React.FC = () => {
             <Select placeholder="请选择" options={ClassicRatingOptions} />
           </Form.Item>
           <Form.Item name="leisureRating" label="休闲指数">
-            <Select placeholder="请选择" options={leisureRatingOptions} />
+            <DictSelect code="travel_leisure" />
           </Form.Item>
           <Form.Item name="openTime" label="开放时间">
             <TimePicker.RangePicker format="HH:mm" style={{ width: '100%' }} />

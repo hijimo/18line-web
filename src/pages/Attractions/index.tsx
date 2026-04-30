@@ -8,12 +8,13 @@ import { get as getAttractionApi } from '@/services/api/景点管理/景点管�
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
 import LineSelect from '@/components/DataSelect/LineSelect';
-import { BlindStatusLabel, FamilyFriendlyLabel, LeisureRatingLabel, ClassicRatingOptions, BadFactorsLabel, StatusEnum, StatusLabel } from '@/enums';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import { useDictMap } from '@/hooks/useDictMap';
+import { BlindStatusLabel, FamilyFriendlyLabel, ClassicRatingOptions, BadFactorsLabel, StatusEnum, StatusLabel } from '@/enums';
 
 
 const attractionApi = getAttractionApi();
 
-const leisureRatingValueEnum = Object.fromEntries(Object.entries(LeisureRatingLabel).map(([k, v]) => [k, { text: v }]));
 const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({ label, value }));
 const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({ label, value }));
 
@@ -24,6 +25,7 @@ const Attractions: React.FC = () => {
   const [form] = Form.useForm();
 
   const request = useTableRequest(attractionApi.list7 as any);
+  const leisureMap = useDictMap('travel_leisure');
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -88,7 +90,7 @@ const Attractions: React.FC = () => {
     key,
     { title: '名称', dataIndex: 'attractionName', ellipsis: true },
     { title: '开放时间', dataIndex: 'openTime', search: false, ellipsis: true },
-    { title: '休闲指数', dataIndex: 'leisureRating', search: false, valueEnum: leisureRatingValueEnum },
+    { title: '休闲指数', dataIndex: 'leisureRating', search: false, render: (_: any, r: any) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--' },
     { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}小时` : '--' },
     { title: '地点', dataIndex: 'location', search: false },
     { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{FamilyFriendlyLabel[v]}</Tag> },
@@ -174,7 +176,7 @@ const Attractions: React.FC = () => {
             <Select placeholder="请选择" options={ClassicRatingOptions} />
           </Form.Item>
           <Form.Item name="leisureRating" label="休闲指数">
-            <Select placeholder="请选择" options={Object.entries(LeisureRatingLabel).map(([value, label]) => ({ label, value }))} />
+            <DictSelect code="travel_leisure" />
           </Form.Item>
           <Form.Item name="visitDuration" label="游玩时间">
             <InputNumber placeholder="请输入" addonAfter="小时" style={{ width: '100%' }} />
