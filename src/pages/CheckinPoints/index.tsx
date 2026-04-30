@@ -42,7 +42,7 @@ const CheckinPoints: React.FC = () => {
       const openTimeValue = record.openTime
         ? record.openTime.split(' - ').map((t: string) => dayjs(t, 'HH:mm'))
         : undefined;
-      form.setFieldsValue({ ...record, openTime: openTimeValue, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
+      form.setFieldsValue({ ...record, openTime: openTimeValue, region: { province: record.province, city: record.city, district: record.district }, badFactors: record.badFactors ? record.badFactors.split(',').map((s: string) => s.trim()).filter(Boolean) : [], attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -52,7 +52,7 @@ const CheckinPoints: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const { region, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', attachments: attachmentFiles || [] };
+    const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', badFactors: Array.isArray(rest.badFactors) ? rest.badFactors.join(',') : rest.badFactors, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await checkinApi.editSave5({ ...params, checkinId: currentRecord.checkinId } as any);

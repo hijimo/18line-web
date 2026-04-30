@@ -38,10 +38,10 @@ const Users: React.FC = () => {
     const values = await form.validateFields();
     try {
       if (currentRecord) {
-        await userApi.edit3({ ...values, userId: currentRecord.userId } as any);
+        await userApi.edit3({ ...values, userId: currentRecord?.userId } as any);
         message.success('编辑成功');
       } else {
-        await userApi.add3(values as any);
+        await userApi.add4(values as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -133,6 +133,7 @@ const Users: React.FC = () => {
   return (
     <>
       <CommonTable
+      rowKey='userId'
         actionRef={actionRef}
         request={request as any}
         columns={columns as any}

@@ -34,6 +34,7 @@ const Attractions: React.FC = () => {
         ...record,
         region: { province: record.province, city: record.city, district: record.district },
         lineIds: record.lineIds || record.lines?.map((l: any) => l.lineId) || [],
+        badFactors: record.badFactors ? record.badFactors.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
         attachments: record.attachments || [],
       });
     } else {
@@ -48,6 +49,7 @@ const Attractions: React.FC = () => {
     const params = {
       ...rest,
       ...region,
+      badFactors: Array.isArray(rest.badFactors) ? rest.badFactors.join(',') : rest.badFactors,
       attachments: attachmentFiles || [],
     };
     try {

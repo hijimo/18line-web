@@ -3,7 +3,6 @@ import {
   CarOutlined,
   CameraOutlined,
   CalendarOutlined,
-  GiftOutlined,
   HomeOutlined,
   HeartOutlined,
   SettingOutlined,
@@ -40,7 +39,6 @@ import Users from './pages/Users';
 import Tourists from './pages/Tourists';
 import TouristPreferences from './pages/TouristPreferences';
 import Routes from './pages/Routes';
-// import EasterEgg from './pages/EasterEgg';
 import AlgorithmConfig from './pages/AlgorithmConfig';
 import Template from './pages/Template';
 import DictType from './pages/DictType';
@@ -161,14 +159,6 @@ const resources: ResourceProps[] = [
     meta: {
       label: '线路信息',
       icon: <BookOutlined />,
-    },
-  },
-  {
-    name: 'easter-egg',
-    list: '/easter-egg',
-    meta: {
-      label: '彩蛋',
-      icon: <GiftOutlined />,
     },
   },
   {
@@ -336,12 +326,6 @@ const router = createBrowserRouter([
               
             ),
           },
-          // {
-          //   path: '/easter-egg',
-          //   element: (
-          //       <EasterEgg />
-          //   ),
-          // },
           {
             path: '/algorithm-config',
             element: <AlgorithmConfig />,
