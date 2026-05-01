@@ -125,7 +125,7 @@ const Attractions: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +景点
+            添加景点
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

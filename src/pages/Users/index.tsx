@@ -139,7 +139,7 @@ const Users: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加用户
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

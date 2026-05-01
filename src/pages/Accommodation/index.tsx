@@ -130,7 +130,7 @@ const Accommodation: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加住宿
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}
@@ -176,6 +176,14 @@ const Accommodation: React.FC = () => {
             </Form.Item>
             <Form.Item name="priceMax" label="最高价格" style={{ width: '50%' }}>
               <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
+            </Form.Item>
+          </Space>
+          <Space style={{ width: '100%' }} size="middle">
+            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
+            </Form.Item>
+            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
+              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
             </Form.Item>
           </Space>
           {ACCOMMODATION_UPLOAD_FIELDS.map(({ name, label, purpose }) => (

@@ -127,7 +127,7 @@ const Photography: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加跟拍
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

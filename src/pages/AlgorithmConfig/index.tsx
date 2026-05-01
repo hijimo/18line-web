@@ -102,7 +102,7 @@ const AlgorithmConfig: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加配置
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

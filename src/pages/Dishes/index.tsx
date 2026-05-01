@@ -111,7 +111,7 @@ const Dishes: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加菜品
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

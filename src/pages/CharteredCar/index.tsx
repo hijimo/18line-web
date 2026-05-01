@@ -131,7 +131,7 @@ const CharteredCar: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加包车
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

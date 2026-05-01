@@ -127,7 +127,7 @@ const CheckinPoints: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +打卡点
+            添加打卡点
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

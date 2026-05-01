@@ -100,7 +100,7 @@ const Routes: React.FC = () => {
         columns={columns as any}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +线路
+            添加线路
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}

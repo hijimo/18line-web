@@ -159,7 +159,7 @@ const Template: React.FC = () => {
             自动生成
           </Button>,
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
-            +新增
+            添加模板
           </Button>,
         ]}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}
