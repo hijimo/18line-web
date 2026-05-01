@@ -1,50 +1,68 @@
 import * as path from 'path';
 import react from '@vitejs/plugin-react-swc';
-import { defineConfig } from 'vite';
+import { defineConfig, loadEnv } from 'vite';
+import vitePluginAliOss from 'vite-plugin-ali-oss';
 
 // https://vitejs.dev/config/
-export default defineConfig({
-  css: {
-    modules: {
-      localsConvention: 'camelCase',
-    },
-    preprocessorOptions: {
-      less: {
-        javascriptEnabled: true,
+export default defineConfig(({ mode }) => {
+  const env = loadEnv(mode, process.cwd());
+  // 通过环境变量 ENABLE_OSS=true 控制是否上传 OSS，防止本地打包触发
+  const enableOSS = env.VITE_ENABLE_OSS === 'true';
+
+  const ossPlugins = enableOSS
+    ? [
+        vitePluginAliOss({
+          region: 'oss-cn-hangzhou',
+          accessKeyId: env.VITE_OSS_ACCESSKEY_ID,
+          accessKeySecret: env.VITE_OSS_ACCESSKEY_SECRET,
+          bucket: 'juxieyun',
+          secure: true,
+          headers: { 'Cache-Control': 'max-age=31536000' },
+        }),
+      ]
+    : [];
+
+  return {
+    base: enableOSS
+      ? 'https://juxieyun.oss-cn-hangzhou.aliyuncs.com/front-static/18line-web/'
+      : '/',
+    css: {
+      modules: {
+        localsConvention: 'camelCase',
+      },
+      preprocessorOptions: {
+        less: {
+          javascriptEnabled: true,
+        },
       },
     },
-  },
-  build: {
-    sourcemap: true,
-  },
-  plugins: [react()],
-  publicDir: 'public',
-  server: {
-    host: true,
-    port: 3000,
-    hmr: { overlay: false },
-    cors: true,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    build: {
+      sourcemap: true,
     },
-    proxy: {
-      '/api/': {
-        // 要代理的地址
-        target: 'http://8.136.229.208:8080',
-        // target: 'https://dev-droplet.jushuitan.com',
-        // 配置了这个可以从 http 代理到 https
-        // 依赖 origin 的功能可能需要这个，比如 cookie
-        changeOrigin: true,
-        // secure: true,
-        rewrite: (path) => path.replace(/^\/api/, ''), // ✅
+    plugins: [react(), ...ossPlugins],
+    publicDir: 'public',
+    server: {
+      host: true,
+      port: 3000,
+      hmr: { overlay: false },
+      cors: true,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      },
+      proxy: {
+        '/api/': {
+          target: 'http://8.136.229.208:8080',
+          changeOrigin: true,
+          rewrite: (path) => path.replace(/^\/api/, ''),
+        },
       },
     },
-  },
-  resolve: {
-    alias: {
-      '@': path.resolve(__dirname, './src'),
+    resolve: {
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+      },
     },
-  },
+  };
 });
