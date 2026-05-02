@@ -15,7 +15,7 @@ export default defineConfig(({ mode }) => {
           region: 'oss-cn-hangzhou',
           accessKeyId: env.VITE_OSS_ACCESSKEY_ID,
           accessKeySecret: env.VITE_OSS_ACCESSKEY_SECRET,
-          bucket: 'juxieyun',
+          bucket: env.VITE_OSS_BUCKET,
           secure: true,
           headers: { 'Cache-Control': 'max-age=31536000' },
         }),
@@ -24,7 +24,7 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: enableOSS
-      ? 'https://juxieyun.oss-cn-hangzhou.aliyuncs.com/front-static/18line-web/'
+      ? 'https://oss.asyncb.com/front-static/18line-web/'
       : '/',
     css: {
       modules: {
