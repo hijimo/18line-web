@@ -32,7 +32,6 @@ import CheckinPoints from './pages/CheckinPoints';
 import LocalDishes from './pages/LocalDishes';
 import Accommodation from './pages/Accommodation';
 import Dining from './pages/Dining';
-import Dishes from './pages/Dishes';
 import Photography from './pages/Photography';
 import CharteredCar from './pages/CharteredCar';
 import Users from './pages/Users';
@@ -108,15 +107,6 @@ const resources: ResourceProps[] = [
     meta: {
       label: '跟拍',
       icon: <CameraOutlined />,
-      parent: 'local-service',
-    },
-  },
-  {
-    name: 'dishes',
-    list: '/dishes',
-    meta: {
-      label: '菜品',
-      icon: <CoffeeOutlined />,
       parent: 'local-service',
     },
   },
@@ -278,12 +268,6 @@ const router = createBrowserRouter([
               
                 <Dining />
               
-            ),
-          },
-          {
-            path: '/dishes',
-            element: (
-                <Dishes />
             ),
           },
           {
