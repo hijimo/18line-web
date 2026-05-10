@@ -248,7 +248,7 @@ const Dining: React.FC = () => {
     { title: '地址', dataIndex: 'address', search: false, ellipsis: true },
     {
       ...option,
-      width:160,
+      width:200,
       render: (_: any, record: any) => (
         <Space>
           <a onClick={() => openDishesDrawer(record)}>菜品</a>

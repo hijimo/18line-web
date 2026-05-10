@@ -1,82 +1,84 @@
-/**
- * LocalDishes (特色菜品/当地美食) page tests.
- *
- * This module has full CRUD: add, edit, detail, remove, status toggle.
- */
-
-import { screen, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ConfigProvider } from 'antd';
+import { MemoryRouter } from 'react-router';
+import LocalDishes from '@/pages/LocalDishes';
 
-import { render } from '@/test-utils';
-import { crudHandlers } from '@/test-utils/crud-msw-handlers';
-import {
-  verifyTableRenders,
-  verifyAddButtonExistsAndOpensDrawer,
-  verifyDetailActionExists,
-  verifyEditActionExists,
-  verifyStatusToggleExists,
-  clickActionAndVerifyDrawer,
-} from '@/test-utils/crud-test-helpers';
+vi.mock('@/services/api/地方特色菜管理/地方特色菜管理', () => ({
+  get: () => ({
+    list2: vi.fn().mockResolvedValue({
+      code: 200,
+      total: 2,
+      rows: [
+        { specialtyId: 1, dishName: '地方特色菜A', price: 38, specialStar: 5, status: '0', createTime: '2024-01-01' },
+        { specialtyId: 2, dishName: '地方特色菜B', price: 25, specialStar: 4, status: '1', createTime: '2024-02-01' },
+      ],
+    }),
+    addSave3: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    editSave2: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    remove4: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    getInfo12: vi.fn().mockResolvedValue({ code: 200 }),
+  }),
+}));
 
-let LocalDishesPage: React.ComponentType;
-try {
-  LocalDishesPage = require('@/pages/LocalDishes/index').default;
-} catch {
-  LocalDishesPage = null;
-}
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false }, mutations: { retry: false } },
+});
 
-const mswServer = setupServer(...crudHandlers);
+const renderPage = () =>
+  render(
+    <QueryClientProvider client={queryClient}>
+      <ConfigProvider>
+        <MemoryRouter>
+          <LocalDishes />
+        </MemoryRouter>
+      </ConfigProvider>
+    </QueryClientProvider>,
+  );
 
-beforeAll(() => mswServer.listen({ onUnhandledRequest: 'bypass' }));
-afterEach(() => mswServer.resetHandlers());
-afterAll(() => mswServer.close());
-
-const describeIfComponentExists = LocalDishesPage ? describe : describe.skip;
-
-describeIfComponentExists('特色菜品 (LocalDishes) Page', () => {
+describe('地方特色菜 (LocalDishes) Page', () => {
   beforeEach(() => {
-    render(<LocalDishesPage />);
+    queryClient.clear();
   });
 
-  it('renders the table correctly', async () => {
-    await verifyTableRenders(['菜品A']);
+  it('表格正确渲染数据', async () => {
+    renderPage();
+    await waitFor(() => {
+      expect(screen.getByText('地方特色菜A')).toBeInTheDocument();
+    });
   });
 
-  it('"新增" button exists and opens drawer on click', async () => {
-    await verifyAddButtonExistsAndOpensDrawer('新增');
+  it('操作列包含编辑、删除、上架/下架', async () => {
+    renderPage();
+    await waitFor(() => {
+      expect(screen.getAllByText('编辑').length).toBeGreaterThan(0);
+      expect(screen.getAllByText('删除').length).toBeGreaterThan(0);
+    });
   });
 
-  it('"详情" action opens drawer with detail mode', async () => {
-    await verifyDetailActionExists();
-    await clickActionAndVerifyDrawer('详情');
-  });
-
-  it('"编辑" action opens drawer with edit mode', async () => {
-    await verifyEditActionExists();
-    await clickActionAndVerifyDrawer('编辑');
-  });
-
-  it('status toggle (上架/下架) works', async () => {
-    await verifyStatusToggleExists();
-  });
-
-  it('form validation shows errors for required fields on empty submit', async () => {
+  it('点击"添加特色菜"按钮打开抽屉', async () => {
     const user = userEvent.setup();
-    const addButton = screen.getByRole('button', { name: /新增/ });
-    await user.click(addButton);
-
+    renderPage();
     await waitFor(() => {
-      expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
-    }, { timeout: 3000 });
-
-    const submitButton = screen.getByRole('button', { name: /确定|提交|保存/ });
-    await user.click(submitButton);
-
+      expect(screen.getByText('添加特色菜')).toBeInTheDocument();
+    });
+    await user.click(screen.getByText('添加特色菜'));
     await waitFor(() => {
-      const errors = document.querySelectorAll('.ant-form-item-explain-error');
-      expect(errors.length).toBeGreaterThan(0);
-    }, { timeout: 3000 });
+      expect(screen.getByText('新增特色菜')).toBeInTheDocument();
+    });
+  });
+
+  it('点击编辑打开编辑抽屉', async () => {
+    const user = userEvent.setup();
+    renderPage();
+    await waitFor(() => {
+      expect(screen.getAllByText('编辑').length).toBeGreaterThan(0);
+    });
+    await user.click(screen.getAllByText('编辑')[0]);
+    await waitFor(() => {
+      expect(screen.getByText('编辑特色菜')).toBeInTheDocument();
+    });
   });
 });

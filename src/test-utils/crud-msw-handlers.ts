@@ -38,6 +38,11 @@ const mockDishes = [
   { id: 1, name: '菜品A', status: '1', created: '2024-01-01 12:00:00', creatorName: 'admin' },
 ];
 
+const mockLocalSpecialties = [
+  { specialtyId: 1, dishName: '地方特色菜A', price: 38, specialStar: 5, status: '1', created: '2024-01-01 12:00:00' },
+  { specialtyId: 2, dishName: '地方特色菜B', price: 25, specialStar: 4, status: '0', created: '2024-02-01 12:00:00' },
+];
+
 const mockAccommodations = [
   { id: 1, name: '住宿A', status: '1', created: '2024-01-01 12:00:00', creatorName: 'admin' },
 ];
@@ -93,6 +98,15 @@ export const crudHandlers = [
   http.post('*/travel18/dish/remove', () => createSuccessResponse()),
   http.get('*/travel18/dish/:id', ({ params }) =>
     createSuccessResponse({ ...mockDishes[0], id: Number(params.id) }),
+  ),
+
+  // 地方特色菜管理
+  http.post('*/travel18/localSpecialty/list', () => createPaginatedResponse(mockLocalSpecialties)),
+  http.post('*/travel18/localSpecialty/add', () => createSuccessResponse()),
+  http.post('*/travel18/localSpecialty/edit', () => createSuccessResponse()),
+  http.post('*/travel18/localSpecialty/remove', () => createSuccessResponse()),
+  http.get('*/travel18/localSpecialty/:id', ({ params }) =>
+    createSuccessResponse({ ...mockLocalSpecialties[0], specialtyId: Number(params.id) }),
   ),
 
   // 住宿管理

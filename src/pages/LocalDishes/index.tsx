@@ -6,10 +6,10 @@ import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { SpecialStarOptions, StatusEnum, StatusLabel } from '@/enums';
 
-import { get as getDishApi } from '@/services/api/菜品管理/菜品管理';
+import { get as getSpecialtyApi } from '@/services/api/地方特色菜管理/地方特色菜管理';
 import UploadList from '@/components/Upload';
 
-const dishApi = getDishApi();
+const specialtyApi = getSpecialtyApi();
 
 const LocalDishes: React.FC = () => {
   const actionRef = useRef<any>(null);
@@ -17,7 +17,7 @@ const LocalDishes: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(dishApi.list3 as any);
+  const request = useTableRequest(specialtyApi.list2 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -35,10 +35,10 @@ const LocalDishes: React.FC = () => {
     const params = { ...rest, dishTag: Array.isArray(rest.dishTag) ? rest.dishTag.join(',') : rest.dishTag, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await dishApi.editSave3({ ...params, dishId: currentRecord.dishId } as any);
+        await specialtyApi.editSave2({ ...params, specialtyId: currentRecord.specialtyId } as any);
         message.success('编辑成功');
       } else {
-        await dishApi.addSave3(params as any);
+        await specialtyApi.addSave3(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -51,7 +51,7 @@ const LocalDishes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await dishApi.editSave3({ dishId: record.dishId, status: newStatus } as any);
+      await specialtyApi.editSave2({ specialtyId: record.specialtyId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -61,7 +61,7 @@ const LocalDishes: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await dishApi.remove5({ ids: record.dishId } as any);
+      await specialtyApi.remove4({ ids: record.specialtyId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
