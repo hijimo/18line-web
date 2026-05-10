@@ -8,6 +8,7 @@ import { SpecialStarOptions, StatusEnum, StatusLabel } from '@/enums';
 
 import { get as getSpecialtyApi } from '@/services/api/地方特色菜管理/地方特色菜管理';
 import UploadList from '@/components/Upload';
+import RegionSelect from '@/components/RegionSelect';
 
 const specialtyApi = getSpecialtyApi();
 
@@ -22,7 +23,7 @@ const LocalDishes: React.FC = () => {
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, attachments: record.attachments || [] });
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
     } else {
       form.resetFields();
     }
@@ -31,8 +32,8 @@ const LocalDishes: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, attachments: attachmentFiles || [] };
+    const { attachments: attachmentFiles, region, ...rest } = values;
+    const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await specialtyApi.editSave2({ ...params, specialtyId: currentRecord.specialtyId } as any);
@@ -127,14 +128,8 @@ const LocalDishes: React.FC = () => {
           <Form.Item name="specialtyDesc" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
-          <Form.Item name="province" label="省份">
-            <Input placeholder="请输入省份" />
-          </Form.Item>
-          <Form.Item name="city" label="城市">
-            <Input placeholder="请输入城市" />
-          </Form.Item>
-          <Form.Item name="district" label="区县">
-            <Input placeholder="请输入区县" />
+          <Form.Item name="region" label="地区">
+            <RegionSelect />
           </Form.Item>
           <Form.Item name="price" label="价格">
             <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />

@@ -9,6 +9,7 @@ import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
 import { get as getCarApi } from '@/services/api/包车管理/包车管理';
 import UploadList from '@/components/Upload';
+import RegionSelect from '@/components/RegionSelect';
 
 const carApi = getCarApi();
 
@@ -42,7 +43,7 @@ const CharteredCar: React.FC = () => {
           .filter(a => a.purpose === purpose)
           .map(a => ({ url: a.url, name: a.name }));
       }
-      form.setFieldsValue({ ...record, ...fieldValues });
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, ...fieldValues });
     } else {
       form.resetFields();
     }
@@ -52,13 +53,15 @@ const CharteredCar: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const rest = { ...values };
+    const { region } = rest;
+    delete rest.region;
     // 从各上传字段收集附件，按 purpose 合并
     const allAttachments = CAR_UPLOAD_FIELDS.flatMap(({ name, purpose }) => {
       const files = rest[name] || [];
       delete rest[name];
       return toAttachments(files, purpose);
     });
-    const params = { ...rest, attachments: allAttachments };
+    const params = { ...rest, ...region, attachments: allAttachments };
     try {
       if (currentRecord) {
         await carApi.editSave7({ ...params, carId: currentRecord.carId } as any);
@@ -173,6 +176,9 @@ const CharteredCar: React.FC = () => {
           </Form.Item>
           <Form.Item name="introduction" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
+          </Form.Item>
+          <Form.Item name="region" label="地区">
+            <RegionSelect />
           </Form.Item>
           <Form.Item name="recommendRating" label="评分">
             <Select placeholder="请选择" options={PhotographyRecommendRatingOptions} />

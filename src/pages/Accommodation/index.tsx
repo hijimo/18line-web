@@ -9,6 +9,7 @@ import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
 import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
 import UploadList from '@/components/Upload';
+import RegionSelect from '@/components/RegionSelect';
 
 const stayApi = getStayApi();
 
@@ -41,7 +42,7 @@ const Accommodation: React.FC = () => {
           .filter(a => a.purpose === purpose)
           .map(a => ({ url: a.url, name: a.name }));
       }
-      form.setFieldsValue({ ...record, ...fieldValues });
+      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, ...fieldValues });
     } else {
       form.resetFields();
     }
@@ -51,13 +52,15 @@ const Accommodation: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const rest = { ...values };
+    const { region } = rest;
+    delete rest.region;
     // 从各上传字段收集附件，按 purpose 合并
     const allAttachments = ACCOMMODATION_UPLOAD_FIELDS.flatMap(({ name, purpose }) => {
       const files = rest[name] || [];
       delete rest[name];
       return toAttachments(files, purpose);
     });
-    const params = { ...rest, attachments: allAttachments };
+    const params = { ...rest, ...region, attachments: allAttachments };
     try {
       if (currentRecord) {
         await stayApi.editSave9({ ...params, accommodationId: currentRecord.accommodationId } as any);
@@ -154,6 +157,9 @@ const Accommodation: React.FC = () => {
           </Form.Item>
           <Form.Item name="address" label="地址">
             <Input placeholder="请输入" />
+          </Form.Item>
+          <Form.Item name="region" label="地区">
+            <RegionSelect />
           </Form.Item>
           <Form.Item name="accommodationType" label="类型">
             <Select placeholder="请选择" options={TYPE_OPTIONS} />
