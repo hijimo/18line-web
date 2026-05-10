@@ -9,7 +9,7 @@ const api = getAttractionApi();
 export const AttractionSelect: React.FC<SelectProps> = (props) => {
   const { data, isLoading } = useQuery({
     queryKey: ['attractions-select'],
-    queryFn: () => api.list7({ pageNum: 1, pageSize: 500 } as any),
+    queryFn: () => api.list8({ pageNum: 1, pageSize: 500 } as any),
     staleTime: 30 * 1000,
   });
   const options = useMemo(() => ((data as any)?.rows || []).map((r: any) => ({ value: String(r.attractionId), label: r.attractionName })), [data]);

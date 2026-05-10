@@ -17,7 +17,7 @@ const Tourists: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(touristApi.list11 as any);
+  const request = useTableRequest(touristApi.list17 as any);
 
   const openEdit = (record: any) => {
     setCurrentRecord(record);
@@ -44,7 +44,7 @@ const Tourists: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await touristApi.remove12({ touristIds: String(record.touristId) });
+      await touristApi.remove13({ touristIds: String(record.touristId) });
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

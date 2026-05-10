@@ -30,13 +30,13 @@ const Template: React.FC = () => {
   const [form] = Form.useForm();
   const [generateForm] = Form.useForm();
 
-  const request = useTableRequest(templateApi.list12 as any);
+  const request = useTableRequest(templateApi.list18 as any);
 
   const openDrawer = async (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
       try {
-        const res = await templateApi.getInfo3({ templateId: record.templateId });
+        const res = await templateApi.getInfo8({ templateId: record.templateId });
         const detail = (res as any)?.data || record;
         form.setFieldsValue({
           ...detail,
@@ -75,7 +75,7 @@ const Template: React.FC = () => {
         await templateApi.edit13({ ...params, templateId: currentRecord.templateId } as any);
         message.success('编辑成功');
       } else {
-        await templateApi.add1(params as any);
+        await templateApi.add2(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);

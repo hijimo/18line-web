@@ -24,7 +24,7 @@ const Dishes: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(dishApi.list3 as any);
+  const request = useTableRequest(dishApi.list4 as any);
   const darkLevelMap = useDictMap('travel_dark_level');
 
   const openDrawer = (record?: any) => {
@@ -43,10 +43,10 @@ const Dishes: React.FC = () => {
     const params = { ...rest, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await dishApi.editSave3({ ...params, dishId: currentRecord.dishId } as any);
+        await dishApi.editSave4({ ...params, dishId: currentRecord.dishId } as any);
         message.success('编辑成功');
       } else {
-        await dishApi.addSave3(params as any);
+        await dishApi.addSave5(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -59,7 +59,7 @@ const Dishes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await dishApi.editSave3({ dishId: record.dishId, status: newStatus } as any);
+      await dishApi.editSave4({ dishId: record.dishId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -69,7 +69,7 @@ const Dishes: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await dishApi.remove5({ ids: record.dishId } as any);
+      await dishApi.remove6({ ids: record.dishId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

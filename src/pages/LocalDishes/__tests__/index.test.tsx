@@ -12,8 +12,8 @@ vi.mock('@/services/api/地方特色菜管理/地方特色菜管理', () => ({
       code: 200,
       total: 2,
       rows: [
-        { specialtyId: 1, dishName: '地方特色菜A', price: 38, specialStar: 5, status: '0', createTime: '2024-01-01' },
-        { specialtyId: 2, dishName: '地方特色菜B', price: 25, specialStar: 4, status: '1', createTime: '2024-02-01' },
+        { specialtyId: 1, specialtyName: '地方特色菜A', price: 38, specialStar: 5, province: '四川省', city: '成都市', status: '0', createTime: '2024-01-01' },
+        { specialtyId: 2, specialtyName: '地方特色菜B', price: 25, specialStar: 4, province: '湖南省', city: '长沙市', status: '1', createTime: '2024-02-01' },
       ],
     }),
     addSave3: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),

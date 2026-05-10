@@ -32,7 +32,7 @@ const DictType: React.FC = () => {
   const [currentDataRecord, setCurrentDataRecord] = useState<any>(null);
   const [dataForm] = Form.useForm();
 
-  const request = useTableRequest(dictTypeApi.list20 as any);
+  const request = useTableRequest(dictTypeApi.list26 as any);
 
   // ========== 字典类型 CRUD ==========
 
@@ -53,7 +53,7 @@ const DictType: React.FC = () => {
         await dictTypeApi.edit8({ ...values, dictId: currentRecord.dictId } as any);
         message.success('编辑成功');
       } else {
-        await dictTypeApi.add8(values as any);
+        await dictTypeApi.add9(values as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -65,7 +65,7 @@ const DictType: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await dictTypeApi.remove19({ dictIds: record.dictId } as any);
+      await dictTypeApi.remove20({ dictIds: record.dictId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -82,7 +82,7 @@ const DictType: React.FC = () => {
     setTimeout(() => dataActionRef.current?.reload(), 100);
   };
 
-  const dataRequest = useTableRequest(dictDataApi.list21 as any, undefined, () => ({
+  const dataRequest = useTableRequest(dictDataApi.list27 as any, undefined, () => ({
     dictType: currentDictType,
   }));
 
@@ -106,7 +106,7 @@ const DictType: React.FC = () => {
         await dictDataApi.edit9({ ...values, dictCode: currentDataRecord.dictCode } as any);
         message.success('编辑成功');
       } else {
-        await dictDataApi.add9(values as any);
+        await dictDataApi.add10(values as any);
         message.success('新增成功');
       }
       setDataEditOpen(false);
@@ -118,7 +118,7 @@ const DictType: React.FC = () => {
 
   const handleDataDelete = async (record: any) => {
     try {
-      await dictDataApi.remove20({ dictCodes: record.dictCode } as any);
+      await dictDataApi.remove21({ dictCodes: record.dictCode } as any);
       message.success('删除成功');
       dataActionRef.current?.reload();
     } catch {

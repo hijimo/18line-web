@@ -29,7 +29,7 @@ const DishesPanel: React.FC<{ diningId: number }> = ({ diningId }) => {
   const [form] = Form.useForm();
   const darkLevelMap = useDictMap('travel_dark_level');
 
-  const request = useTableRequest(dishApi.list3 as any, { diningId });
+  const request = useTableRequest(dishApi.list4 as any, { diningId });
 
   const openDrawer = (record?: any) => {
     setCurrentDish(record || null);
@@ -47,10 +47,10 @@ const DishesPanel: React.FC<{ diningId: number }> = ({ diningId }) => {
     const params = { ...rest, diningId, attachments: attachmentFiles || [] };
     try {
       if (currentDish) {
-        await dishApi.editSave3({ ...params, dishId: currentDish.dishId } as any);
+        await dishApi.editSave4({ ...params, dishId: currentDish.dishId } as any);
         message.success('编辑成功');
       } else {
-        await dishApi.addSave4(params as any);
+        await dishApi.addSave5(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -63,7 +63,7 @@ const DishesPanel: React.FC<{ diningId: number }> = ({ diningId }) => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await dishApi.editSave3({ dishId: record.dishId, status: newStatus } as any);
+      await dishApi.editSave4({ dishId: record.dishId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -73,7 +73,7 @@ const DishesPanel: React.FC<{ diningId: number }> = ({ diningId }) => {
 
   const handleDelete = async (record: any) => {
     try {
-      await dishApi.remove5({ ids: record.dishId } as any);
+      await dishApi.remove6({ ids: record.dishId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -178,7 +178,7 @@ const Dining: React.FC = () => {
   const [currentDiningId, setCurrentDiningId] = useState<number | null>(null);
   const [currentDiningName, setCurrentDiningName] = useState('');
 
-  const request = useTableRequest(diningApi.list4 as any);
+  const request = useTableRequest(diningApi.list5 as any);
   const diningNatureMap = useDictMap('travel_dining_nature');
 
   const openDrawer = (record?: any) => {
@@ -197,10 +197,10 @@ const Dining: React.FC = () => {
     const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await diningApi.editSave4({ ...params, diningId: currentRecord.diningId } as any);
+        await diningApi.editSave5({ ...params, diningId: currentRecord.diningId } as any);
         message.success('编辑成功');
       } else {
-        await diningApi.addSave5(params as any);
+        await diningApi.addSave6(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -213,7 +213,7 @@ const Dining: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await diningApi.editSave4({ diningId: record.diningId, status: newStatus } as any);
+      await diningApi.editSave5({ diningId: record.diningId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -223,7 +223,7 @@ const Dining: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await diningApi.remove6({ ids: record.diningId } as any);
+      await diningApi.remove7({ ids: record.diningId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

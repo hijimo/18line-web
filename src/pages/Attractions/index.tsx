@@ -24,7 +24,7 @@ const Attractions: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(attractionApi.list7 as any);
+  const request = useTableRequest(attractionApi.list8 as any);
   const leisureMap = useDictMap('travel_leisure');
 
   const openDrawer = (record?: any) => {
@@ -54,10 +54,10 @@ const Attractions: React.FC = () => {
     };
     try {
       if (currentRecord) {
-        await attractionApi.editSave7({ ...params, attractionId: currentRecord.attractionId } as any);
+        await attractionApi.editSave8({ ...params, attractionId: currentRecord.attractionId } as any);
         message.success('编辑成功');
       } else {
-        await attractionApi.addSave7(params as any);
+        await attractionApi.addSave9(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -70,7 +70,7 @@ const Attractions: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await attractionApi.editSave7({ attractionId: record.attractionId, status: newStatus } as any);
+      await attractionApi.editSave8({ attractionId: record.attractionId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -80,7 +80,7 @@ const Attractions: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await attractionApi.remove9({ ids: record.attractionId } as any);
+      await attractionApi.remove10({ ids: record.attractionId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

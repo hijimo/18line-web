@@ -29,13 +29,13 @@ const CheckinPoints: React.FC = () => {
   const [form] = Form.useForm();
   const [attractionOptions, setAttractionOptions] = useState<any[]>([]);
 
-  const request = useTableRequest(checkinApi.list5 as any);
+  const request = useTableRequest(checkinApi.list6 as any);
   const leisureMap = useDictMap('travel_leisure');
 
   const openDrawer = async (record?: any) => {
     setCurrentRecord(record || null);
     try {
-      const res = await attractionApi.list7({ pageNum: 1, pageSize: 1000 } as any);
+      const res = await attractionApi.list8({ pageNum: 1, pageSize: 1000 } as any);
       setAttractionOptions((res as any).rows || []);
     } catch {}
     if (record) {
@@ -55,10 +55,10 @@ const CheckinPoints: React.FC = () => {
     const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', badFactors: Array.isArray(rest.badFactors) ? rest.badFactors.join(',') : rest.badFactors, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await checkinApi.editSave5({ ...params, checkinId: currentRecord.checkinId } as any);
+        await checkinApi.editSave6({ ...params, checkinId: currentRecord.checkinId } as any);
         message.success('编辑成功');
       } else {
-        await checkinApi.addSave5(params as any);
+        await checkinApi.addSave7(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -71,7 +71,7 @@ const CheckinPoints: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await checkinApi.editSave5({ checkinId: record.checkinId, status: newStatus } as any);
+      await checkinApi.editSave6({ checkinId: record.checkinId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -81,7 +81,7 @@ const CheckinPoints: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await checkinApi.remove7({ ids: record.checkinId } as any);
+      await checkinApi.remove8({ ids: record.checkinId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

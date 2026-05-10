@@ -17,7 +17,7 @@ export const LineSelect: React.FC<SelectProps> = (selectProps) => {
   const { data, isLoading, error } = useQuery({
     queryKey: ['lines', debouncedKeyword],
     queryFn: () =>
-      lineApi.list2({
+      lineApi.list3({
         line: { lineName: debouncedKeyword || '' },
         pageNo: 1,
         pageSize: 200,

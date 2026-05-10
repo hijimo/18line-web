@@ -61,7 +61,7 @@ const Photography: React.FC = () => {
         await photographyApi.editSave1({ ...params, photographyId: currentRecord.photographyId } as any);
         message.success('编辑成功');
       } else {
-        await photographyApi.addSave1(params as any);
+        await photographyApi.addSave2(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);

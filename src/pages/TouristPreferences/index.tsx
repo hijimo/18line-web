@@ -19,7 +19,7 @@ const TouristPreferences: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(preferenceApi.list13 as any);
+  const request = useTableRequest(preferenceApi.list19 as any);
   const staminaMap = useDictMap('travel_stamina');
   const travelLikeMap = useDictMap('travel_tourist_like');
   const foodLikeMap = useDictMap('travel_food_like');
@@ -54,7 +54,7 @@ const TouristPreferences: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await preferenceApi.remove13({ preferenceIds: String(record.preferenceId) });
+      await preferenceApi.remove14({ preferenceIds: String(record.preferenceId) });
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

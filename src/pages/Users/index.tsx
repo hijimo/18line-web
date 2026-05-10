@@ -22,7 +22,7 @@ const Users: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(userApi.list15 as any);
+  const request = useTableRequest(userApi.list21 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -53,7 +53,7 @@ const Users: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await userApi.remove14({ userIds: [record.userId] });
+      await userApi.remove15({ userIds: [record.userId] });
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

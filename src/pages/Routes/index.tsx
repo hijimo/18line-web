@@ -18,7 +18,7 @@ const Routes: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(routeApi.list2 as any);
+  const request = useTableRequest(routeApi.list3 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -36,10 +36,10 @@ const Routes: React.FC = () => {
     const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await routeApi.editSave2({ ...params, lineId: currentRecord.lineId } as any);
+        await routeApi.editSave3({ ...params, lineId: currentRecord.lineId } as any);
         message.success('编辑成功');
       } else {
-        await routeApi.addSave2(params as any);
+        await routeApi.addSave4(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -52,7 +52,7 @@ const Routes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await routeApi.editSave2({ lineId: record.lineId, status: newStatus } as any);
+      await routeApi.editSave3({ lineId: record.lineId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -62,7 +62,7 @@ const Routes: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await routeApi.remove4({ ids: record.lineId } as any);
+      await routeApi.remove5({ ids: record.lineId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

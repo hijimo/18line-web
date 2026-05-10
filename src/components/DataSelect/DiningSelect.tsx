@@ -9,7 +9,7 @@ const api = getDiningApi();
 export const DiningSelect: React.FC<SelectProps> = (props) => {
   const { data, isLoading } = useQuery({
     queryKey: ['dining-select'],
-    queryFn: () => api.list4({ pageNum: 1, pageSize: 500 } as any),
+    queryFn: () => api.list5({ pageNum: 1, pageSize: 500 } as any),
     staleTime: 30 * 1000,
   });
   const options = useMemo(() => ((data as any)?.rows || []).map((r: any) => ({ value: r.diningId, label: r.diningName })), [data]);

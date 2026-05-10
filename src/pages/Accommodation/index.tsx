@@ -29,7 +29,7 @@ const Accommodation: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(stayApi.list8 as any);
+  const request = useTableRequest(stayApi.list9 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -60,10 +60,10 @@ const Accommodation: React.FC = () => {
     const params = { ...rest, attachments: allAttachments };
     try {
       if (currentRecord) {
-        await stayApi.editSave8({ ...params, accommodationId: currentRecord.accommodationId } as any);
+        await stayApi.editSave9({ ...params, accommodationId: currentRecord.accommodationId } as any);
         message.success('编辑成功');
       } else {
-        await stayApi.addSave8(params as any);
+        await stayApi.addSave10(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -76,7 +76,7 @@ const Accommodation: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await stayApi.editSave8({ accommodationId: record.accommodationId, status: newStatus } as any);
+      await stayApi.editSave9({ accommodationId: record.accommodationId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -86,7 +86,7 @@ const Accommodation: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await stayApi.remove11({ ids: record.accommodationId } as any);
+      await stayApi.remove12({ ids: record.accommodationId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

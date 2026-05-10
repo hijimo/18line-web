@@ -32,7 +32,7 @@ const LocalDishes: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const { attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, dishTag: Array.isArray(rest.dishTag) ? rest.dishTag.join(',') : rest.dishTag, attachments: attachmentFiles || [] };
+    const params = { ...rest, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
         await specialtyApi.editSave2({ ...params, specialtyId: currentRecord.specialtyId } as any);
@@ -71,7 +71,9 @@ const LocalDishes: React.FC = () => {
 
   const columns = [
     key,
-    { title: '名称', dataIndex: 'dishName', ellipsis: true },
+    { title: '名称', dataIndex: 'specialtyName', ellipsis: true },
+    { title: '省份', dataIndex: 'province', ellipsis: true, search: false },
+    { title: '城市', dataIndex: 'city', ellipsis: true, search: false },
     { title: '价格（元）', dataIndex: 'price', search: false },
     { title: '推荐指数', dataIndex: 'specialStar', search: false, render: (v: number) => SpecialStarOptions.find(o => o.value === v)?.label ?? '--' },
     {
@@ -119,20 +121,26 @@ const LocalDishes: React.FC = () => {
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="dishName" label="特色菜名称" rules={[{ required: true, message: '请输入特色菜名称' }]}>
+          <Form.Item name="specialtyName" label="特色菜名称" rules={[{ required: true, message: '请输入特色菜名称' }]}>
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item name="dishDesc" label="描述">
+          <Form.Item name="specialtyDesc" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
+          </Form.Item>
+          <Form.Item name="province" label="省份">
+            <Input placeholder="请输入省份" />
+          </Form.Item>
+          <Form.Item name="city" label="城市">
+            <Input placeholder="请输入城市" />
+          </Form.Item>
+          <Form.Item name="district" label="区县">
+            <Input placeholder="请输入区县" />
           </Form.Item>
           <Form.Item name="price" label="价格">
             <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="specialStar" label="推荐指数" initialValue={4}>
             <Select placeholder="请选择" options={SpecialStarOptions} />
-          </Form.Item>
-          <Form.Item name="dishTag" label="菜品标签">
-            <Input placeholder="菜品" />
           </Form.Item>
           <Form.Item name="attachments" label="附件" valuePropName="fileList">
             <UploadList

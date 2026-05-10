@@ -55,7 +55,7 @@ export default defineConfig(({ mode }) => {
         '/api/': {
           target: 'http://8.136.229.208:8080',
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ''),
+          
         },
       },
     },

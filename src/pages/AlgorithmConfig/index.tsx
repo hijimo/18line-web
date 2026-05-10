@@ -19,7 +19,7 @@ const AlgorithmConfig: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(algoApi.list14 as any);
+  const request = useTableRequest(algoApi.list20 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -40,7 +40,7 @@ const AlgorithmConfig: React.FC = () => {
         await algoApi.edit14({ ...params, configId: currentRecord.configId } as any);
         message.success('编辑成功');
       } else {
-        await algoApi.add2(params as any);
+        await algoApi.add3(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -63,7 +63,7 @@ const AlgorithmConfig: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await algoApi.remove10({ ids: record.configId } as any);
+      await algoApi.remove11({ ids: record.configId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

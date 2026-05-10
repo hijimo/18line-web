@@ -9,7 +9,7 @@ const api = getCarApi();
 export const CarSelect: React.FC<SelectProps> = (props) => {
   const { data, isLoading } = useQuery({
     queryKey: ['car-select'],
-    queryFn: () => api.list6({ pageNum: 1, pageSize: 500 } as any),
+    queryFn: () => api.list7({ pageNum: 1, pageSize: 500 } as any),
     staleTime: 30 * 1000,
   });
   const options = useMemo(() => ((data as any)?.rows || []).map((r: any) => ({ value: r.carId, label: r.nickname })), [data]);

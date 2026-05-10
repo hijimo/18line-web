@@ -15,7 +15,7 @@ const RegionSelect: React.FC<RegionSelectProps> = ({ value, onChange }) => {
   const [districtOptions, setDistrictOptions] = useState<any[]>([]);
 
   useEffect(() => {
-    regionApi.provinceList().then((res: any) => {
+    regionApi.provinceList1().then((res: any) => {
       if (res.code === 200) {
         setProvinceOptions(res.data || []);
       }
@@ -27,7 +27,7 @@ const RegionSelect: React.FC<RegionSelectProps> = ({ value, onChange }) => {
     setDistrictOptions([]);
     onChange?.({ province: regionCode, city: undefined, district: undefined });
     
-    regionApi.cityList({ provinceCode: regionCode } as any).then((res: any) => {
+    regionApi.cityList1({ provinceCode: regionCode } as any).then((res: any) => {
       if (res.code === 200) {
         setCityOptions(res.data || []);
       }
@@ -38,7 +38,7 @@ const RegionSelect: React.FC<RegionSelectProps> = ({ value, onChange }) => {
   const handleCityChange = (cityCode: string) => {
     setDistrictOptions([]);
     onChange?.({ province: value?.province, city: cityCode, district: undefined });
-      regionApi.districtList({ cityCode: cityCode} as any).then((res: any) => {
+      regionApi.districtList1({ cityCode: cityCode} as any).then((res: any) => {
         if (res.code === 200) {
           setDistrictOptions(res.data || []);
         }
@@ -55,7 +55,7 @@ const RegionSelect: React.FC<RegionSelectProps> = ({ value, onChange }) => {
     if (value?.province && provinceOptions.length > 0) {
       const province = provinceOptions.find((p: any) => p.regionCode === value.province);
       if (province) {
-        regionApi.cityList({ provinceCode: province.regionCode } as any).then((res: any) => {
+        regionApi.cityList1({ provinceCode: province.regionCode } as any).then((res: any) => {
           if (res.code === 200) {
             setCityOptions(res.data || []);
           }
@@ -68,7 +68,7 @@ const RegionSelect: React.FC<RegionSelectProps> = ({ value, onChange }) => {
     if (value?.city && cityOptions.length > 0) {
       const city = cityOptions.find((c: any) => c.regionCode === value.city);
       if (city) {
-        regionApi.districtList({ cityCode: city.regionCode } as any).then((res: any) => {
+        regionApi.districtList1({ cityCode: city.regionCode } as any).then((res: any) => {
           if (res.code === 200) {
             setDistrictOptions(res.data || []);
           }

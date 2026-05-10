@@ -30,7 +30,7 @@ const CharteredCar: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(carApi.list6 as any);
+  const request = useTableRequest(carApi.list7 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
@@ -61,10 +61,10 @@ const CharteredCar: React.FC = () => {
     const params = { ...rest, attachments: allAttachments };
     try {
       if (currentRecord) {
-        await carApi.editSave6({ ...params, carId: currentRecord.carId } as any);
+        await carApi.editSave7({ ...params, carId: currentRecord.carId } as any);
         message.success('编辑成功');
       } else {
-        await carApi.addSave6(params as any);
+        await carApi.addSave8(params as any);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -77,7 +77,7 @@ const CharteredCar: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await carApi.editSave6({ carId: record.carId, status: newStatus } as any);
+      await carApi.editSave7({ carId: record.carId, status: newStatus } as any);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -87,7 +87,7 @@ const CharteredCar: React.FC = () => {
 
   const handleDelete = async (record: any) => {
     try {
-      await carApi.remove8({ ids: record.carId } as any);
+      await carApi.remove9({ ids: record.carId } as any);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {

@@ -9,7 +9,7 @@ const api = getAccommodationApi();
 export const AccommodationSelect: React.FC<SelectProps> = (props) => {
   const { data, isLoading } = useQuery({
     queryKey: ['accommodation-select'],
-    queryFn: () => api.list8({ pageNum: 1, pageSize: 500 } as any),
+    queryFn: () => api.list9({ pageNum: 1, pageSize: 500 } as any),
     staleTime: 30 * 1000,
   });
   const options = useMemo(() => ((data as any)?.rows || []).map((r: any) => ({ value: r.accommodationId, label: r.accommodationName })), [data]);
