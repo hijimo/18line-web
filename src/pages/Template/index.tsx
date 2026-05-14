@@ -7,7 +7,7 @@ import { key, option } from '@/configurify/columns/baseColumns';
 import { StaminaLabel, YesNoLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getTemplateApi } from '@/services/api/行程模板管理/行程模板管理';
 import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
+import RegionFormItem from '@/components/RegionFormItem';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import AttractionSelect from '@/components/DataSelect/AttractionSelect';
 import AccommodationSelect from '@/components/DataSelect/AccommodationSelect';
@@ -184,9 +184,7 @@ const Template: React.FC = () => {
           <Form.Item name="templateDesc" label="模板描述">
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
-          <Form.Item name="region" label="地区">
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem />
           <Form.Item name="baseDays" label="基准天数">
             <InputNumber placeholder="请输入" addonAfter="天" style={{ width: '100%' }} />
           </Form.Item>
@@ -290,9 +288,7 @@ const Template: React.FC = () => {
         }
       >
         <Form form={generateForm} layout="vertical">
-          <Form.Item name="region" label="地区" rules={[{ required: true, message: '请选择地区' }]}>
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem required />
           <Form.Item name="days" label="天数" rules={[{ required: true, message: '请输入天数' }]}>
             <InputNumber placeholder="请输入" addonAfter="天" min={1} style={{ width: '100%' }} />
           </Form.Item>

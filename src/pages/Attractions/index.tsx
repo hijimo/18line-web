@@ -6,7 +6,7 @@ import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
 import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
+import RegionFormItem from '@/components/RegionFormItem';
 import LineSelect from '@/components/DataSelect/LineSelect';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
@@ -95,7 +95,7 @@ const Attractions: React.FC = () => {
     { title: '休闲指数', dataIndex: 'leisureRating', search: false, render: (_: any, r: any) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--' },
     { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}小时` : '--' },
     { title: '地点', dataIndex: 'location', search: false },
-    { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{FamilyFriendlyLabel[v]}</Tag> },
+    { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel] ?? '--'}</Tag> },
     { title: '经典指数', dataIndex: 'classicRating', search: false, render: (v: number) => v ? `${v}星` : '--' },
     { title: '门票', dataIndex: 'ticketPriceA', search: false, render: (v: number) => v ? `${v}元` : '--' },
     { title: '打卡点', dataIndex: 'checkinCount', search: false },
@@ -151,9 +151,7 @@ const Attractions: React.FC = () => {
           <Form.Item name="attractionShortName" label="简称">
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item name="region" label="地区">
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem />
           <Form.Item name="lineIds" label="所属线路">
             <LineSelect mode="multiple" placeholder="请选择线路" />
           </Form.Item>
@@ -182,6 +180,9 @@ const Attractions: React.FC = () => {
           </Form.Item>
           <Form.Item name="visitDuration" label="游玩时间">
             <InputNumber placeholder="请输入" addonAfter="小时" style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="bestViewingTime" label="最佳观景时间点">
+            <Input placeholder="例如 06:30、日落前后、19:00-20:00" />
           </Form.Item>
           <Form.Item name="badFactors" label="不宜出行因素">
             <Checkbox.Group options={badFactorsOptions} />

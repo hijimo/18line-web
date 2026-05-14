@@ -9,7 +9,7 @@ import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
 import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
 import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
+import RegionFormItem from '@/components/RegionFormItem';
 
 const stayApi = getStayApi();
 
@@ -102,10 +102,10 @@ const Accommodation: React.FC = () => {
     { title: '名称', dataIndex: 'accommodationName', ellipsis: true },
     { title: '地址', dataIndex: 'address', search: false, ellipsis: true },
     { title: '类型', dataIndex: 'accommodationType', valueEnum: AccommodationTypeLabel },
-    { title: '早餐', dataIndex: 'breakfastIncluded', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{BreakfastIncludedLabel[v] ?? '--'}</Tag> },
+    { title: '早餐', dataIndex: 'breakfastIncluded', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{BreakfastIncludedLabel[v as keyof typeof BreakfastIncludedLabel] ?? '--'}</Tag> },
     { title: '联系电话', dataIndex: 'contactPhone', search: false },
     { title: '地点', dataIndex: 'location', search: false },
-    { title: '宠物', dataIndex: 'petFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'green' : undefined}>{PetFriendlyLabel[v] ?? '--'}</Tag> },
+    { title: '宠物', dataIndex: 'petFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'green' : undefined}>{PetFriendlyLabel[v as keyof typeof PetFriendlyLabel] ?? '--'}</Tag> },
     { title: '价格区间', dataIndex: 'priceRange', search: false },
     {
       ...option,
@@ -158,9 +158,7 @@ const Accommodation: React.FC = () => {
           <Form.Item name="address" label="地址">
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item name="region" label="地区">
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem />
           <Form.Item name="accommodationType" label="类型">
             <Select placeholder="请选择" options={TYPE_OPTIONS} />
           </Form.Item>

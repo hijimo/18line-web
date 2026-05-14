@@ -9,7 +9,7 @@ import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
 import { get as getCarApi } from '@/services/api/包车管理/包车管理';
 import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
+import RegionFormItem from '@/components/RegionFormItem';
 
 const carApi = getCarApi();
 
@@ -177,9 +177,7 @@ const CharteredCar: React.FC = () => {
           <Form.Item name="introduction" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
-          <Form.Item name="region" label="地区">
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem />
           <Form.Item name="recommendRating" label="评分">
             <Select placeholder="请选择" options={PhotographyRecommendRatingOptions} />
           </Form.Item>

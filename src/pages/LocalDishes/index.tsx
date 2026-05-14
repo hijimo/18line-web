@@ -8,7 +8,7 @@ import { SpecialStarOptions, StatusEnum, StatusLabel } from '@/enums';
 
 import { get as getSpecialtyApi } from '@/services/api/地方特色菜管理/地方特色菜管理';
 import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
+import RegionFormItem from '@/components/RegionFormItem';
 
 const specialtyApi = getSpecialtyApi();
 
@@ -128,9 +128,7 @@ const LocalDishes: React.FC = () => {
           <Form.Item name="specialtyDesc" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
-          <Form.Item name="region" label="地区">
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem />
           <Form.Item name="price" label="价格">
             <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
           </Form.Item>

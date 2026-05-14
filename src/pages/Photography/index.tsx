@@ -9,12 +9,12 @@ import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
 import { get as getPhotographyApi } from '@/services/api/跟拍管理/跟拍管理';
 import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
+import RegionFormItem from '@/components/RegionFormItem';
 
 const photographyApi = getPhotographyApi();
 
 const genderOptions = Object.entries(GenderLabel).map(([value, label]) => ({ label, value }));
-const recommendRatingValueEnum = PhotographyRecommendRatingOptions.reduce((acc, opt) => { acc[opt.value] = { text: opt.label }; return acc; }, {} as Record<number, string>);
+const recommendRatingValueEnum = PhotographyRecommendRatingOptions.reduce((acc, opt) => { acc[opt.value] = { text: opt.label }; return acc; }, {} as Record<number, { text: string }>);
 
 /** 跟拍服务的上传分类配置 */
 const PHOTOGRAPHY_UPLOAD_FIELDS: { name: string; label: string; purpose: AttachmentPurpose }[] = [
@@ -167,9 +167,7 @@ const Photography: React.FC = () => {
           <Form.Item name="introduction" label="描述">
             <Input.TextArea placeholder="请输入" rows={3} />
           </Form.Item>
-          <Form.Item name="region" label="地区">
-            <RegionSelect />
-          </Form.Item>
+          <RegionFormItem />
           <Form.Item name="recommendRating" label="专业评分">
             <Select placeholder="请选择" options={PhotographyRecommendRatingOptions} />
           </Form.Item>
