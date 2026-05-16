@@ -10,6 +10,7 @@ import { get as getDiningApi } from '@/services/api/餐饮管理/餐饮管理';
 import { get as getDishApi } from '@/services/api/菜品管理/菜品管理';
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
+import CoordinateInput from '@/components/CoordinateInput';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
 
@@ -308,14 +309,7 @@ const Dining: React.FC = () => {
           <Form.Item name="address" label="地址">
             <Input placeholder="请输入" />
           </Form.Item>
-          <Space style={{ width: '100%' }} size="middle">
-            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-          </Space>
+          <CoordinateInput />
           <Form.Item name="petFriendly" label="宠物友好">
             <Select placeholder="请选择" options={YES_NO} />
           </Form.Item>

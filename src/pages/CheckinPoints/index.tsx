@@ -11,6 +11,7 @@ import { FamilyFriendlyLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFacto
 
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
+import CoordinateInput from '@/components/CoordinateInput';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
 
@@ -97,7 +98,7 @@ const CheckinPoints: React.FC = () => {
     { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}分钟` : '--' },
     { title: '地点', dataIndex: 'location', search: false },
     { title: '是否全盲', dataIndex: 'blindStatus', search: false, valueEnum: Object.fromEntries(Object.entries(BlindStatusLabel).map(([k, v]) => [k, { text: v }])) },
-    { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => v === '1' ? <Tag color="blue">{FamilyFriendlyLabel[v]}</Tag> : <Tag>{FamilyFriendlyLabel[v]}</Tag> },
+    { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => v === '1' ? <Tag color="blue">{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel]}</Tag> : <Tag>{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel]}</Tag> },
     { title: '经典指数', dataIndex: 'classicRating', search: false, valueEnum: classicRatingValueEnum },
     { title: '门票(成人)', dataIndex: 'ticketPriceA', search: false, render: (v: number) => v ? `${v}元` : '--' },
     { title: '门票(儿童)', dataIndex: 'ticketPriceC', search: false, render: (v: number) => v ? `${v}元` : '--' },
@@ -164,14 +165,7 @@ const CheckinPoints: React.FC = () => {
           <Form.Item name="region" label="地区">
             <RegionSelect />
           </Form.Item>
-          <Space style={{ width: '100%' }} size="middle">
-            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-          </Space>
+          <CoordinateInput />
           <Form.Item name="blindStatus" label="是否全盲">
             <Select placeholder="请选择" options={blindStatusOptions} />
           </Form.Item>

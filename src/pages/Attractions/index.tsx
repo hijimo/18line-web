@@ -7,6 +7,7 @@ import { key, option } from '@/configurify/columns/baseColumns';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
 import UploadList from '@/components/Upload';
 import RegionFormItem from '@/components/RegionFormItem';
+import CoordinateInput from '@/components/CoordinateInput';
 import LineSelect from '@/components/DataSelect/LineSelect';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
@@ -155,14 +156,7 @@ const Attractions: React.FC = () => {
           <Form.Item name="lineIds" label="所属线路">
             <LineSelect mode="multiple" placeholder="请选择线路" />
           </Form.Item>
-          <Space style={{ width: '100%' }} size="middle">
-            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-          </Space>
+          <CoordinateInput />
           <Form.Item name="blindStatus" label="是否全盲">
             <Select placeholder="请选择" options={blindStatusOptions} />
           </Form.Item>

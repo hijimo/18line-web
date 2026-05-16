@@ -10,6 +10,7 @@ import { toAttachments } from '@/types/common';
 import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
 import UploadList from '@/components/Upload';
 import RegionFormItem from '@/components/RegionFormItem';
+import CoordinateInput from '@/components/CoordinateInput';
 
 const stayApi = getStayApi();
 
@@ -182,14 +183,7 @@ const Accommodation: React.FC = () => {
               <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
             </Form.Item>
           </Space>
-          <Space style={{ width: '100%' }} size="middle">
-            <Form.Item name="longitude" label="经度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-            <Form.Item name="latitude" label="纬度" style={{ width: '50%' }}>
-              <InputNumber placeholder="请输入" style={{ width: '100%' }} />
-            </Form.Item>
-          </Space>
+          <CoordinateInput />
           {ACCOMMODATION_UPLOAD_FIELDS.map(({ name, label, purpose }) => (
             <Form.Item key={name} name={name} label={label} valuePropName="fileList">
               <UploadList

@@ -1,0 +1,62 @@
+.coordinateField {
+  margin-bottom: 24px;
+}
+
+.label {
+  color: rgba(0, 0, 0, 0.88);
+  font-size: 14px;
+  line-height: 1.5715;
+  margin-bottom: 8px;
+}
+
+.compact {
+  display: flex;
+  width: 100%;
+}
+
+.item {
+  flex: 1 1 0;
+  margin-bottom: 0;
+}
+
+.item :global(.ant-form-item-control-input) {
+  min-height: auto;
+}
+
+.item :global(.ant-input) {
+  text-align: center;
+}
+
+.longitude :global(.ant-input) {
+  border-start-end-radius: 0;
+  border-end-end-radius: 0;
+}
+
+.latitude :global(.ant-input) {
+  border-start-start-radius: 0;
+  border-end-start-radius: 0;
+}
+
+.separator {
+  align-items: center;
+  background: #f5f7fa;
+  color: rgba(0, 0, 0, 0.45);
+  display: inline-flex;
+  height: 32px;
+  justify-content: center;
+  min-width: 32px;
+  padding: 0 8px;
+  position: relative;
+  z-index: 1;
+}
+
+.hint {
+  color: rgba(0, 0, 0, 0.45);
+  font-size: 12px;
+  line-height: 20px;
+  margin-top: 4px;
+}
+
+.error {
+  color: #ff4d4f;
+}
