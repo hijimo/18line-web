@@ -16,19 +16,12 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "baseUrl": ".",
+    "ignoreDeprecations": "6.0",
     "paths": {
       "@/*": ["./src/*"]
     },
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   },
-  "include": [
-    "./src",
-    "./@types",
-    "./mocks",
-    "scripts",
-    "./**.js",
-    "./**.ts",
-    "eslint.config.js"
-  ],
+  "include": ["./src", "./@types", "./mocks", "scripts", "./**.js", "./**.ts", "eslint.config.js"],
   "exclude": ["dist"]
 }
