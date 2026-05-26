@@ -27,7 +27,7 @@ const assignHeaders = (
   file: File,
 ) => {
   const { name: filename } = file;
-  const headerOptions = { ...headers, ...defaultHeaders(filename) };
+  const headerOptions: Record<string, string> = { ...headers, ...defaultHeaders(filename) };
   Object.keys(headerOptions).forEach((header: string) => {
     xhr.setRequestHeader(header, encodeURIComponent(headerOptions[header]));
   });
@@ -41,6 +41,7 @@ type UploaderOpts = {
   file?: globalThis.File;
   name?: string;
   data?: Record<string, string>;
+  formData?: TODO;
   headers?: Record<string, string>;
   withCredentials?: boolean;
   onError?: (error: unknown) => void;

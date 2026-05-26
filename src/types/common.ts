@@ -11,6 +11,8 @@ export type ResponsePaginationData<T = TODO> = {
   msg: string;
   total: number;
   rows: T[];
+  pageNo?: number;
+  pageSize?: number;
 };
 
 export type PaginationParams = {

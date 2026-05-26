@@ -1,0 +1,23 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "ignoreDeprecations": "6.0"
+  },
+  "exclude": [
+    "dist",
+    "src/**/*.test.ts",
+    "src/**/*.test.tsx",
+    "src/**/__tests__/**",
+    "src/examples/**",
+    "src/test-utils/**",
+    "src/configurify/columns/userColumns.tsx",
+    "src/components/PageContainer/**",
+    "src/stores/index.ts",
+    "src/types/chat.ts",
+    "orval.config.ts",
+    "orval.openapi.config.ts",
+    "tailwind.config.ts",
+    "vitest.config.ts",
+    "playwright.config.ts"
+  ]
+}

@@ -36,7 +36,7 @@ const BasicLayout = ({ children }: { children: React.ReactElement }) => {
         request: async () => menuItems,
       }}
       onMenuHeaderClick={() => navigate('/')}
-      menuItemRender={(item, dom) => (
+      menuItemRender={(item: { path?: string }, dom: React.ReactNode) => (
         <div
           onClick={() => {
             navigate(item.path || '/');

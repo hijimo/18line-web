@@ -68,10 +68,10 @@ const Upload: React.FC<UploadPropsExt> = ({
         formData: data,
         name,
         file: file[orginFileSymbol],
-        onError(msg?: string) {
+        onError(msg: unknown) {
           handleError(true);
           if (onError) {
-            onError(file, msg);
+            onError(file, typeof msg === 'string' ? msg : undefined);
           }
         },
         onProgress(p: number) {

@@ -12,6 +12,10 @@ export type UserInfo = {
   u_id?: number;
   /** 用户名称 */
   u_name?: string;
+  /** 后端角色集合 */
+  roles?: TODO;
+  /** 后端岗位集合 */
+  posts?: TODO;
 };
 
 /**

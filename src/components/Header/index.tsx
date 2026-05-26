@@ -5,8 +5,7 @@ import React, { useEffect, useState } from 'react';
 import type { ThemedLayoutHeaderProps } from '@/components/Layout';
 import { useAuthStore } from '@/stores/authStore';
 import { getCompanyInfoFromStorage, getUserInfoFromStorage } from '@/utils/userData';
-import type { User } from '@/types/api';
-import type { CompanyInfo } from '@/types/user';
+import type { CompanyInfo, UserInfo } from '@/types/user';
 
 const { Text } = Typography;
 const { useToken } = theme;
@@ -15,7 +14,7 @@ const Header: React.FC<ThemedLayoutHeaderProps> = ({ sticky = true }) => {
   const { token } = useToken();
 
   const { logout } = useAuthStore();
-  const [userInfo, setUserInfo] = useState<User | null>(null);
+  const [userInfo, setUserInfo] = useState<UserInfo | null>(null);
   const [companyInfo, setCompanyInfo] = useState<CompanyInfo | null>(null);
 
   useEffect(() => {

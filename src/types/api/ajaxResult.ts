@@ -11,5 +11,5 @@ export type AjaxResult = {
   warn?: boolean;
   error?: boolean;
   empty?: boolean;
-  [key: string]: { [key: string]: unknown };
+  [key: string]: unknown;
 };

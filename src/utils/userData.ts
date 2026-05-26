@@ -1,5 +1,4 @@
-import type { User } from '@/types/api';
-import type { CompanyInfo } from '@/types/user';
+import type { CompanyInfo, UserInfo } from '@/types/user';
 
 // 存储键名常量
 export const TOKEN_KEY = 'token';
@@ -9,7 +8,7 @@ export const COMPANY_INFO_KEY = 'company_info';
 /**
  * 从localStorage获取用户信息
  */
-export const getUserInfoFromStorage = (): User | null => {
+export const getUserInfoFromStorage = (): UserInfo | null => {
   try {
     const cached = localStorage.getItem(USER_INFO_KEY);
     return cached ? JSON.parse(cached) : null;
@@ -33,7 +32,7 @@ export const getCompanyInfoFromStorage = (): CompanyInfo | null => {
 /**
  * 检查用户是否有特定权限
  */
-export const hasPermission = (permission: number, userInfo?: User | null): boolean => {
+export const hasPermission = (permission: number, userInfo?: UserInfo | null): boolean => {
   if (!userInfo?.permission) {
     return false;
   }
@@ -43,7 +42,7 @@ export const hasPermission = (permission: number, userInfo?: User | null): boole
 /**
  * 获取用户显示名称
  */
-export const getUserDisplayName = (userInfo?: User | null): string => {
+export const getUserDisplayName = (userInfo?: UserInfo | null): string => {
   return userInfo?.u_name || '未知用户';
 };
 

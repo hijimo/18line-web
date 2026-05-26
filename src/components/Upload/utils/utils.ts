@@ -5,11 +5,11 @@ import type { File } from '@/types';
 import { getFileMIME } from './file';
 
 export const getMaxSize = (file: File, maxSize: TODO | number) =>
-  _isObject(maxSize) ? _get(maxSize, file.type) : maxSize;
+  _isObject(maxSize) ? _get(maxSize, file.type || '') : maxSize;
 
 export const checkIsSizeOut = (file: File, maxSize: number) => {
   const max = getMaxSize(file, maxSize);
-  return +file.size / 1024 > max;
+  return +(file.size || 0) / 1024 > max;
 };
 
 export const inAccpetList = (type: string, accpet: string) => {

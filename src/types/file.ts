@@ -1,3 +1,5 @@
+export const orginFileSymbol: unique symbol = Symbol('orginFile');
+
 export type File = {
   uid: string;
   name: string;
@@ -6,6 +8,7 @@ export type File = {
   type?: string;
   status?: FileUploadStateEnums;
   size?: number;
+  [orginFileSymbol]?: globalThis.File;
   [key: string]: TODO;
 };
 
@@ -15,5 +18,3 @@ export enum FileUploadStateEnums {
   Done = 'done',
   Fail = 'fail',
 }
-
-export const orginFileSymbol = Symbol('orginFile');

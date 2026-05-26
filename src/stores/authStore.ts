@@ -6,7 +6,7 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { TOKEN_KEY, USER_INFO_KEY as USER_INFO } from '@/utils/userData';
-import type { User } from '@/types/api/user';
+import type { UserInfo as User } from '@/types/user';
 
 /**
  * 认证状态接口
