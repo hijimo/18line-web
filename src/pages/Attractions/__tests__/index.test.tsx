@@ -10,28 +10,28 @@
 
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
-
 import { render } from '@/test-utils';
 import { crudHandlers } from '@/test-utils/crud-msw-handlers';
 import {
-  verifyTableRenders,
+  clickActionAndVerifyDrawer,
   verifyAddButtonExistsAndOpensDrawer,
   verifyDetailActionExists,
   verifyEditActionExists,
-  verifyStatusToggleExists,
   verifySearchFormFields,
-  clickActionAndVerifyDrawer,
+  verifyStatusToggleExists,
+  verifyTableRenders,
 } from '@/test-utils/crud-test-helpers';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
 // Try to import the component; skip tests if it doesn't exist yet
-let AttractionsPage: React.ComponentType;
+let hasAttractionsPage = true;
+let AttractionsPage: React.ComponentType = () => null;
 try {
   // eslint-disable-next-line @typescript-eslint/no-require-imports
   AttractionsPage = require('@/pages/Attractions/index').default;
 } catch {
-  AttractionsPage = null;
+  hasAttractionsPage = false;
 }
 
 const mswServer = setupServer(...crudHandlers);
@@ -40,7 +40,7 @@ beforeAll(() => mswServer.listen({ onUnhandledRequest: 'bypass' }));
 afterEach(() => mswServer.resetHandlers());
 afterAll(() => mswServer.close());
 
-const describeIfComponentExists = AttractionsPage ? describe : describe.skip;
+const describeIfComponentExists = hasAttractionsPage ? describe : describe.skip;
 
 describeIfComponentExists('景点管理 (Attractions) Page', () => {
   beforeEach(() => {
@@ -75,13 +75,16 @@ describeIfComponentExists('景点管理 (Attractions) Page', () => {
   });
 
   it('table columns match expected columns', async () => {
-    await waitFor(() => {
-      // Verify column headers are present
-      expect(screen.getByText('序号')).toBeInTheDocument();
-      expect(screen.getByText('状态')).toBeInTheDocument();
-      expect(screen.getByText('创建时间')).toBeInTheDocument();
-      expect(screen.getByText('操作')).toBeInTheDocument();
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        // Verify column headers are present
+        expect(screen.getByText('序号')).toBeInTheDocument();
+        expect(screen.getByText('状态')).toBeInTheDocument();
+        expect(screen.getByText('创建时间')).toBeInTheDocument();
+        expect(screen.getByText('操作')).toBeInTheDocument();
+      },
+      { timeout: 5000 },
+    );
   });
 
   it('drawer form fields render correctly after opening', async () => {
@@ -89,9 +92,12 @@ describeIfComponentExists('景点管理 (Attractions) Page', () => {
     const addButton = screen.getByRole('button', { name: /新增/ });
     await user.click(addButton);
 
-    await waitFor(() => {
-      expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
+      },
+      { timeout: 3000 },
+    );
   });
 
   it('form validation shows errors for required fields', async () => {
@@ -99,18 +105,24 @@ describeIfComponentExists('景点管理 (Attractions) Page', () => {
     const addButton = screen.getByRole('button', { name: /新增/ });
     await user.click(addButton);
 
-    await waitFor(() => {
-      expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
+      },
+      { timeout: 3000 },
+    );
 
     // Click submit without filling form
     const submitButton = screen.getByRole('button', { name: /确定|提交|保存/ });
     await user.click(submitButton);
 
-    await waitFor(() => {
-      const errors = document.querySelectorAll('.ant-form-item-explain-error');
-      expect(errors.length).toBeGreaterThan(0);
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        const errors = document.querySelectorAll('.ant-form-item-explain-error');
+        expect(errors.length).toBeGreaterThan(0);
+      },
+      { timeout: 3000 },
+    );
   });
 
   it('form submission calls correct API', async () => {
@@ -127,9 +139,12 @@ describeIfComponentExists('景点管理 (Attractions) Page', () => {
     const addButton = screen.getByRole('button', { name: /新增/ });
     await user.click(addButton);
 
-    await waitFor(() => {
-      expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
+      },
+      { timeout: 3000 },
+    );
 
     // Fill required fields and submit
     // (Exact field names depend on the actual form implementation)
@@ -139,8 +154,11 @@ describeIfComponentExists('景点管理 (Attractions) Page', () => {
     const submitButton = screen.getByRole('button', { name: /确定|提交|保存/ });
     await user.click(submitButton);
 
-    await waitFor(() => {
-      expect(addCalled).toBe(true);
-    }, { timeout: 5000 });
+    await waitFor(
+      () => {
+        expect(addCalled).toBe(true);
+      },
+      { timeout: 5000 },
+    );
   });
 });

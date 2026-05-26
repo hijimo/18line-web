@@ -1,4 +1,4 @@
-import { defineConfig } from 'orval'
+import { defineConfig } from 'orval';
 
 export default defineConfig({
   api: {
@@ -14,8 +14,6 @@ export default defineConfig({
       client: 'axios',
       // 按标签分组生成文件
       mode: 'tags-split',
-      // 启用 Prettier 格式化（满足需求 5.1）
-      prettier: true,
       // 文件扩展名
       fileExtension: '.ts',
       // 引用 tsconfig.json 确保生成的代码符合 TypeScript 严格模式（满足需求 5.4, 5.5）
@@ -42,4 +40,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

@@ -1,12 +1,11 @@
-import { messageInstance } from '@/utils/antdStatic';
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import cookies from 'js-cookie';
 import { useAuthStore } from '@/stores/authStore';
+import { messageInstance } from '@/utils/antdStatic';
 import { logError, parseError } from '@/utils/errorHandler';
 import { TOKEN_KEY, USER_INFO_KEY as USER_INFO } from '@/utils/userData';
 import type { ResponseData } from '@/types';
 
-console.log('import.meta.env.VITE_API_BASE_URL', import.meta.env);
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   // baseURL: '/api/v1/',
@@ -36,7 +35,7 @@ const errorHandler = (error: AxiosError | Error, context?: string): void => {
   // 根据错误类型显示不同的提示
   switch (errorInfo.type) {
     case 'network':
-      messageInstance.error({
+      messageInstance?.error({
         content: '网络连接失败，请检查网络连接',
         duration: 4,
       });
@@ -44,7 +43,7 @@ const errorHandler = (error: AxiosError | Error, context?: string): void => {
     case 'api': {
       const axiosErr = error as AxiosError;
       const messageStr = (axiosErr.response?.data as any)?.message;
-      messageInstance.error({
+      messageInstance?.error({
         content: messageStr || errorInfo.message || '服务器响应异常',
         duration: 4,
       });

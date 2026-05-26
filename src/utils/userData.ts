@@ -1,5 +1,4 @@
-import type { User } from '@/types/api';
-import type { CompanyInfo } from '@/types/user';
+import type { CompanyInfo, User } from '@/types/user';
 
 // 存储键名常量
 export const TOKEN_KEY = 'token';

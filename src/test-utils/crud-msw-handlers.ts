@@ -16,7 +16,7 @@ function createPaginatedResponse(data: Record<string, unknown>[]) {
   });
 }
 
-function createSuccessResponse(data?: Record<string, unknown>) {
+function createSuccessResponse(data?: unknown) {
   return HttpResponse.json({
     code: 200,
     msg: '操作成功',
@@ -39,8 +39,22 @@ const mockDishes = [
 ];
 
 const mockLocalSpecialties = [
-  { specialtyId: 1, dishName: '地方特色菜A', price: 38, specialStar: 5, status: '1', created: '2024-01-01 12:00:00' },
-  { specialtyId: 2, dishName: '地方特色菜B', price: 25, specialStar: 4, status: '0', created: '2024-02-01 12:00:00' },
+  {
+    specialtyId: 1,
+    dishName: '地方特色菜A',
+    price: 38,
+    specialStar: 5,
+    status: '1',
+    created: '2024-01-01 12:00:00',
+  },
+  {
+    specialtyId: 2,
+    dishName: '地方特色菜B',
+    price: 25,
+    specialStar: 4,
+    status: '0',
+    created: '2024-02-01 12:00:00',
+  },
 ];
 
 const mockAccommodations = [
@@ -68,7 +82,14 @@ const mockTemplates = [
 ];
 
 const mockUsers = [
-  { id: 1, email: 'test@example.com', displayName: '测试用户', phone: '13800138000', roles: ['user'], isActive: true },
+  {
+    id: 1,
+    email: 'test@example.com',
+    displayName: '测试用户',
+    phone: '13800138000',
+    roles: ['user'],
+    isActive: true,
+  },
 ];
 
 export const crudHandlers = [

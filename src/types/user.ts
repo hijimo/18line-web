@@ -14,6 +14,19 @@ export type UserInfo = {
   u_name?: string;
 };
 
+export type User = UserInfo & {
+  id?: number;
+  email?: string;
+  displayName?: string;
+  phone?: string;
+  roles?: string[];
+  isActive?: boolean;
+  tenantId?: string;
+  isAdmin?: boolean;
+  createdAt?: string;
+  createdByName?: string;
+};
+
 /**
  * 公司信息类型定义
  */

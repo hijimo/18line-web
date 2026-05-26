@@ -1,26 +1,14 @@
 import { BankOutlined, LogoutOutlined } from '@ant-design/icons';
-import {
-  Layout as AntdLayout,
-  Avatar,
-  Button,
-  Dropdown,
-  Layout,
-  Space,
-  theme,
-  Typography,
-  type LayoutProps,
-} from 'antd';
+import { Layout as AntdLayout, Avatar, Button, Dropdown, Space, theme, Typography } from 'antd';
 import type { MenuProps } from 'antd';
 import React, { useEffect, useState } from 'react';
 import type { ThemedLayoutHeaderProps } from '@/components/Layout';
 import { useAuthStore } from '@/stores/authStore';
 import { getCompanyInfoFromStorage, getUserInfoFromStorage } from '@/utils/userData';
-import type { User } from '@/types/api';
-import type { CompanyInfo } from '@/types/user';
+import type { CompanyInfo, User } from '@/types/user';
 
 const { Text } = Typography;
 const { useToken } = theme;
-const { Header: AntdHeader } = Layout;
 
 const Header: React.FC<ThemedLayoutHeaderProps> = ({ sticky = true }) => {
   const { token } = useToken();

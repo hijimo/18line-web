@@ -1,4 +1,4 @@
-import { defineConfig } from 'orval'
+import { defineConfig } from 'orval';
 
 export default defineConfig({
   api: {
@@ -13,7 +13,6 @@ export default defineConfig({
       schemas: './src/types/api',
       client: 'axios',
       mode: 'tags-split',
-      prettier: true,
       fileExtension: '.ts',
       tsconfig: './tsconfig.json',
       override: {
@@ -27,4 +26,4 @@ export default defineConfig({
       },
     },
   },
-})
+});

@@ -1,13 +1,11 @@
-// @ts-nocheck
 /* eslint-disable */
-import type { File } from '@/types';
-import { FileUploadStateEnums, orginFileSymbol } from '@/types/file';
 import { PlusOutlined } from '@ant-design/icons';
 import { message } from 'antd';
 import classNames from 'classnames';
 import _findIndex from 'lodash-es/findIndex';
 import _map from 'lodash-es/map';
 import React, { useEffect, useRef, useState } from 'react';
+import { FileUploadStateEnums, orginFileSymbol, type File } from '@/types/file';
 import styles from './index.module.less';
 import type { UploadProps } from './Upload';
 import UploadItem from './Upload';
@@ -92,7 +90,7 @@ const UploadList: React.FC<UploadListProps> = ({
   const beforeUpload = (orginFileList: File[]): Promise<boolean> => {
     // 文件格式非法
     const isNotAllowFile = _map(orginFileList, (file: File) =>
-      inAccpetList(file.type, accept || ''),
+      inAccpetList(file.type || file[orginFileSymbol]?.type || '', accept || ''),
     ).includes(false);
     if (isNotAllowFile) {
       message.error('不允许的文件格式');
@@ -108,7 +106,7 @@ const UploadList: React.FC<UploadListProps> = ({
     }
     // 文件大小溢出
     const isSizeOut = _map(orginFileList, (file: File) =>
-      checkIsSizeOut(file[orginFileSymbol], maxSize || Infinity),
+      checkIsSizeOut(file, maxSize || Infinity),
     ).indexOf(true);
     if (isSizeOut >= 0) {
       message.error(`文件大小不能超过 ${getMaxSize(orginFileList[isSizeOut] as File, maxSize)} KB`);

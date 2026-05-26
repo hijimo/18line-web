@@ -1,15 +1,14 @@
-import type { File } from '@/types';
-import { FileUploadStateEnums, orginFileSymbol } from '@/types/file';
 import _get from 'lodash-es/get';
 import _isObject from 'lodash-es/isObject';
+import { FileUploadStateEnums, orginFileSymbol, type File } from '@/types/file';
 import { getFileMIME } from './file';
 
-export const getMaxSize = (file: File, maxSize: any | number) =>
-  _isObject(maxSize) ? _get(maxSize, file.type) : maxSize;
+export const getMaxSize = (file: File, maxSize: number | Record<string, number>) =>
+  _isObject(maxSize) ? _get(maxSize, file.type || file[orginFileSymbol]?.type || '') : maxSize;
 
 export const checkIsSizeOut = (file: File, maxSize: number) => {
   const max = getMaxSize(file, maxSize);
-  return +file.size / 1024 > max;
+  return +((file[orginFileSymbol]?.size ?? file.size) || 0) / 1024 > max;
 };
 
 export const inAccpetList = (type: string, accpet: string) => {

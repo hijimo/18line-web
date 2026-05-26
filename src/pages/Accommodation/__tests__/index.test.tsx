@@ -4,25 +4,25 @@
 
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { http, HttpResponse } from 'msw';
-import { setupServer } from 'msw/node';
-
 import { render } from '@/test-utils';
 import { crudHandlers } from '@/test-utils/crud-msw-handlers';
 import {
-  verifyTableRenders,
+  clickActionAndVerifyDrawer,
   verifyAddButtonExistsAndOpensDrawer,
   verifyDetailActionExists,
   verifyEditActionExists,
   verifyStatusToggleExists,
-  clickActionAndVerifyDrawer,
+  verifyTableRenders,
 } from '@/test-utils/crud-test-helpers';
+import { http, HttpResponse } from 'msw';
+import { setupServer } from 'msw/node';
 
-let AccommodationPage: React.ComponentType;
+let hasAccommodationPage = true;
+let AccommodationPage: React.ComponentType = () => null;
 try {
   AccommodationPage = require('@/pages/Accommodation/index').default;
 } catch {
-  AccommodationPage = null;
+  hasAccommodationPage = false;
 }
 
 const mswServer = setupServer(...crudHandlers);
@@ -31,7 +31,7 @@ beforeAll(() => mswServer.listen({ onUnhandledRequest: 'bypass' }));
 afterEach(() => mswServer.resetHandlers());
 afterAll(() => mswServer.close());
 
-const describeIfComponentExists = AccommodationPage ? describe : describe.skip;
+const describeIfComponentExists = hasAccommodationPage ? describe : describe.skip;
 
 describeIfComponentExists('住宿管理 (Accommodation) Page', () => {
   beforeEach(() => {
@@ -65,16 +65,22 @@ describeIfComponentExists('住宿管理 (Accommodation) Page', () => {
     const addButton = screen.getByRole('button', { name: /新增/ });
     await user.click(addButton);
 
-    await waitFor(() => {
-      expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        expect(document.querySelector('.ant-drawer-open')).toBeTruthy();
+      },
+      { timeout: 3000 },
+    );
 
     const submitButton = screen.getByRole('button', { name: /确定|提交|保存/ });
     await user.click(submitButton);
 
-    await waitFor(() => {
-      const errors = document.querySelectorAll('.ant-form-item-explain-error');
-      expect(errors.length).toBeGreaterThan(0);
-    }, { timeout: 3000 });
+    await waitFor(
+      () => {
+        const errors = document.querySelectorAll('.ant-form-item-explain-error');
+        expect(errors.length).toBeGreaterThan(0);
+      },
+      { timeout: 3000 },
+    );
   });
 });

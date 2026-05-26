@@ -1,6 +1,6 @@
 import { renderHook } from '@testing-library/react';
-import { useTableRequest } from '../useTableRequest';
 import type { ResponsePaginationData } from '@/types';
+import { useTableRequest } from '../useTableRequest';
 
 describe('useTableRequest', () => {
   const mockDataLoader = vi.fn();
@@ -18,9 +18,9 @@ describe('useTableRequest', () => {
   describe('pagination transformation', () => {
     it('transforms current/pageSize to pageNo/pageSize params', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result } = renderHook(() => useTableRequest(mockDataLoader));
 
-      await request(
+      await result.current(
         { current: 2, pageSize: 20 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
@@ -35,9 +35,9 @@ describe('useTableRequest', () => {
 
     it('returns data, total, success, pageSize, current from response', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result: hookResult } = renderHook(() => useTableRequest(mockDataLoader));
 
-      const result = await request(
+      const result = await hookResult.current(
         { current: 1, pageSize: 10 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
@@ -58,26 +58,23 @@ describe('useTableRequest', () => {
         msg: 'error',
       };
       mockDataLoader.mockResolvedValue(errorResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result: hookResult } = renderHook(() => useTableRequest(mockDataLoader));
 
-      const result = await request(
+      const result = await hookResult.current(
         { current: 1, pageSize: 10 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
 
-      expect(result.success).toBe(false);
+      expect((result as { success: boolean }).success).toBe(false);
     });
   });
 
   describe('sort transformation', () => {
     it('transforms ascend sort to ASC order_by', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result } = renderHook(() => useTableRequest(mockDataLoader));
 
-      await request(
-        { current: 1, pageSize: 10 },
-        { name: 'ascend' },
-      );
+      await result.current({ current: 1, pageSize: 10 }, { name: 'ascend' });
 
       expect(mockDataLoader).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -88,12 +85,9 @@ describe('useTableRequest', () => {
 
     it('transforms descend sort to DESC order_by', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result } = renderHook(() => useTableRequest(mockDataLoader));
 
-      await request(
-        { current: 1, pageSize: 10 },
-        { created: 'descend' },
-      );
+      await result.current({ current: 1, pageSize: 10 }, { created: 'descend' });
 
       expect(mockDataLoader).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -104,12 +98,9 @@ describe('useTableRequest', () => {
 
     it('uses first sort field when multiple sorts provided', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result } = renderHook(() => useTableRequest(mockDataLoader));
 
-      await request(
-        { current: 1, pageSize: 10 },
-        { name: 'ascend', created: 'descend' },
-      );
+      await result.current({ current: 1, pageSize: 10 }, { name: 'ascend', created: 'descend' });
 
       expect(mockDataLoader).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -122,9 +113,9 @@ describe('useTableRequest', () => {
   describe('default params merge', () => {
     it('merges defaultParams into request params', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader, { status: '1' });
+      const { result } = renderHook(() => useTableRequest(mockDataLoader, { status: '1' }));
 
-      await request(
+      await result.current(
         { current: 1, pageSize: 10 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
@@ -141,9 +132,9 @@ describe('useTableRequest', () => {
     it('calls getParams hook to add custom params', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
       const getParams = vi.fn().mockReturnValue({ customField: 'customValue' });
-      const request = useTableRequest(mockDataLoader, undefined, getParams);
+      const { result } = renderHook(() => useTableRequest(mockDataLoader, undefined, getParams));
 
-      await request(
+      await result.current(
         { current: 1, pageSize: 10 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
@@ -158,14 +149,11 @@ describe('useTableRequest', () => {
     it('applies custom transform function', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
       const customTransform = vi.fn().mockReturnValue({ custom: 'result' });
-      const request = useTableRequest(
-        mockDataLoader,
-        undefined,
-        undefined,
-        customTransform,
+      const { result: hookResult } = renderHook(() =>
+        useTableRequest(mockDataLoader, undefined, undefined, customTransform),
       );
 
-      const result = await request(
+      const result = await hookResult.current(
         { current: 1, pageSize: 10 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
@@ -177,9 +165,9 @@ describe('useTableRequest', () => {
 
   describe('edge cases', () => {
     it('returns undefined data when dataLoader is not provided', async () => {
-      const request = useTableRequest(undefined);
+      const { result: hookResult } = renderHook(() => useTableRequest(undefined));
 
-      const result = await request(
+      const result = await hookResult.current(
         { current: 1, pageSize: 10 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );
@@ -189,9 +177,9 @@ describe('useTableRequest', () => {
 
     it('preserves current and pageSize in params alongside pageNo', async () => {
       mockDataLoader.mockResolvedValue(mockPaginatedResponse);
-      const request = useTableRequest(mockDataLoader);
+      const { result } = renderHook(() => useTableRequest(mockDataLoader));
 
-      await request(
+      await result.current(
         { current: 3, pageSize: 25 },
         {} as Record<string, 'ascend' | 'descend' | null>,
       );

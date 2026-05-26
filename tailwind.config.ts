@@ -1,8 +1,6 @@
-import type { Config } from 'tailwindcss'
+const { generateTailwindTheme } = require('./src/theme/tailwind-bridge');
 
-const { generateTailwindTheme } = require('./src/theme/tailwind-bridge')
-
-const config: Config = {
+const config = {
   content: ['./index.html', './src/**/*.{js,ts,jsx,tsx,.css}'],
   theme: {
     extend: {
@@ -18,6 +16,6 @@ const config: Config = {
   corePlugins: {
     preflight: false,
   },
-}
+} as const;
 
-export default config
+export default config;

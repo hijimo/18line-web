@@ -3,7 +3,7 @@ import { Badge, Tag } from 'antd';
 import dayjs from 'dayjs';
 import ColumnEllipsisWrap from '@/components/CommonTable/ColumnEllipsisWrap';
 import { DATE_FORMAT_FULL_TIME } from '@/variables';
-import type { User } from '@/types/api';
+import type { User } from '@/types/user';
 
 // 用户邮箱列
 export const userEmail: ProColumns<User> = {

@@ -3,13 +3,16 @@ import _upperCase from 'lodash-es/upperCase';
 import { useCallback } from 'react';
 import type { ResponsePaginationData } from '@/types';
 
-const transformDataToProTable = (result: ResponsePaginationData) => {
+const transformDataToProTable = (
+  result: ResponsePaginationData,
+  params: Record<string, unknown>,
+) => {
   return {
     data: result.rows,
     total: result.total,
     success: result?.code === 200,
-    pageSize: result?.pageSize,
-    current: result?.pageNo,
+    pageSize: result?.pageSize ?? params.pageSize,
+    current: result?.pageNo ?? params.current,
   };
 };
 
@@ -46,9 +49,9 @@ export const useTableRequest = (
         ...getParams?.(params),
       };
       const result = await dataLoader?.(newParams);
-      const transformedResult =
-        transform?.(result as ResponsePaginationData) ||
-        transformDataToProTable(result as ResponsePaginationData);
+      if (!result) return undefined;
+
+      const transformedResult = transform?.(result) || transformDataToProTable(result, params);
       return Promise.resolve(transformedResult);
     },
     [dataLoader, defaultParams, getParams, transform],

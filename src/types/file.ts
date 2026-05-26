@@ -1,4 +1,6 @@
-export interface File {
+export const orginFileSymbol = Symbol('orginFile');
+
+export type File = {
   uid: string;
   name: string;
   url?: string;
@@ -6,8 +8,9 @@ export interface File {
   type?: string;
   status?: FileUploadStateEnums;
   size?: number;
-  [key: string]: any;
-}
+  [orginFileSymbol]?: globalThis.File;
+  [key: string]: unknown;
+};
 
 export enum FileUploadStateEnums {
   Initial = 'initial',
@@ -15,5 +18,3 @@ export enum FileUploadStateEnums {
   Done = 'done',
   Fail = 'fail',
 }
-
-export const orginFileSymbol = Symbol('orginFile');

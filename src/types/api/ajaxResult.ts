@@ -6,10 +6,10 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export interface AjaxResult {
+export type AjaxResult = {
   success?: boolean;
   warn?: boolean;
   error?: boolean;
   empty?: boolean;
-  [key: string]: { [key: string]: unknown };
-}
+  [key: string]: unknown;
+};

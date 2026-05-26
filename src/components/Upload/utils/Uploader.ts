@@ -21,19 +21,23 @@ const defaultHeaders = (filename: string) => ({
   'Content-Disposition': `filename="${filename}"`,
 });
 
-const assignHeaders = (xhr: XMLHttpRequestExtend, headers: Record<string, string> | undefined, file: File) => {
+const assignHeaders = (
+  xhr: XMLHttpRequestExtend,
+  headers: Record<string, string> | undefined,
+  file: File,
+) => {
   const { name: filename } = file;
-  const headerOptions = { ...headers, ...defaultHeaders(filename) };
+  const headerOptions: Record<string, string> = { ...headers, ...defaultHeaders(filename) };
   Object.keys(headerOptions).forEach((header: string) => {
     xhr.setRequestHeader(header, encodeURIComponent(headerOptions[header]));
   });
 };
 
-export interface XMLHttpRequestExtend extends XMLHttpRequest {
+export type XMLHttpRequestExtend = {
   fileUrl?: string;
-}
+} & XMLHttpRequest;
 
-interface UploaderOpts {
+type UploaderOpts = {
   file?: globalThis.File;
   name?: string;
   data?: Record<string, string>;
@@ -42,7 +46,7 @@ interface UploaderOpts {
   onError?: (error: unknown) => void;
   onProgress?: (percent: number) => void;
   onSuccess?: (xhr: XMLHttpRequestExtend) => void;
-}
+};
 
 class Uploader {
   opts: UploaderOpts;

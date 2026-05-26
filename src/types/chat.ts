@@ -3,9 +3,20 @@
  * 基于 API 类型扩展的本地使用类型
  */
 
-import type { Message } from './api/message';
-import type { MessageDetailResponse } from './api/messageDetailResponse';
-import type { SessionResponse } from './api/sessionResponse';
+type Message = {
+  id?: string;
+  content?: string;
+  role?: string;
+  [key: string]: unknown;
+};
+
+type MessageDetailResponse = {} & Message;
+
+type SessionResponse = {
+  id?: string;
+  title?: string;
+  [key: string]: unknown;
+};
 
 /**
  * 消息角色枚举
@@ -20,7 +31,7 @@ export enum MessageRole {
  * 聊天设置
  * 用于配置聊天行为和模型参数
  */
-export interface ChatSettings {
+export type ChatSettings = {
   /** 模型名称 */
   model: string;
   /** 温度参数 (0-2) */
@@ -35,13 +46,13 @@ export interface ChatSettings {
   retrievalCount: number;
   /** TopP 参数 */
   topP?: number;
-}
+};
 
 /**
  * 流式响应状态
  * 用于管理流式消息生成的状态
  */
-export interface StreamingState {
+export type StreamingState = {
   /** 是否正在流式传输 */
   isStreaming: boolean;
   /** 当前流式内容 */
@@ -50,34 +61,34 @@ export interface StreamingState {
   messageId?: string;
   /** 错误信息 */
   error?: string;
-}
+};
 
 /**
  * 聊天错误类型枚举
  */
 export enum ChatErrorType {
   /** 网络错误 */
-  NETWORK_ERROR = 'NETWORK_ERROR',
+  NetworkError = 'NETWORK_ERROR',
   /** 会话不存在 */
-  SESSION_NOT_FOUND = 'SESSION_NOT_FOUND',
+  SessionNotFound = 'SESSION_NOT_FOUND',
   /** 消息发送失败 */
-  MESSAGE_SEND_FAILED = 'MESSAGE_SEND_FAILED',
+  MessageSendFailed = 'MESSAGE_SEND_FAILED',
   /** 文件上传失败 */
-  FILE_UPLOAD_FAILED = 'FILE_UPLOAD_FAILED',
+  FileUploadFailed = 'FILE_UPLOAD_FAILED',
   /** 流式响应错误 */
-  STREAM_ERROR = 'STREAM_ERROR',
+  StreamError = 'STREAM_ERROR',
   /** 无效输入 */
-  INVALID_INPUT = 'INVALID_INPUT',
+  InvalidInput = 'INVALID_INPUT',
   /** 未授权 */
-  UNAUTHORIZED = 'UNAUTHORIZED',
+  Unauthorized = 'UNAUTHORIZED',
   /** 服务器错误 */
-  SERVER_ERROR = 'SERVER_ERROR',
+  ServerError = 'SERVER_ERROR',
 }
 
 /**
  * 聊天错误
  */
-export interface ChatError {
+export type ChatError = {
   /** 错误类型 */
   type: ChatErrorType;
   /** 错误消息 */
@@ -86,13 +97,13 @@ export interface ChatError {
   details?: unknown;
   /** 错误代码 */
   code?: string;
-}
+};
 
 /**
  * 文件项
  * 用于表示上传的文件
  */
-export interface FileItem {
+export type FileItem = {
   /** 文件 ID */
   id: string;
   /** 文件名 */
@@ -109,13 +120,13 @@ export interface FileItem {
   status?: 'uploading' | 'done' | 'error';
   /** 上传进度 (0-100) */
   progress?: number;
-}
+};
 
 /**
  * 消息图片
  * 用于表示消息中的图片
  */
-export interface MessageImage {
+export type MessageImage = {
   /** 图片 ID */
   id: string;
   /** 消息 ID */
@@ -132,13 +143,13 @@ export interface MessageImage {
   width?: number;
   /** 图片高度 */
   height?: number;
-}
+};
 
 /**
  * 助手
  * 用于表示 AI 助手配置
  */
-export interface Assistant {
+export type Assistant = {
   /** 助手 ID */
   id: string;
   /** 助手名称 */
@@ -155,13 +166,13 @@ export interface Assistant {
   icon?: string;
   /** 是否启用 */
   enabled?: boolean;
-}
+};
 
 /**
  * 工具
  * 用于表示可用的功能工具
  */
-export interface Tool {
+export type Tool = {
   /** 工具 ID */
   id: string;
   /** 工具名称 */
@@ -174,7 +185,7 @@ export interface Tool {
   type?: string;
   /** 工具参数 */
   parameters?: Record<string, unknown>;
-}
+};
 
 /**
  * 本地会话类型
@@ -191,7 +202,7 @@ export type ChatMessage = Message | MessageDetailResponse;
 /**
  * 消息发送参数
  */
-export interface SendMessageParams {
+export type SendMessageParams = {
   /** 消息内容 */
   content: string;
   /** 会话 ID */
@@ -202,12 +213,12 @@ export interface SendMessageParams {
   images?: MessageImage[];
   /** 是否流式响应 */
   stream?: boolean;
-}
+};
 
 /**
  * 会话创建参数
  */
-export interface CreateSessionParams {
+export type CreateSessionParams = {
   /** 会话标题 */
   title?: string;
   /** 模型名称 */
@@ -218,12 +229,12 @@ export interface CreateSessionParams {
   temperature?: number;
   /** TopP 参数 */
   topP?: number;
-}
+};
 
 /**
  * 会话更新参数
  */
-export interface UpdateSessionParams {
+export type UpdateSessionParams = {
   /** 会话标题 */
   title?: string;
   /** 模型名称 */
@@ -238,16 +249,16 @@ export interface UpdateSessionParams {
   isPinned?: boolean;
   /** 是否归档 */
   isArchived?: boolean;
-}
+};
 
 /**
  * 滚动位置
  */
-export interface ScrollPosition {
+export type ScrollPosition = {
   /** 是否在顶部 */
   isAtTop: boolean;
   /** 是否在底部 */
   isAtBottom: boolean;
   /** 滚动百分比 (0-100) */
   scrollPercentage: number;
-}
+};
