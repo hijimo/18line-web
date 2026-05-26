@@ -1,10 +1,10 @@
-import { http, HttpResponse } from 'msw'
+import { http, HttpResponse } from 'msw';
 
 const sleep = async (ms: number): Promise<void> =>
-  new Promise((resolve) => setTimeout(resolve, ms))
+  new Promise((resolve) => setTimeout(resolve, ms));
 
 export const handlers = [
-  http.get('http://localhost:3000/api/doclist', async () => {
+  http.get('*/api/doclist', async () => {
     const data: DocList = [
       { name: 'React', url: 'https://react.dev/' },
       { name: 'Vite', url: 'https://vitejs.dev/' },
@@ -14,10 +14,13 @@ export const handlers = [
       },
       { name: 'MSW', url: 'https://mswjs.io/' },
       { name: 'Tailwind CSS', url: 'https://tailwindcss.com/' },
-    ]
+    ];
 
-    await sleep(2000)
+    await sleep(10);
 
-    return HttpResponse.json(data)
+    return HttpResponse.json(data);
   }),
-]
+  http.get('*/system/region/province', () =>
+    HttpResponse.json({ code: 200, msg: 'success', data: [] }),
+  ),
+];

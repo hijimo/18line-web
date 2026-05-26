@@ -1,23 +1,34 @@
-import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ConfigProvider } from 'antd';
 import { MemoryRouter } from 'react-router';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 import TouristPreferences from '@/pages/TouristPreferences';
 
 vi.mock('@/services/api/游客喜好管理/游客喜好管理', () => ({
   get: () => ({
-    list13: vi.fn().mockResolvedValue({
+    list19: vi.fn().mockResolvedValue({
       code: 200,
       total: 1,
       rows: [
-        { preferenceId: 1, touristId: 100, gender: '1', birthYear: 1990, stamina: '1', travelLikes: '自然风光', foodLikes: '辣味', stayPref: '民宿', healthTags: '无', createTime: '2024-01-01' },
+        {
+          preferenceId: 1,
+          touristId: 100,
+          gender: '1',
+          birthYear: 1990,
+          stamina: '1',
+          travelLikes: '自然风光',
+          foodLikes: '辣味',
+          stayPref: '民宿',
+          healthTags: '无',
+          createTime: '2024-01-01',
+        },
       ],
     }),
     edit2: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
     getInfo5: vi.fn().mockResolvedValue({ code: 200 }),
-    remove13: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
+    remove15: vi.fn().mockResolvedValue({ code: 200, msg: '操作成功' }),
   }),
 }));
 
