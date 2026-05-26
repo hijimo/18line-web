@@ -8,5 +8,5 @@
 import type { SysDictType } from './sysDictType';
 
 export type Export12Params = {
-dictType: SysDictType;
+  dictType: SysDictType;
 };

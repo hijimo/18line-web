@@ -7,5 +7,5 @@
  */
 
 export type GetInfo25PathParameters = {
- menuId: number,
- }
+  menuId: number;
+};

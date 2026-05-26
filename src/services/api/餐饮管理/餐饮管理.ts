@@ -13,103 +13,74 @@ import type {
   List5Params,
   Remove7Params,
   TableDataInfo,
-  TravelDining
+  TravelDining,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除餐饮
- */
-const remove7 = (
-    params: Remove7Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dining/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询餐饮列表
- */
-const list5 = (
-    params: List5Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/dining/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除餐饮
+   */
+  const remove7 = (params: Remove7Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/dining/remove`, method: 'POST', params });
+  };
   /**
- * @summary 导出餐饮列表
- */
-const export4 = (
-    params: Export4Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/dining/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询餐饮列表
+   */
+  const list5 = (params: List5Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/dining/list`, method: 'POST', params });
+  };
   /**
- * @summary 修改保存餐饮
- */
-const editSave5 = (
-    travelDining: TravelDining,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dining/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelDining
-    },
-      );
-    }
+   * @summary 导出餐饮列表
+   */
+  const export4 = (params: Export4Params) => {
+    return orvalMutator<void>({ url: `/travel18/dining/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存餐饮
- */
-const addSave6 = (
-    travelDining: TravelDining,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dining/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelDining
-    },
-      );
-    }
+   * @summary 修改保存餐饮
+   */
+  const editSave5 = (travelDining: TravelDining) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/dining/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelDining,
+    });
+  };
   /**
- * @summary 获取餐饮详情
- */
-const getInfo14 = (
-    { diningId }: GetInfo14PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dining/${diningId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 新增保存餐饮
+   */
+  const addSave6 = (travelDining: TravelDining) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/dining/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelDining,
+    });
+  };
   /**
- * @summary 查询餐饮下的菜品
- */
-const getDishesByDining = (
-    { diningId }: GetDishesByDiningPathParameters,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/dining/${diningId}/dishes`, method: 'GET'
-    },
-      );
-    }
-  return {remove7,list5,export4,editSave5,addSave6,getInfo14,getDishesByDining}};
-export type Remove7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove7']>>>
-export type List5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list5']>>>
-export type Export4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export4']>>>
-export type EditSave5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave5']>>>
-export type AddSave6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave6']>>>
-export type GetInfo14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo14']>>>
-export type GetDishesByDiningResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getDishesByDining']>>>
+   * @summary 获取餐饮详情
+   */
+  const getInfo14 = ({ diningId }: GetInfo14PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/dining/${diningId}`, method: 'GET' });
+  };
+  /**
+   * @summary 查询餐饮下的菜品
+   */
+  const getDishesByDining = ({ diningId }: GetDishesByDiningPathParameters) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/dining/${diningId}/dishes`,
+      method: 'GET',
+    });
+  };
+  return { remove7, list5, export4, editSave5, addSave6, getInfo14, getDishesByDining };
+};
+export type Remove7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove7']>>>;
+export type List5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list5']>>>;
+export type Export4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export4']>>>;
+export type EditSave5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave5']>>>;
+export type AddSave6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave6']>>>;
+export type GetInfo14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo14']>>>;
+export type GetDishesByDiningResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['getDishesByDining']>>
+>;

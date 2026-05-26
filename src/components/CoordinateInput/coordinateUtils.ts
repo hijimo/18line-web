@@ -1,13 +1,12 @@
-export interface CoordinatePair {
+export type CoordinatePair = {
   latitude: number;
   longitude: number;
-}
+};
 
 const COORDINATE_SEPARATOR_PATTERN = /[,，\s]+/;
 
-const isFiniteNumber = (value: unknown): value is number => (
-  typeof value === 'number' && Number.isFinite(value)
-);
+const isFiniteNumber = (value: unknown): value is number =>
+  typeof value === 'number' && Number.isFinite(value);
 
 const toNumber = (value: unknown): number | undefined => {
   if (isFiniteNumber(value)) {

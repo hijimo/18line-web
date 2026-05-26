@@ -7,5 +7,5 @@
  */
 
 export type GetInfo8PathParameters = {
- templateId: number,
- }
+  templateId: number;
+};

@@ -7,5 +7,5 @@
  */
 
 export type Remove24PathParameters = {
- operIds: number[],
- }
+  operIds: number[];
+};

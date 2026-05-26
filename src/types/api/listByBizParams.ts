@@ -7,12 +7,12 @@
  */
 
 export type ListByBizParams = {
-/**
- * 业务类型：attraction/checkin/accommodation/dining/car/photography
- */
-bizType: string;
-/**
- * 业务实体ID
- */
-bizId: number;
+  /**
+   * 业务类型：attraction/checkin/accommodation/dining/car/photography
+   */
+  bizType: string;
+  /**
+   * 业务实体ID
+   */
+  bizId: number;
 };

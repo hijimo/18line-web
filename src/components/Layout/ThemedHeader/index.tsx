@@ -5,18 +5,18 @@ import type { ThemedLayoutHeaderProps } from '../types';
 /**
  * 用户信息接口
  */
-interface UserIdentity {
+type UserIdentity = {
   name?: string;
   avatar?: string;
-}
+};
 
 /**
  * 主题头部组件属性
  */
-interface ThemedHeaderProps extends ThemedLayoutHeaderProps {
+type ThemedHeaderProps = {
   /** 用户信息 */
   user?: UserIdentity;
-}
+} & ThemedLayoutHeaderProps;
 
 /**
  * 主题头部组件

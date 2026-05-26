@@ -12,82 +12,67 @@ import type {
   List28Params,
   Remove22PathParameters,
   SysDept,
-  UpdateSort1Body
+  UpdateSort1Body,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getSysDeptController = () => {
-const edit10 = (
-    sysDept: SysDept,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysDept
-    },
-      );
-    }
-  const add11 = (
-    sysDept: SysDept,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysDept
-    },
-      );
-    }
-  const updateSort1 = (
-    updateSort1Body: UpdateSort1Body,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept/updateSort`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateSort1Body
-    },
-      );
-    }
-  const getInfo28 = (
-    { deptId }: GetInfo28PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept/${deptId}`, method: 'GET'
-    },
-      );
-    }
-  const remove22 = (
-    { deptId }: Remove22PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept/${deptId}`, method: 'DELETE'
-    },
-      );
-    }
-  const list28 = (
-    params: List28Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  const excludeChild = (
-    { deptId }: ExcludeChildPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dept/list/exclude/${deptId}`, method: 'GET'
-    },
-      );
-    }
-  return {edit10,add11,updateSort1,getInfo28,remove22,list28,excludeChild}};
-export type Edit10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['edit10']>>>
-export type Add11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['add11']>>>
-export type UpdateSort1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['updateSort1']>>>
-export type GetInfo28Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['getInfo28']>>>
-export type Remove22Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['remove22']>>>
-export type List28Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['list28']>>>
-export type ExcludeChildResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysDeptController>['excludeChild']>>>
+export const getSysDeptController = () => {
+  const edit10 = (sysDept: SysDept) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/dept`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysDept,
+    });
+  };
+  const add11 = (sysDept: SysDept) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/dept`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysDept,
+    });
+  };
+  const updateSort1 = (updateSort1Body: UpdateSort1Body) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/dept/updateSort`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateSort1Body,
+    });
+  };
+  const getInfo28 = ({ deptId }: GetInfo28PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dept/${deptId}`, method: 'GET' });
+  };
+  const remove22 = ({ deptId }: Remove22PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dept/${deptId}`, method: 'DELETE' });
+  };
+  const list28 = (params: List28Params) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dept/list`, method: 'GET', params });
+  };
+  const excludeChild = ({ deptId }: ExcludeChildPathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dept/list/exclude/${deptId}`, method: 'GET' });
+  };
+  return { edit10, add11, updateSort1, getInfo28, remove22, list28, excludeChild };
+};
+export type Edit10Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['edit10']>>
+>;
+export type Add11Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['add11']>>
+>;
+export type UpdateSort1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['updateSort1']>>
+>;
+export type GetInfo28Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['getInfo28']>>
+>;
+export type Remove22Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['remove22']>>
+>;
+export type List28Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['list28']>>
+>;
+export type ExcludeChildResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysDeptController>['excludeChild']>>
+>;

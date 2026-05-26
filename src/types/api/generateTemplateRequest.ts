@@ -6,7 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export interface GenerateTemplateRequest {
+export type GenerateTemplateRequest = {
   province?: string;
   city?: string;
   district?: string;
@@ -14,4 +14,4 @@ export interface GenerateTemplateRequest {
   staminaLevel?: string;
   travelLikes?: string;
   foodLikes?: string;
-}
+};

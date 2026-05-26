@@ -7,5 +7,5 @@
  */
 
 export type GetUserPathParameters = {
- userId: number,
- }
+  userId: number;
+};

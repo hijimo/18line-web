@@ -8,5 +8,5 @@
 import type { SysRole } from './sysRole';
 
 export type List22Params = {
-role: SysRole;
+  role: SysRole;
 };

@@ -7,6 +7,6 @@
  */
 
 export type GetCacheValuePathParameters = {
- cacheName: string,
-    cacheKey: string,
- }
+  cacheName: string;
+  cacheKey: string;
+};

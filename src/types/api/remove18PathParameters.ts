@@ -7,5 +7,5 @@
  */
 
 export type Remove18PathParameters = {
- noticeIds: number[],
- }
+  noticeIds: number[];
+};

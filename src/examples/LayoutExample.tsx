@@ -4,7 +4,6 @@ import {
   DashboardOutlined,
   FileTextOutlined,
   SettingOutlined,
-  ShoppingOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -135,7 +134,7 @@ const menuItems: MenuItem[] = [
 /**
  * 自定义侧边栏组件
  */
-const CustomSider = (props: any) => {
+const CustomSider = (props: TODO) => {
   return (
     <ThemedSider
       {...props}
@@ -144,7 +143,7 @@ const CustomSider = (props: any) => {
       defaultOpenKeys={['content', 'system']}
       showLogout={true}
       onLogout={() => {
-        console.log('用户登出');
+        console.warn('用户登出');
         // 这里可以添加登出逻辑
         // 例如：清除 token、跳转到登录页等
       }}
@@ -185,7 +184,7 @@ export const LayoutExample: React.FC = () => {
       Title={CustomTitle}
       initialSiderCollapsed={siderCollapsed}
       onSiderCollapsed={(collapsed) => {
-        console.log('侧边栏折叠状态变化:', collapsed);
+        console.warn('侧边栏折叠状态变化:', collapsed);
         setSiderCollapsed(collapsed);
       }}
     >

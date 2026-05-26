@@ -1,4 +1,4 @@
-export interface File {
+export type File = {
   uid: string;
   name: string;
   url?: string;
@@ -6,8 +6,8 @@ export interface File {
   type?: string;
   status?: FileUploadStateEnums;
   size?: number;
-  [key: string]: any;
-}
+  [key: string]: TODO;
+};
 
 export enum FileUploadStateEnums {
   Initial = 'initial',

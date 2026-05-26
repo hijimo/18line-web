@@ -5,40 +5,23 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult,
-  GetInfo6PathParameters,
-  List16Params
-} from '../../../types/api';
-
+import type { AjaxResult, GetInfo6PathParameters, List16Params } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getC = () => {
-/**
- * @summary 查询住宿详情（含经纬度和图片）
- */
-const getInfo6 = (
-    { accommodationId }: GetInfo6PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/accommodation/${accommodationId}`, method: 'GET'
-    },
-      );
-    }
+export const getC = () => {
   /**
- * @summary 查询住宿列表
- */
-const list16 = (
-    params?: List16Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/accommodation/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {getInfo6,list16}};
-export type GetInfo6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo6']>>>
-export type List16Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list16']>>>
+   * @summary 查询住宿详情（含经纬度和图片）
+   */
+  const getInfo6 = ({ accommodationId }: GetInfo6PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/accommodation/${accommodationId}`, method: 'GET' });
+  };
+  /**
+   * @summary 查询住宿列表
+   */
+  const list16 = (params?: List16Params) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/accommodation/list`, method: 'GET', params });
+  };
+  return { getInfo6, list16 };
+};
+export type GetInfo6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo6']>>>;
+export type List16Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list16']>>>;

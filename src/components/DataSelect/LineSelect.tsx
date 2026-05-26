@@ -1,8 +1,8 @@
-import React, { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useDebounce } from 'ahooks';
 import { Select } from 'antd';
 import type { SelectProps } from 'antd';
+import React, { useMemo, useState } from 'react';
 import { get as getLineApi } from '@/services/api/线路管理/线路管理';
 
 const lineApi = getLineApi();
@@ -21,13 +21,13 @@ export const LineSelect: React.FC<SelectProps> = (selectProps) => {
         line: { lineName: debouncedKeyword || '' },
         pageNo: 1,
         pageSize: 200,
-      } as any),
+      } as TODO),
     staleTime: 5 * 1000,
   });
 
   const options = useMemo(() => {
-    const rows = (data as any)?.rows || [];
-    return rows.map((line: any) => ({
+    const rows = (data as TODO)?.rows || [];
+    return rows.map((line: TODO) => ({
       value: line.lineId,
       label: line.lineName,
     }));

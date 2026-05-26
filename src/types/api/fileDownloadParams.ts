@@ -7,6 +7,6 @@
  */
 
 export type FileDownloadParams = {
-fileName: string;
-delete: boolean;
+  fileName: string;
+  delete: boolean;
 };

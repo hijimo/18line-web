@@ -1,31 +1,45 @@
+import {
+  Button,
+  Descriptions,
+  Drawer,
+  Form,
+  Input,
+  message,
+  Popconfirm,
+  Select,
+  Space,
+  Tag,
+} from 'antd';
 import React, { useRef, useState } from 'react';
-import { Button, Drawer, Descriptions, Form, Input, Popconfirm, Select, Space, Tag, message } from 'antd';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { TouristGenderLabel, StatusEnum, StatusLabel } from '@/enums';
+import { StatusEnum, StatusLabel, TouristGenderLabel } from '@/enums';
 import { get as getTouristApi } from '@/services/api/游客管理/游客管理';
 
 const touristApi = getTouristApi();
 
-const GENDER_OPTIONS = Object.entries(TouristGenderLabel).map(([value, label]) => ({ label, value }));
+const GENDER_OPTIONS = Object.entries(TouristGenderLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
 
 const Tourists: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [detailOpen, setDetailOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(touristApi.list17 as any);
+  const request = useTableRequest(touristApi.list17 as TODO);
 
-  const openEdit = (record: any) => {
+  const openEdit = (record: TODO) => {
     setCurrentRecord(record);
     form.setFieldsValue(record);
     setDrawerOpen(true);
   };
 
-  const openDetail = (record: any) => {
+  const openDetail = (record: TODO) => {
     setCurrentRecord(record);
     setDetailOpen(true);
   };
@@ -33,7 +47,7 @@ const Tourists: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     try {
-      await touristApi.edit1({ ...values, touristId: currentRecord.touristId } as any);
+      await touristApi.edit1({ ...values, touristId: currentRecord.touristId } as TODO);
       message.success('编辑成功');
       setDrawerOpen(false);
       actionRef.current?.reload();
@@ -42,7 +56,7 @@ const Tourists: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
       await touristApi.remove13({ touristIds: String(record.touristId) });
       message.success('删除成功');
@@ -63,16 +77,27 @@ const Tourists: React.FC = () => {
       search: false,
       render: (v: string) => {
         const label = TouristGenderLabel[v as keyof typeof TouristGenderLabel];
-        return <Tag color={v === '2' ? 'pink' : v === '1' ? 'blue' : undefined}>{label ?? '--'}</Tag>;
+        return (
+          <Tag color={v === '2' ? 'pink' : v === '1' ? 'blue' : undefined}>{label ?? '--'}</Tag>
+        );
       },
     },
     { title: '真实姓名', dataIndex: 'realName', search: false },
-    { title: '状态', dataIndex: 'status', search: false, render: (v: string) => <Tag color={v === StatusEnum.NORMAL ? 'green' : 'red'}>{StatusLabel[v as keyof typeof StatusLabel] ?? '--'}</Tag> },
+    {
+      title: '状态',
+      dataIndex: 'status',
+      search: false,
+      render: (v: string) => (
+        <Tag color={v === StatusEnum.NORMAL ? 'green' : 'red'}>
+          {StatusLabel[v as keyof typeof StatusLabel] ?? '--'}
+        </Tag>
+      ),
+    },
     { title: '创建时间', dataIndex: 'createTime', search: false, width: 180 },
     { title: '备注', dataIndex: 'remark', search: false, ellipsis: true },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDetail(record)}>详情</a>
           <a onClick={() => openEdit(record)}>编辑</a>
@@ -88,8 +113,8 @@ const Tourists: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={false}
         search={{ labelWidth: 'auto', defaultCollapsed: false }}
       />
@@ -103,7 +128,9 @@ const Tourists: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
@@ -121,7 +148,13 @@ const Tourists: React.FC = () => {
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="status" label="状态">
-            <Select placeholder="请选择" options={[{ label: '正常', value: '0' }, { label: '停用', value: '1' }]} />
+            <Select
+              placeholder="请选择"
+              options={[
+                { label: '正常', value: '0' },
+                { label: '停用', value: '1' },
+              ]}
+            />
           </Form.Item>
           <Form.Item name="remark" label="备注">
             <Input.TextArea placeholder="请输入" rows={3} />
@@ -130,26 +163,35 @@ const Tourists: React.FC = () => {
       </Drawer>
 
       {/* 详情抽屉 */}
-      <Drawer
-        title="游客详情"
-        width={640}
-        open={detailOpen}
-        onClose={() => setDetailOpen(false)}
-      >
+      <Drawer title="游客详情" width={640} open={detailOpen} onClose={() => setDetailOpen(false)}>
         {currentRecord && (
           <Descriptions column={2} bordered size="small">
             <Descriptions.Item label="游客ID">{currentRecord.touristId}</Descriptions.Item>
             <Descriptions.Item label="昵称">{currentRecord.nickname}</Descriptions.Item>
             <Descriptions.Item label="手机号">{currentRecord.phone}</Descriptions.Item>
-            <Descriptions.Item label="性别">{TouristGenderLabel[currentRecord.gender as keyof typeof TouristGenderLabel] ?? '--'}</Descriptions.Item>
+            <Descriptions.Item label="性别">
+              {TouristGenderLabel[currentRecord.gender as keyof typeof TouristGenderLabel] ?? '--'}
+            </Descriptions.Item>
             <Descriptions.Item label="真实姓名">{currentRecord.realName ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="状态">{StatusLabel[currentRecord.status as keyof typeof StatusLabel] ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="OpenID" span={2}>{currentRecord.openid ?? '--'}</Descriptions.Item>
+            <Descriptions.Item label="状态">
+              {StatusLabel[currentRecord.status as keyof typeof StatusLabel] ?? '--'}
+            </Descriptions.Item>
+            <Descriptions.Item label="OpenID" span={2}>
+              {currentRecord.openid ?? '--'}
+            </Descriptions.Item>
             <Descriptions.Item label="登录IP">{currentRecord.loginIp ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="登录时间">{currentRecord.loginDate ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="创建时间">{currentRecord.createTime ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="更新时间">{currentRecord.updateTime ?? '--'}</Descriptions.Item>
-            <Descriptions.Item label="备注" span={2}>{currentRecord.remark ?? '--'}</Descriptions.Item>
+            <Descriptions.Item label="登录时间">
+              {currentRecord.loginDate ?? '--'}
+            </Descriptions.Item>
+            <Descriptions.Item label="创建时间">
+              {currentRecord.createTime ?? '--'}
+            </Descriptions.Item>
+            <Descriptions.Item label="更新时间">
+              {currentRecord.updateTime ?? '--'}
+            </Descriptions.Item>
+            <Descriptions.Item label="备注" span={2}>
+              {currentRecord.remark ?? '--'}
+            </Descriptions.Item>
           </Descriptions>
         )}
       </Drawer>

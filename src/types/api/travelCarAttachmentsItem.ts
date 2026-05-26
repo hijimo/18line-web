@@ -6,4 +6,4 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export type TravelCarAttachmentsItem = {[key: string]: { [key: string]: unknown }};
+export type TravelCarAttachmentsItem = { [key: string]: { [key: string]: unknown } };

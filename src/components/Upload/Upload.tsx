@@ -1,21 +1,20 @@
-import type { File } from '@/types';
-import { FileUploadStateEnums, orginFileSymbol } from '@/types/file';
 import { CloseCircleOutlined } from '@ant-design/icons';
 import classNames from 'classnames';
 import React, { useEffect, useRef, useState } from 'react';
+import { FileUploadStateEnums, orginFileSymbol } from '@/types/file';
+import type { File } from '@/types';
+import styles from './Upload.module.less';
 import { getFileIcon, isImage, isVideo } from './utils/file';
 import type { XMLHttpRequestExtend } from './utils/Uploader';
 import Uploader from './utils/Uploader';
 
-import styles from './Upload.module.less';
-
-export interface UploadProps {
+export type UploadProps = {
   className?: string;
   style?: React.CSSProperties;
   // 服务器接收file的字段名
   name?: string;
   // 额外的post data数参
-  data?: any;
+  data?: TODO;
   // 上传中
   onProgress?: (progress: number, file: File) => void;
   // 当某个文件上传出错
@@ -23,14 +22,14 @@ export interface UploadProps {
   // 当某个文件上传完成
   onSuccess?: (res: XMLHttpRequestExtend, fileUrl: string, file: File) => void;
   onRemove?: (e: React.MouseEvent<HTMLSpanElement, MouseEvent>, file: File) => void;
-}
-interface UploadPropsExt extends UploadProps {
+};
+type UploadPropsExt = {
   file: File;
-}
+} & UploadProps;
 
 const getThumUrl = (file: File) => {
   const { name, url } = file;
-  let thumbUrl = '';
+  let thumbUrl: string;
 
   const filename = name || url;
   if (isImage(filename)) {
@@ -61,7 +60,7 @@ const Upload: React.FC<UploadPropsExt> = ({
 }) => {
   const [error, handleError] = useState<boolean>(false);
   const [progress, handleProgress] = useState<number>(0);
-  const uploaderRef = useRef<any>(null);
+  const uploaderRef = useRef<TODO>(null);
   // 文件上传
   const upload = () => {
     if (!uploaderRef.current) {

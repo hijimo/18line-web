@@ -1,4 +1,3 @@
-// @ts-nocheck
 /* eslint-disable */
 import type { File } from '@/types';
 import { FileUploadStateEnums, orginFileSymbol } from '@/types/file';

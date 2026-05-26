@@ -7,5 +7,5 @@
  */
 
 export type MarkReadAllParams = {
-ids: string;
+  ids: string;
 };

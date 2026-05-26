@@ -1,10 +1,10 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, Popconfirm, Select, Space, Tag, Badge, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Badge, Button, Drawer, Form, Input, message, Popconfirm, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { StatusEnum, StatusLabel, GenderLabel } from '@/enums';
+import { GenderLabel, StatusEnum } from '@/enums';
 import { get as getUserApi } from '@/services/api/用户管理/用户管理';
 
 const userApi = getUserApi();
@@ -17,14 +17,14 @@ const STATUS_OPTIONS = [
 ];
 
 const Users: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(userApi.list21 as any);
+  const request = useTableRequest(userApi.list21 as TODO);
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue(record);
@@ -38,10 +38,10 @@ const Users: React.FC = () => {
     const values = await form.validateFields();
     try {
       if (currentRecord) {
-        await userApi.edit3({ ...values, userId: currentRecord?.userId } as any);
+        await userApi.edit3({ ...values, userId: currentRecord?.userId } as TODO);
         message.success('编辑成功');
       } else {
-        await userApi.add4(values as any);
+        await userApi.add4(values as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -51,7 +51,7 @@ const Users: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
       await userApi.remove15({ userIds: [record.userId] });
       message.success('删除成功');
@@ -61,10 +61,10 @@ const Users: React.FC = () => {
     }
   };
 
-  const handleChangeStatus = async (record: any) => {
+  const handleChangeStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await userApi.changeStatus({ userId: record.userId, status: newStatus } as any);
+      await userApi.changeStatus({ userId: record.userId, status: newStatus } as TODO);
       message.success('状态修改成功');
       actionRef.current?.reload();
     } catch {
@@ -72,9 +72,9 @@ const Users: React.FC = () => {
     }
   };
 
-  const handleResetPwd = async (record: any) => {
+  const handleResetPwd = async (record: TODO) => {
     try {
-      await userApi.resetPwd({ userId: record.userId, password: '123456' } as any);
+      await userApi.resetPwd({ userId: record.userId, password: '123456' } as TODO);
       message.success('密码已重置为 123456');
     } catch {
       message.error('重置失败');
@@ -101,17 +101,19 @@ const Users: React.FC = () => {
       dataIndex: 'status',
       valueType: 'select',
       fieldProps: { options: STATUS_OPTIONS },
-      render: (_: any, record: any) =>
-        record.status === StatusEnum.NORMAL
-          ? <Badge status="success" text="正常" />
-          : <Badge status="error" text="停用" />,
+      render: (_: TODO, record: TODO) =>
+        record.status === StatusEnum.NORMAL ? (
+          <Badge status="success" text="正常" />
+        ) : (
+          <Badge status="error" text="停用" />
+        ),
     },
     { title: '部门', dataIndex: ['dept', 'deptName'], search: false },
     { title: '创建时间', dataIndex: 'createTime', search: false, width: 180 },
     {
       ...option,
       width: 240,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -133,10 +135,10 @@ const Users: React.FC = () => {
   return (
     <>
       <CommonTable
-      rowKey='userId'
+        rowKey="userId"
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加用户
@@ -153,19 +155,33 @@ const Users: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="userName" label="用户名" rules={[{ required: true, message: '请输入用户名' }]}>
+          <Form.Item
+            name="userName"
+            label="用户名"
+            rules={[{ required: true, message: '请输入用户名' }]}
+          >
             <Input placeholder="请输入" disabled={!!currentRecord} />
           </Form.Item>
-          <Form.Item name="nickName" label="昵称" rules={[{ required: true, message: '请输入昵称' }]}>
+          <Form.Item
+            name="nickName"
+            label="昵称"
+            rules={[{ required: true, message: '请输入昵称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           {!currentRecord && (
-            <Form.Item name="password" label="密码" rules={[{ required: true, message: '请输入密码' }]}>
+            <Form.Item
+              name="password"
+              label="密码"
+              rules={[{ required: true, message: '请输入密码' }]}
+            >
               <Input.Password placeholder="请输入" />
             </Form.Item>
           )}

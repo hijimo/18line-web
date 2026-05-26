@@ -1,20 +1,41 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Popconfirm,
+  Select,
+  Space,
+  Tag,
+} from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import CoordinateInput from '@/components/CoordinateInput';
+import RegionFormItem from '@/components/RegionFormItem';
+import UploadList from '@/components/Upload';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { AccommodationTypeLabel, BreakfastIncludedLabel, PetFriendlyLabel, StatusEnum, StatusLabel, YesNoLabel } from '@/enums';
+import {
+  AccommodationTypeLabel,
+  BreakfastIncludedLabel,
+  PetFriendlyLabel,
+  StatusEnum,
+  StatusLabel,
+  YesNoLabel,
+} from '@/enums';
+import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
 import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
-import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
-import UploadList from '@/components/Upload';
-import RegionFormItem from '@/components/RegionFormItem';
-import CoordinateInput from '@/components/CoordinateInput';
 
 const stayApi = getStayApi();
 
-const TYPE_OPTIONS = Object.entries(AccommodationTypeLabel).map(([value, label]) => ({ label, value }));
+const TYPE_OPTIONS = Object.entries(AccommodationTypeLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
 const YES_NO = Object.entries(YesNoLabel).map(([value, label]) => ({ label, value }));
 
 /** 住宿管理的上传分类配置 */
@@ -26,24 +47,28 @@ const ACCOMMODATION_UPLOAD_FIELDS: { name: string; label: string; purpose: Attac
 ];
 
 const Accommodation: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(stayApi.list9 as any);
+  const request = useTableRequest(stayApi.list9 as TODO);
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
-      const allAttachments: any[] = record.attachments || [];
+      const allAttachments: TODO[] = record.attachments || [];
       const fieldValues: Record<string, { url: string; name: string }[]> = {};
       for (const { name, purpose } of ACCOMMODATION_UPLOAD_FIELDS) {
         fieldValues[name] = allAttachments
-          .filter(a => a.purpose === purpose)
-          .map(a => ({ url: a.url, name: a.name }));
+          .filter((a) => a.purpose === purpose)
+          .map((a) => ({ url: a.url, name: a.name }));
       }
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, ...fieldValues });
+      form.setFieldsValue({
+        ...record,
+        region: { province: record.province, city: record.city, district: record.district },
+        ...fieldValues,
+      });
     } else {
       form.resetFields();
     }
@@ -64,10 +89,13 @@ const Accommodation: React.FC = () => {
     const params = { ...rest, ...region, attachments: allAttachments };
     try {
       if (currentRecord) {
-        await stayApi.editSave9({ ...params, accommodationId: currentRecord.accommodationId } as any);
+        await stayApi.editSave9({
+          ...params,
+          accommodationId: currentRecord.accommodationId,
+        } as TODO);
         message.success('编辑成功');
       } else {
-        await stayApi.addSave10(params as any);
+        await stayApi.addSave10(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -77,10 +105,13 @@ const Accommodation: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await stayApi.editSave9({ accommodationId: record.accommodationId, status: newStatus } as any);
+      await stayApi.editSave9({
+        accommodationId: record.accommodationId,
+        status: newStatus,
+      } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -88,9 +119,9 @@ const Accommodation: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await stayApi.remove12({ ids: record.accommodationId } as any);
+      await stayApi.remove12({ ids: record.accommodationId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -103,14 +134,32 @@ const Accommodation: React.FC = () => {
     { title: '名称', dataIndex: 'accommodationName', ellipsis: true },
     { title: '地址', dataIndex: 'address', search: false, ellipsis: true },
     { title: '类型', dataIndex: 'accommodationType', valueEnum: AccommodationTypeLabel },
-    { title: '早餐', dataIndex: 'breakfastIncluded', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{BreakfastIncludedLabel[v as keyof typeof BreakfastIncludedLabel] ?? '--'}</Tag> },
+    {
+      title: '早餐',
+      dataIndex: 'breakfastIncluded',
+      search: false,
+      render: (v: string) => (
+        <Tag color={v === '1' ? 'blue' : undefined}>
+          {BreakfastIncludedLabel[v as keyof typeof BreakfastIncludedLabel] ?? '--'}
+        </Tag>
+      ),
+    },
     { title: '联系电话', dataIndex: 'contactPhone', search: false },
     { title: '地点', dataIndex: 'location', search: false },
-    { title: '宠物', dataIndex: 'petFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'green' : undefined}>{PetFriendlyLabel[v as keyof typeof PetFriendlyLabel] ?? '--'}</Tag> },
+    {
+      title: '宠物',
+      dataIndex: 'petFriendly',
+      search: false,
+      render: (v: string) => (
+        <Tag color={v === '1' ? 'green' : undefined}>
+          {PetFriendlyLabel[v as keyof typeof PetFriendlyLabel] ?? '--'}
+        </Tag>
+      ),
+    },
     { title: '价格区间', dataIndex: 'priceRange', search: false },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -130,8 +179,8 @@ const Accommodation: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加住宿
@@ -148,12 +197,18 @@ const Accommodation: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="accommodationName" label="酒店名称" rules={[{ required: true, message: '请输入酒店名称' }]}>
+          <Form.Item
+            name="accommodationName"
+            label="酒店名称"
+            rules={[{ required: true, message: '请输入酒店名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="address" label="地址">

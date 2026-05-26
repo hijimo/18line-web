@@ -7,8 +7,8 @@
  */
 import type { UserEntity } from './userEntity';
 
-export interface RListUserEntity {
+export type RListUserEntity = {
   code?: number;
   msg?: string;
   data?: UserEntity[];
-}
+};

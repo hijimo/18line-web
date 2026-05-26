@@ -11,7 +11,7 @@ import type { User } from '@/types/api/user';
 /**
  * 认证状态接口
  */
-interface AuthState {
+type AuthState = {
   /** 是否已认证 */
   isAuthenticated: boolean;
   /** 用户信息 */
@@ -20,12 +20,12 @@ interface AuthState {
   token: string | null;
   /** 是否记住登录状态 */
   rememberMe: boolean;
-}
+};
 
 /**
  * 认证操作接口
  */
-interface AuthActions {
+type AuthActions = {
   /**
    * 登录方法
    * @param token 认证令牌
@@ -47,7 +47,7 @@ interface AuthActions {
    * @param token 新的认证令牌
    */
   updateToken: (token: string) => void;
-}
+};
 
 /**
  * 认证 Store 类型

@@ -15,210 +15,207 @@ import type {
   TravelItineraryDining,
   UpdateDayAccommodationPathParameters,
   UpdateDayAttractionsPathParameters,
-  UpdateDayDiningPathParameters
+  UpdateDayDiningPathParameters,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getC = () => {
-/**
- * @summary 添加行程跟拍
- */
-const addPhotography = (
+export const getC = () => {
+  /**
+   * @summary 添加行程跟拍
+   */
+  const addPhotography = (
     { itineraryId }: AddPhotographyPathParameters,
     addPhotographyBody: number,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/${itineraryId}/photography/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: addPhotographyBody
-    },
-      );
-    }
+  ) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/${itineraryId}/photography/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: addPhotographyBody,
+    });
+  };
   /**
- * @summary 更新日程餐饮
- */
-const updateDayDining = (
+   * @summary 更新日程餐饮
+   */
+  const updateDayDining = (
     { itineraryId, dayNumber }: UpdateDayDiningPathParameters,
     travelItineraryDining: TravelItineraryDining,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/${itineraryId}/day/${dayNumber}/dining`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItineraryDining
-    },
-      );
-    }
+  ) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/${itineraryId}/day/${dayNumber}/dining`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItineraryDining,
+    });
+  };
   /**
- * @summary 更新日程景点
- */
-const updateDayAttractions = (
+   * @summary 更新日程景点
+   */
+  const updateDayAttractions = (
     { itineraryId, dayNumber }: UpdateDayAttractionsPathParameters,
     updateDayAttractionsBody: string,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/${itineraryId}/day/${dayNumber}/attractions`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDayAttractionsBody
-    },
-      );
-    }
+  ) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/${itineraryId}/day/${dayNumber}/attractions`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateDayAttractionsBody,
+    });
+  };
   /**
- * @summary 更新日程住宿
- */
-const updateDayAccommodation = (
+   * @summary 更新日程住宿
+   */
+  const updateDayAccommodation = (
     { itineraryId, dayNumber }: UpdateDayAccommodationPathParameters,
     updateDayAccommodationBody: number,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/${itineraryId}/day/${dayNumber}/accommodation`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: updateDayAccommodationBody
-    },
-      );
-    }
+  ) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/${itineraryId}/day/${dayNumber}/accommodation`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateDayAccommodationBody,
+    });
+  };
   /**
- * @summary 添加行程包车
- */
-const addCar = (
-    { itineraryId }: AddCarPathParameters,
-    addCarBody: number,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/${itineraryId}/car/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: addCarBody
-    },
-      );
-    }
+   * @summary 添加行程包车
+   */
+  const addCar = ({ itineraryId }: AddCarPathParameters, addCarBody: number) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/${itineraryId}/car/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: addCarBody,
+    });
+  };
   /**
- * @summary 删除行程
- */
-const remove = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/remove`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 删除行程
+   */
+  const remove = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/remove`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 修改行程
- */
-const edit12 = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 修改行程
+   */
+  const edit12 = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 复制行程
- */
-const copy = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/copy`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 复制行程
+   */
+  const copy = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/copy`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 确认行程
- */
-const confirm = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/confirm`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 确认行程
+   */
+  const confirm = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/confirm`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 更新确认状态
- */
-const confirmStatus = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/confirmStatus`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 更新确认状态
+   */
+  const confirmStatus = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/confirmStatus`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 一键生成行程
- */
-const autoGenerate = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/auto`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 一键生成行程
+   */
+  const autoGenerate = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/auto`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 手动创建行程
- */
-const add1 = (
-    travelItinerary: TravelItinerary,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelItinerary
-    },
-      );
-    }
+   * @summary 手动创建行程
+   */
+  const add1 = (travelItinerary: TravelItinerary) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/itinerary/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelItinerary,
+    });
+  };
   /**
- * @summary 查询行程详情
- */
-const getInfo2 = (
-    { itineraryId }: GetInfo2PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/${itineraryId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 查询行程详情
+   */
+  const getInfo2 = ({ itineraryId }: GetInfo2PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/itinerary/${itineraryId}`, method: 'GET' });
+  };
   /**
- * @summary 查询行程列表
- */
-const list12 = (
-    params?: List12Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/itinerary/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {addPhotography,updateDayDining,updateDayAttractions,updateDayAccommodation,addCar,remove,edit12,copy,confirm,confirmStatus,autoGenerate,add1,getInfo2,list12}};
-export type AddPhotographyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['addPhotography']>>>
-export type UpdateDayDiningResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['updateDayDining']>>>
-export type UpdateDayAttractionsResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['updateDayAttractions']>>>
-export type UpdateDayAccommodationResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['updateDayAccommodation']>>>
-export type AddCarResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['addCar']>>>
-export type RemoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['remove']>>>
-export type Edit12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['edit12']>>>
-export type CopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['copy']>>>
-export type ConfirmResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['confirm']>>>
-export type ConfirmStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['confirmStatus']>>>
-export type AutoGenerateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['autoGenerate']>>>
-export type Add1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['add1']>>>
-export type GetInfo2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo2']>>>
-export type List12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list12']>>>
+   * @summary 查询行程列表
+   */
+  const list12 = (params?: List12Params) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/itinerary/list`, method: 'GET', params });
+  };
+  return {
+    addPhotography,
+    updateDayDining,
+    updateDayAttractions,
+    updateDayAccommodation,
+    addCar,
+    remove,
+    edit12,
+    copy,
+    confirm,
+    confirmStatus,
+    autoGenerate,
+    add1,
+    getInfo2,
+    list12,
+  };
+};
+export type AddPhotographyResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getC>['addPhotography']>>
+>;
+export type UpdateDayDiningResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getC>['updateDayDining']>>
+>;
+export type UpdateDayAttractionsResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getC>['updateDayAttractions']>>
+>;
+export type UpdateDayAccommodationResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getC>['updateDayAccommodation']>>
+>;
+export type AddCarResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['addCar']>>>;
+export type RemoveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['remove']>>>;
+export type Edit12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['edit12']>>>;
+export type CopyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['copy']>>>;
+export type ConfirmResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['confirm']>>>;
+export type ConfirmStatusResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getC>['confirmStatus']>>
+>;
+export type AutoGenerateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getC>['autoGenerate']>>
+>;
+export type Add1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['add1']>>>;
+export type GetInfo2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo2']>>>;
+export type List12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list12']>>>;

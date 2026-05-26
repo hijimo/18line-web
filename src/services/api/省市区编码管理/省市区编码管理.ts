@@ -8,72 +8,53 @@
 import type {
   AjaxResult,
   CityList1PathParameters,
-  DistrictList1PathParameters
+  DistrictList1PathParameters,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 刷新省市区缓存
- */
-const refreshCache = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/region/refresh-cache`, method: 'POST'
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 获取树形区域数据
- */
-const regionTree = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/region/tree`, method: 'GET'
-    },
-      );
-    }
+   * @summary 刷新省市区缓存
+   */
+  const refreshCache = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/region/refresh-cache`, method: 'POST' });
+  };
   /**
- * @summary 获取所有省级数据
- */
-const provinceList1 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/region/province`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取树形区域数据
+   */
+  const regionTree = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/region/tree`, method: 'GET' });
+  };
   /**
- * @summary 根据城市编码获取区级数据
- */
-const districtList1 = (
-    { cityCode }: DistrictList1PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/region/district/${cityCode}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取所有省级数据
+   */
+  const provinceList1 = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/region/province`, method: 'GET' });
+  };
   /**
- * @summary 根据省份编码获取市级数据
- */
-const cityList1 = (
-    { provinceCode }: CityList1PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/region/city/${provinceCode}`, method: 'GET'
-    },
-      );
-    }
-  return {refreshCache,regionTree,provinceList1,districtList1,cityList1}};
-export type RefreshCacheResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['refreshCache']>>>
-export type RegionTreeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['regionTree']>>>
-export type ProvinceList1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['provinceList1']>>>
-export type DistrictList1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['districtList1']>>>
-export type CityList1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['cityList1']>>>
+   * @summary 根据城市编码获取区级数据
+   */
+  const districtList1 = ({ cityCode }: DistrictList1PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/region/district/${cityCode}`, method: 'GET' });
+  };
+  /**
+   * @summary 根据省份编码获取市级数据
+   */
+  const cityList1 = ({ provinceCode }: CityList1PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/region/city/${provinceCode}`, method: 'GET' });
+  };
+  return { refreshCache, regionTree, provinceList1, districtList1, cityList1 };
+};
+export type RefreshCacheResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['refreshCache']>>
+>;
+export type RegionTreeResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['regionTree']>>
+>;
+export type ProvinceList1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['provinceList1']>>
+>;
+export type DistrictList1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['districtList1']>>
+>;
+export type CityList1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['cityList1']>>>;

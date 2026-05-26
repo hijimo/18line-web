@@ -7,5 +7,5 @@
  */
 
 export type GetInfo6PathParameters = {
- accommodationId: number,
- }
+  accommodationId: number;
+};

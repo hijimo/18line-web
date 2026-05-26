@@ -11,93 +11,72 @@ import type {
   GetInfo8PathParameters,
   List18Params,
   TableDataInfo,
-  TravelTemplate
+  TravelTemplate,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 新增行程模板
- */
-const add2 = (
-    travelTemplate: TravelTemplate,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/template`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelTemplate
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 删除行程模板
- */
-const remove1 = (
-    remove1Body: string,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/template/remove`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: remove1Body
-    },
-      );
-    }
+   * @summary 新增行程模板
+   */
+  const add2 = (travelTemplate: TravelTemplate) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/template`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelTemplate,
+    });
+  };
   /**
- * @summary 全自动生成模板
- */
-const generate = (
-    generateTemplateRequest: GenerateTemplateRequest,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/template/generate`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: generateTemplateRequest
-    },
-      );
-    }
+   * @summary 删除行程模板
+   */
+  const remove1 = (remove1Body: string) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/template/remove`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: remove1Body,
+    });
+  };
   /**
- * @summary 修改行程模板
- */
-const edit13 = (
-    travelTemplate: TravelTemplate,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/template/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelTemplate
-    },
-      );
-    }
+   * @summary 全自动生成模板
+   */
+  const generate = (generateTemplateRequest: GenerateTemplateRequest) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/template/generate`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: generateTemplateRequest,
+    });
+  };
   /**
- * @summary 查询模板详情（含日程明细）
- */
-const getInfo8 = (
-    { templateId }: GetInfo8PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/template/${templateId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 修改行程模板
+   */
+  const edit13 = (travelTemplate: TravelTemplate) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/template/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelTemplate,
+    });
+  };
   /**
- * @summary 分页查询行程模板列表
- */
-const list18 = (
-    params: List18Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/template/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {add2,remove1,generate,edit13,getInfo8,list18}};
-export type Add2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add2']>>>
-export type Remove1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove1']>>>
-export type GenerateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['generate']>>>
-export type Edit13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit13']>>>
-export type GetInfo8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo8']>>>
-export type List18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list18']>>>
+   * @summary 查询模板详情（含日程明细）
+   */
+  const getInfo8 = ({ templateId }: GetInfo8PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/template/${templateId}`, method: 'GET' });
+  };
+  /**
+   * @summary 分页查询行程模板列表
+   */
+  const list18 = (params: List18Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/template/list`, method: 'GET', params });
+  };
+  return { add2, remove1, generate, edit13, getInfo8, list18 };
+};
+export type Add2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add2']>>>;
+export type Remove1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove1']>>>;
+export type GenerateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['generate']>>>;
+export type Edit13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit13']>>>;
+export type GetInfo8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo8']>>>;
+export type List18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list18']>>>;

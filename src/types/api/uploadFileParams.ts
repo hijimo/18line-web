@@ -7,5 +7,5 @@
  */
 
 export type UploadFileParams = {
-file: Blob;
+  file: Blob;
 };

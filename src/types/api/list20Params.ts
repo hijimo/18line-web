@@ -8,5 +8,5 @@
 import type { TravelAlgorithmConfig } from './travelAlgorithmConfig';
 
 export type List20Params = {
-config: TravelAlgorithmConfig;
+  config: TravelAlgorithmConfig;
 };

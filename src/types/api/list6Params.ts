@@ -8,5 +8,5 @@
 import type { TravelCheckin } from './travelCheckin';
 
 export type List6Params = {
-checkin: TravelCheckin;
+  checkin: TravelCheckin;
 };

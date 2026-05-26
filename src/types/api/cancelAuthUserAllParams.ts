@@ -7,6 +7,6 @@
  */
 
 export type CancelAuthUserAllParams = {
-roleId: number;
-userIds: number[];
+  roleId: number;
+  userIds: number[];
 };

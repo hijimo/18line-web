@@ -9,7 +9,7 @@
 /**
  * 用户登录对象
  */
-export interface LoginBody {
+export type LoginBody = {
   /** 用户名 */
   username: string;
   /** 密码 */
@@ -18,4 +18,4 @@ export interface LoginBody {
   code?: string;
   /** 验证码唯一标识 */
   uuid?: string;
-}
+};

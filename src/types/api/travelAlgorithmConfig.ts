@@ -7,7 +7,7 @@
  */
 import type { TravelAlgorithmConfigParams } from './travelAlgorithmConfigParams';
 
-export interface TravelAlgorithmConfig {
+export type TravelAlgorithmConfig = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -35,4 +35,4 @@ export interface TravelAlgorithmConfig {
   periodLimitMorning?: number;
   periodLimitAfternoon?: number;
   periodLimitEvening?: number;
-}
+};

@@ -6,4 +6,4 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export type TravelAttractionParams = {[key: string]: { [key: string]: unknown }};
+export type TravelAttractionParams = { [key: string]: { [key: string]: unknown } };

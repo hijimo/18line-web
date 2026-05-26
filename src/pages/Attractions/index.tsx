@@ -1,41 +1,71 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Switch, Checkbox, DatePicker, Space, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Checkbox,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Popconfirm,
+  Select,
+  Space,
+  Switch,
+  Tag,
+} from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import CoordinateInput from '@/components/CoordinateInput';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import LineSelect from '@/components/DataSelect/LineSelect';
+import RegionFormItem from '@/components/RegionFormItem';
+import UploadList from '@/components/Upload';
+import { useDictMap } from '@/hooks/useDictMap';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
+import {
+  BadFactorsLabel,
+  BlindStatusLabel,
+  ClassicRatingOptions,
+  FamilyFriendlyLabel,
+  StatusEnum,
+  StatusLabel,
+} from '@/enums';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
-import UploadList from '@/components/Upload';
-import RegionFormItem from '@/components/RegionFormItem';
-import CoordinateInput from '@/components/CoordinateInput';
-import LineSelect from '@/components/DataSelect/LineSelect';
-import DictSelect from '@/components/DataSelect/DictSelect';
-import { useDictMap } from '@/hooks/useDictMap';
-import { BlindStatusLabel, FamilyFriendlyLabel, ClassicRatingOptions, BadFactorsLabel, StatusEnum, StatusLabel } from '@/enums';
-
 
 const attractionApi = getAttractionApi();
 
-const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({ label, value }));
-const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({ label, value }));
+const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
+const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
 
 const Attractions: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(attractionApi.list8 as any);
+  const request = useTableRequest(attractionApi.list8 as TODO);
   const leisureMap = useDictMap('travel_leisure');
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue({
         ...record,
         region: { province: record.province, city: record.city, district: record.district },
-        lineIds: record.lineIds || record.lines?.map((l: any) => l.lineId) || [],
-        badFactors: record.badFactors ? record.badFactors.split(',').map((s: string) => s.trim()).filter(Boolean) : [],
+        lineIds: record.lineIds || record.lines?.map((l: TODO) => l.lineId) || [],
+        badFactors: record.badFactors
+          ? record.badFactors
+              .split(',')
+              .map((s: string) => s.trim())
+              .filter(Boolean)
+          : [],
         attachments: record.attachments || [],
       });
     } else {
@@ -55,10 +85,13 @@ const Attractions: React.FC = () => {
     };
     try {
       if (currentRecord) {
-        await attractionApi.editSave8({ ...params, attractionId: currentRecord.attractionId } as any);
+        await attractionApi.editSave8({
+          ...params,
+          attractionId: currentRecord.attractionId,
+        } as TODO);
         message.success('编辑成功');
       } else {
-        await attractionApi.addSave9(params as any);
+        await attractionApi.addSave9(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -68,10 +101,13 @@ const Attractions: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await attractionApi.editSave8({ attractionId: record.attractionId, status: newStatus } as any);
+      await attractionApi.editSave8({
+        attractionId: record.attractionId,
+        status: newStatus,
+      } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -79,9 +115,9 @@ const Attractions: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await attractionApi.remove10({ ids: record.attractionId } as any);
+      await attractionApi.remove10({ ids: record.attractionId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -93,16 +129,45 @@ const Attractions: React.FC = () => {
     key,
     { title: '名称', dataIndex: 'attractionName', ellipsis: true },
     { title: '开放时间', dataIndex: 'openTime', search: false, ellipsis: true },
-    { title: '休闲指数', dataIndex: 'leisureRating', search: false, render: (_: any, r: any) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--' },
-    { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}小时` : '--' },
+    {
+      title: '休闲指数',
+      dataIndex: 'leisureRating',
+      search: false,
+      render: (_: TODO, r: TODO) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--',
+    },
+    {
+      title: '游玩时间',
+      dataIndex: 'visitDuration',
+      search: false,
+      render: (v: number) => (v ? `${v}小时` : '--'),
+    },
     { title: '地点', dataIndex: 'location', search: false },
-    { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => <Tag color={v === '1' ? 'blue' : undefined}>{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel] ?? '--'}</Tag> },
-    { title: '经典指数', dataIndex: 'classicRating', search: false, render: (v: number) => v ? `${v}星` : '--' },
-    { title: '门票', dataIndex: 'ticketPriceA', search: false, render: (v: number) => v ? `${v}元` : '--' },
+    {
+      title: '是否亲子',
+      dataIndex: 'familyFriendly',
+      search: false,
+      render: (v: string) => (
+        <Tag color={v === '1' ? 'blue' : undefined}>
+          {FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel] ?? '--'}
+        </Tag>
+      ),
+    },
+    {
+      title: '经典指数',
+      dataIndex: 'classicRating',
+      search: false,
+      render: (v: number) => (v ? `${v}星` : '--'),
+    },
+    {
+      title: '门票',
+      dataIndex: 'ticketPriceA',
+      search: false,
+      render: (v: number) => (v ? `${v}元` : '--'),
+    },
     { title: '打卡点', dataIndex: 'checkinCount', search: false },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -122,8 +187,8 @@ const Attractions: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加景点
@@ -141,12 +206,18 @@ const Attractions: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="attractionName" label="景点名称" rules={[{ required: true, message: '请输入景点名称' }]}>
+          <Form.Item
+            name="attractionName"
+            label="景点名称"
+            rules={[{ required: true, message: '请输入景点名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="attractionShortName" label="简称">
@@ -192,7 +263,12 @@ const Attractions: React.FC = () => {
               <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
             </Form.Item>
           </Space>
-          <Form.Item name="familyFriendly" label="亲子游" valuePropName="checked" normalize={(v) => v ? '1' : '0'}>
+          <Form.Item
+            name="familyFriendly"
+            label="亲子游"
+            valuePropName="checked"
+            normalize={(v) => (v ? '1' : '0')}
+          >
             <Switch />
           </Form.Item>
           <Form.Item name="attractionNotes" label="注意事项">

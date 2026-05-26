@@ -8,5 +8,5 @@
 import type { SysDept } from './sysDept';
 
 export type List28Params = {
-dept: SysDept;
+  dept: SysDept;
 };

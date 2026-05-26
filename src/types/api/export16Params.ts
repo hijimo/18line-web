@@ -8,5 +8,5 @@
 import type { SysLogininfor } from './sysLogininfor';
 
 export type Export16Params = {
-logininfor: SysLogininfor;
+  logininfor: SysLogininfor;
 };

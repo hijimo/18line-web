@@ -1,29 +1,32 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, InputNumber, message, Popconfirm, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import RegionFormItem from '@/components/RegionFormItem';
+import UploadList from '@/components/Upload';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { SpecialStarOptions, StatusEnum, StatusLabel } from '@/enums';
-
 import { get as getSpecialtyApi } from '@/services/api/地方特色菜管理/地方特色菜管理';
-import UploadList from '@/components/Upload';
-import RegionFormItem from '@/components/RegionFormItem';
 
 const specialtyApi = getSpecialtyApi();
 
 const LocalDishes: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(specialtyApi.list2 as any);
+  const request = useTableRequest(specialtyApi.list2 as TODO);
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
+      form.setFieldsValue({
+        ...record,
+        region: { province: record.province, city: record.city, district: record.district },
+        attachments: record.attachments || [],
+      });
     } else {
       form.resetFields();
     }
@@ -36,10 +39,10 @@ const LocalDishes: React.FC = () => {
     const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await specialtyApi.editSave2({ ...params, specialtyId: currentRecord.specialtyId } as any);
+        await specialtyApi.editSave2({ ...params, specialtyId: currentRecord.specialtyId } as TODO);
         message.success('编辑成功');
       } else {
-        await specialtyApi.addSave3(params as any);
+        await specialtyApi.addSave3(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -49,10 +52,10 @@ const LocalDishes: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await specialtyApi.editSave2({ specialtyId: record.specialtyId, status: newStatus } as any);
+      await specialtyApi.editSave2({ specialtyId: record.specialtyId, status: newStatus } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -60,9 +63,9 @@ const LocalDishes: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await specialtyApi.remove4({ ids: record.specialtyId } as any);
+      await specialtyApi.remove4({ ids: record.specialtyId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -76,10 +79,15 @@ const LocalDishes: React.FC = () => {
     { title: '省份', dataIndex: 'province', ellipsis: true, search: false },
     { title: '城市', dataIndex: 'city', ellipsis: true, search: false },
     { title: '价格（元）', dataIndex: 'price', search: false },
-    { title: '推荐指数', dataIndex: 'specialStar', search: false, render: (v: number) => SpecialStarOptions.find(o => o.value === v)?.label ?? '--' },
+    {
+      title: '推荐指数',
+      dataIndex: 'specialStar',
+      search: false,
+      render: (v: number) => SpecialStarOptions.find((o) => o.value === v)?.label ?? '--',
+    },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -99,8 +107,8 @@ const LocalDishes: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加特色菜
@@ -117,12 +125,18 @@ const LocalDishes: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="specialtyName" label="特色菜名称" rules={[{ required: true, message: '请输入特色菜名称' }]}>
+          <Form.Item
+            name="specialtyName"
+            label="特色菜名称"
+            rules={[{ required: true, message: '请输入特色菜名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="specialtyDesc" label="描述">

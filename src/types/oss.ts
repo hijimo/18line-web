@@ -1,5 +1,5 @@
 /** OSS 签名凭证数据 */
-export interface OssSignData {
+export type OssSignData = {
   /** OSS 上传地址 */
   host: string;
   /** 上传策略（Base64 编码） */
@@ -14,4 +14,4 @@ export interface OssSignData {
   uploadDir: string;
   /** CDN 域名 */
   cdnDomain: string;
-}
+};

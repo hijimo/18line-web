@@ -9,7 +9,7 @@ import type { TravelItineraryAttachmentsItem } from './travelItineraryAttachment
 import type { TravelItineraryDay } from './travelItineraryDay';
 import type { TravelItineraryParams } from './travelItineraryParams';
 
-export interface TravelItinerary {
+export type TravelItinerary = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -35,4 +35,4 @@ export interface TravelItinerary {
   statusLabel?: string;
   createFromLabel?: string;
   attachments?: TravelItineraryAttachmentsItem[];
-}
+};

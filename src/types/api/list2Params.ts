@@ -8,5 +8,5 @@
 import type { TravelLocalSpecialtyDish } from './travelLocalSpecialtyDish';
 
 export type List2Params = {
-specialty: TravelLocalSpecialtyDish;
+  specialty: TravelLocalSpecialtyDish;
 };

@@ -7,7 +7,7 @@
  */
 import type { SysConfigParams } from './sysConfigParams';
 
-export interface SysConfig {
+export type SysConfig = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,19 +16,19 @@ export interface SysConfig {
   params?: SysConfigParams;
   configId?: number;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   configName: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   configKey: string;
   /**
-     * @minLength 0
-     * @maxLength 500
-     */
+   * @minLength 0
+   * @maxLength 500
+   */
   configValue: string;
   configType?: string;
-}
+};

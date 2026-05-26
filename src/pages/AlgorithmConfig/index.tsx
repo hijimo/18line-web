@@ -1,27 +1,29 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, InputNumber, message, Popconfirm, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import UploadList from '@/components/Upload';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { RegionLevelLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getAlgoApi } from '@/services/api/算法配置管理/算法配置管理';
-import UploadList from '@/components/Upload';
-
 
 const algoApi = getAlgoApi();
 
-const REGION_LEVEL_OPTIONS = Object.entries(RegionLevelLabel).map(([value, label]) => ({ label, value }));
+const REGION_LEVEL_OPTIONS = Object.entries(RegionLevelLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
 
 const AlgorithmConfig: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(algoApi.list20 as any);
+  const request = useTableRequest(algoApi.list20 as TODO);
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue({ ...record, attachments: record.attachments || [] });
@@ -37,10 +39,10 @@ const AlgorithmConfig: React.FC = () => {
     const params = { ...rest, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await algoApi.edit14({ ...params, configId: currentRecord.configId } as any);
+        await algoApi.edit14({ ...params, configId: currentRecord.configId } as TODO);
         message.success('编辑成功');
       } else {
-        await algoApi.add3(params as any);
+        await algoApi.add3(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -50,10 +52,10 @@ const AlgorithmConfig: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await algoApi.edit14({ configId: record.configId, status: newStatus } as any);
+      await algoApi.edit14({ configId: record.configId, status: newStatus } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -61,9 +63,9 @@ const AlgorithmConfig: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await algoApi.remove11({ ids: record.configId } as any);
+      await algoApi.remove11({ ids: record.configId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -78,7 +80,7 @@ const AlgorithmConfig: React.FC = () => {
     { title: '体耗系数', dataIndex: 'staminaFormulaCoefficient', search: false },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -98,8 +100,8 @@ const AlgorithmConfig: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加配置
@@ -116,7 +118,9 @@ const AlgorithmConfig: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
@@ -160,7 +164,7 @@ const AlgorithmConfig: React.FC = () => {
           <Form.Item name="singleAttractionThreshold" label="单景点阈值" initialValue={240}>
             <InputNumber placeholder="请输入" addonAfter="分钟" style={{ width: '100%' }} />
           </Form.Item>
-          <Form.Item name="staminaFormulaCoefficient" label="体耗系数" initialValue={1.00}>
+          <Form.Item name="staminaFormulaCoefficient" label="体耗系数" initialValue={1.0}>
             <InputNumber placeholder="请输入" precision={2} style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="periodLimitMorning" label="上午时段上限" initialValue={180}>

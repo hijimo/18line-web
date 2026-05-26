@@ -10,50 +10,34 @@ import type {
   Export15Params,
   List30Params,
   Remove24PathParameters,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getSysOperlogController = () => {
-const export15 = (
-    params: Export15Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/monitor/operlog/export`, method: 'POST',
-        params
-    },
-      );
-    }
-  const list30 = (
-    params: List30Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/monitor/operlog/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  const remove24 = (
-    { operIds }: Remove24PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/operlog/${operIds}`, method: 'DELETE'
-    },
-      );
-    }
-  const clean = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/operlog/clean`, method: 'DELETE'
-    },
-      );
-    }
-  return {export15,list30,remove24,clean}};
-export type Export15Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['export15']>>>
-export type List30Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['list30']>>>
-export type Remove24Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['remove24']>>>
-export type CleanResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['clean']>>>
+export const getSysOperlogController = () => {
+  const export15 = (params: Export15Params) => {
+    return orvalMutator<void>({ url: `/monitor/operlog/export`, method: 'POST', params });
+  };
+  const list30 = (params: List30Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/monitor/operlog/list`, method: 'GET', params });
+  };
+  const remove24 = ({ operIds }: Remove24PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/operlog/${operIds}`, method: 'DELETE' });
+  };
+  const clean = () => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/operlog/clean`, method: 'DELETE' });
+  };
+  return { export15, list30, remove24, clean };
+};
+export type Export15Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['export15']>>
+>;
+export type List30Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['list30']>>
+>;
+export type Remove24Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['remove24']>>
+>;
+export type CleanResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysOperlogController>['clean']>>
+>;

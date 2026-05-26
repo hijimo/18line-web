@@ -1,21 +1,29 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, InputNumber, message, Popconfirm, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import RegionFormItem from '@/components/RegionFormItem';
+import UploadList from '@/components/Upload';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { GenderLabel, PhotographyRecommendRatingOptions, StatusEnum, StatusLabel } from '@/enums';
+import { get as getCarApi } from '@/services/api/包车管理/包车管理';
 import type { AttachmentPurpose } from '@/types/common';
 import { toAttachments } from '@/types/common';
-import { get as getCarApi } from '@/services/api/包车管理/包车管理';
-import UploadList from '@/components/Upload';
-import RegionFormItem from '@/components/RegionFormItem';
 
 const carApi = getCarApi();
 
 const genderOptions = Object.entries(GenderLabel).map(([value, label]) => ({ label, value }));
-const genderValueEnum = Object.fromEntries(Object.entries(GenderLabel).map(([k, v]) => [k, { text: v }]));
-const recommendRatingValueEnum = PhotographyRecommendRatingOptions.reduce((acc, opt) => { acc[opt.value] = { text: opt.label }; return acc; }, {} as Record<number, { text: string }>);
+const genderValueEnum = Object.fromEntries(
+  Object.entries(GenderLabel).map(([k, v]) => [k, { text: v }]),
+);
+const recommendRatingValueEnum = PhotographyRecommendRatingOptions.reduce(
+  (acc, opt) => {
+    acc[opt.value] = { text: opt.label };
+    return acc;
+  },
+  {} as Record<number, { text: string }>,
+);
 
 /** 包车服务的上传分类配置 */
 const CAR_UPLOAD_FIELDS: { name: string; label: string; purpose: AttachmentPurpose }[] = [
@@ -26,24 +34,28 @@ const CAR_UPLOAD_FIELDS: { name: string; label: string; purpose: AttachmentPurpo
 ];
 
 const CharteredCar: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(carApi.list7 as any);
+  const request = useTableRequest(carApi.list7 as TODO);
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
-      const allAttachments: any[] = record.attachments || [];
+      const allAttachments: TODO[] = record.attachments || [];
       const fieldValues: Record<string, { url: string; name: string }[]> = {};
       for (const { name, purpose } of CAR_UPLOAD_FIELDS) {
         fieldValues[name] = allAttachments
-          .filter(a => a.purpose === purpose)
-          .map(a => ({ url: a.url, name: a.name }));
+          .filter((a) => a.purpose === purpose)
+          .map((a) => ({ url: a.url, name: a.name }));
       }
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, ...fieldValues });
+      form.setFieldsValue({
+        ...record,
+        region: { province: record.province, city: record.city, district: record.district },
+        ...fieldValues,
+      });
     } else {
       form.resetFields();
     }
@@ -64,10 +76,10 @@ const CharteredCar: React.FC = () => {
     const params = { ...rest, ...region, attachments: allAttachments };
     try {
       if (currentRecord) {
-        await carApi.editSave7({ ...params, carId: currentRecord.carId } as any);
+        await carApi.editSave7({ ...params, carId: currentRecord.carId } as TODO);
         message.success('编辑成功');
       } else {
-        await carApi.addSave8(params as any);
+        await carApi.addSave8(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -77,10 +89,10 @@ const CharteredCar: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await carApi.editSave7({ carId: record.carId, status: newStatus } as any);
+      await carApi.editSave7({ carId: record.carId, status: newStatus } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -88,9 +100,9 @@ const CharteredCar: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await carApi.remove9({ ids: record.carId } as any);
+      await carApi.remove9({ ids: record.carId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -102,15 +114,30 @@ const CharteredCar: React.FC = () => {
     key,
     { title: '名称', dataIndex: 'nickname', ellipsis: true },
     { title: '性别', dataIndex: 'gender', search: false, valueEnum: genderValueEnum },
-    { title: '驾龄', dataIndex: 'drivingYears', search: false, render: (v: number) => v ? `${v}年` : '--' },
-    { title: '价格', dataIndex: 'price', search: false, render: (v: number) => v ? `${v}元/天` : '--' },
+    {
+      title: '驾龄',
+      dataIndex: 'drivingYears',
+      search: false,
+      render: (v: number) => (v ? `${v}年` : '--'),
+    },
+    {
+      title: '价格',
+      dataIndex: 'price',
+      search: false,
+      render: (v: number) => (v ? `${v}元/天` : '--'),
+    },
     { title: '电话', dataIndex: 'contactInfo', search: false },
     { title: '车型', dataIndex: 'carModel', search: false },
     { title: '地点', dataIndex: 'location', search: false },
-    { title: '评分', dataIndex: 'recommendRating', search: false, valueEnum: recommendRatingValueEnum },
+    {
+      title: '评分',
+      dataIndex: 'recommendRating',
+      search: false,
+      valueEnum: recommendRatingValueEnum,
+    },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -130,8 +157,8 @@ const CharteredCar: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加包车
@@ -148,12 +175,18 @@ const CharteredCar: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="nickname" label="司机名称" rules={[{ required: true, message: '请输入司机名称' }]}>
+          <Form.Item
+            name="nickname"
+            label="司机名称"
+            rules={[{ required: true, message: '请输入司机名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="gender" label="性别">

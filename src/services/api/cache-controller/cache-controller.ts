@@ -10,75 +10,69 @@ import type {
   ClearCacheKeyPathParameters,
   ClearCacheNamePathParameters,
   GetCacheKeysPathParameters,
-  GetCacheValuePathParameters
+  GetCacheValuePathParameters,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getCacheController = () => {
-const getInfo31 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache`, method: 'GET'
-    },
-      );
-    }
-  const getCacheValue = (
-    { cacheName, cacheKey }: GetCacheValuePathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache/getValue/${cacheName}/${cacheKey}`, method: 'GET'
-    },
-      );
-    }
-  const cache = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache/getNames`, method: 'GET'
-    },
-      );
-    }
-  const getCacheKeys = (
-    { cacheName }: GetCacheKeysPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache/getKeys/${cacheName}`, method: 'GET'
-    },
-      );
-    }
-  const clearCacheName = (
-    { cacheName }: ClearCacheNamePathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache/clearCacheName/${cacheName}`, method: 'DELETE'
-    },
-      );
-    }
-  const clearCacheKey = (
-    { cacheKey }: ClearCacheKeyPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache/clearCacheKey/${cacheKey}`, method: 'DELETE'
-    },
-      );
-    }
-  const clearCacheAll = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/cache/clearCacheAll`, method: 'DELETE'
-    },
-      );
-    }
-  return {getInfo31,getCacheValue,cache,getCacheKeys,clearCacheName,clearCacheKey,clearCacheAll}};
-export type GetInfo31Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['getInfo31']>>>
-export type GetCacheValueResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['getCacheValue']>>>
-export type CacheResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['cache']>>>
-export type GetCacheKeysResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['getCacheKeys']>>>
-export type ClearCacheNameResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['clearCacheName']>>>
-export type ClearCacheKeyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['clearCacheKey']>>>
-export type ClearCacheAllResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getCacheController>['clearCacheAll']>>>
+export const getCacheController = () => {
+  const getInfo31 = () => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/cache`, method: 'GET' });
+  };
+  const getCacheValue = ({ cacheName, cacheKey }: GetCacheValuePathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/monitor/cache/getValue/${cacheName}/${cacheKey}`,
+      method: 'GET',
+    });
+  };
+  const cache = () => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/cache/getNames`, method: 'GET' });
+  };
+  const getCacheKeys = ({ cacheName }: GetCacheKeysPathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/cache/getKeys/${cacheName}`, method: 'GET' });
+  };
+  const clearCacheName = ({ cacheName }: ClearCacheNamePathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/monitor/cache/clearCacheName/${cacheName}`,
+      method: 'DELETE',
+    });
+  };
+  const clearCacheKey = ({ cacheKey }: ClearCacheKeyPathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/monitor/cache/clearCacheKey/${cacheKey}`,
+      method: 'DELETE',
+    });
+  };
+  const clearCacheAll = () => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/cache/clearCacheAll`, method: 'DELETE' });
+  };
+  return {
+    getInfo31,
+    getCacheValue,
+    cache,
+    getCacheKeys,
+    clearCacheName,
+    clearCacheKey,
+    clearCacheAll,
+  };
+};
+export type GetInfo31Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['getInfo31']>>
+>;
+export type GetCacheValueResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['getCacheValue']>>
+>;
+export type CacheResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['cache']>>
+>;
+export type GetCacheKeysResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['getCacheKeys']>>
+>;
+export type ClearCacheNameResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['clearCacheName']>>
+>;
+export type ClearCacheKeyResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['clearCacheKey']>>
+>;
+export type ClearCacheAllResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getCacheController>['clearCacheAll']>>
+>;

@@ -11,79 +11,55 @@ import type {
   List3Params,
   Remove5Params,
   TableDataInfo,
-  TravelLine
+  TravelLine,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除线路
- */
-const remove5 = (
-    params: Remove5Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/line/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询线路列表
- */
-const list3 = (
-    params: List3Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/line/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除线路
+   */
+  const remove5 = (params: Remove5Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/line/remove`, method: 'POST', params });
+  };
   /**
- * @summary 导出线路列表
- */
-const export2 = (
-    params: Export2Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/line/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询线路列表
+   */
+  const list3 = (params: List3Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/line/list`, method: 'POST', params });
+  };
   /**
- * @summary 修改保存线路
- */
-const editSave3 = (
-    travelLine: TravelLine,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/line/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelLine
-    },
-      );
-    }
+   * @summary 导出线路列表
+   */
+  const export2 = (params: Export2Params) => {
+    return orvalMutator<void>({ url: `/travel18/line/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存线路
- */
-const addSave4 = (
-    travelLine: TravelLine,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/line/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelLine
-    },
-      );
-    }
-  return {remove5,list3,export2,editSave3,addSave4}};
-export type Remove5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove5']>>>
-export type List3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list3']>>>
-export type Export2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export2']>>>
-export type EditSave3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave3']>>>
-export type AddSave4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave4']>>>
+   * @summary 修改保存线路
+   */
+  const editSave3 = (travelLine: TravelLine) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/line/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelLine,
+    });
+  };
+  /**
+   * @summary 新增保存线路
+   */
+  const addSave4 = (travelLine: TravelLine) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/line/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelLine,
+    });
+  };
+  return { remove5, list3, export2, editSave3, addSave4 };
+};
+export type Remove5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove5']>>>;
+export type List3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list3']>>>;
+export type Export2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export2']>>>;
+export type EditSave3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave3']>>>;
+export type AddSave4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave4']>>>;

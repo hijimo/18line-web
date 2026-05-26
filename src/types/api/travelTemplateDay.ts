@@ -7,7 +7,7 @@
  */
 import type { TravelTemplateDayParams } from './travelTemplateDayParams';
 
-export interface TravelTemplateDay {
+export type TravelTemplateDay = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -30,4 +30,4 @@ export interface TravelTemplateDay {
   carId?: number;
   status?: string;
   delFlag?: string;
-}
+};

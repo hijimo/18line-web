@@ -6,4 +6,4 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export type TravelTouristPreferenceFoodLikesListItem = {[key: string]: string};
+export type TravelTouristPreferenceFoodLikesListItem = { [key: string]: string };

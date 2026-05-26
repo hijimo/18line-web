@@ -1,10 +1,10 @@
-import React from 'react'
-import type { ProColumns } from '@ant-design/pro-table'
-import type { ProCoreActionType } from '@ant-design/pro-utils/es/typing'
-import { DatePicker } from 'antd'
-import dayjs from 'dayjs'
-import { DATE_FORMAT_FULL_TIME } from '@/variables'
-import { SwitchDesc } from '@/enums'
+import type { ProColumns } from '@ant-design/pro-table';
+import type { ProCoreActionType } from '@ant-design/pro-utils/es/typing';
+import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
+import React from 'react';
+import { DATE_FORMAT_FULL_TIME } from '@/variables';
+import { SwitchDesc } from '@/enums';
 
 // 序号列
 export const key: ProColumns<number> = {
@@ -17,10 +17,10 @@ export const key: ProColumns<number> = {
   width: 60,
   renderText(text, record, idx, action: ProCoreActionType) {
     if (action && action.pageInfo)
-      return `${(action.pageInfo.current - 1) * action.pageInfo.pageSize + idx + 1}`
-    return 1
+      return `${(action.pageInfo.current - 1) * action.pageInfo.pageSize + idx + 1}`;
+    return 1;
   },
-}
+};
 
 // 状态列
 export const status: ProColumns<number> = {
@@ -29,7 +29,7 @@ export const status: ProColumns<number> = {
   className: 'nowrap',
   valueEnum: SwitchDesc,
   search: false,
-}
+};
 
 // 创建时间列
 export const createTime: ProColumns<string> = {
@@ -41,7 +41,7 @@ export const createTime: ProColumns<string> = {
   width: 180,
   sorter: true,
   renderText: (_) => (_ ? dayjs(_).format(DATE_FORMAT_FULL_TIME) : '--'),
-}
+};
 
 // 创建人列
 export const creatorName: ProColumns<string> = {
@@ -52,7 +52,7 @@ export const creatorName: ProColumns<string> = {
   width: 160,
   ellipsis: true,
   search: false,
-}
+};
 
 // 更新时间列
 export const updateTime: ProColumns<string> = {
@@ -62,7 +62,7 @@ export const updateTime: ProColumns<string> = {
   hideInForm: true,
   search: false,
   fixed: 'right',
-}
+};
 
 // 创建时间范围搜索列
 export const createdRangeTime: ProColumns<string> = {
@@ -72,13 +72,9 @@ export const createdRangeTime: ProColumns<string> = {
   hideInForm: true,
   hideInTable: true,
   renderFormItem: () => (
-    <DatePicker.RangePicker
-      showTime
-      placeholder={['请选择', '请选择']}
-      style={{ width: '100%' }}
-    />
+    <DatePicker.RangePicker showTime placeholder={['请选择', '请选择']} style={{ width: '100%' }} />
   ),
-}
+};
 
 // 操作列
 export const option: ProColumns<unknown> = {
@@ -88,4 +84,4 @@ export const option: ProColumns<unknown> = {
   className: 'nowrap',
   fixed: 'right',
   width: 160,
-}
+};

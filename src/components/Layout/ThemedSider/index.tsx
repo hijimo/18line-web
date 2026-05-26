@@ -18,7 +18,7 @@ import { drawerButtonStyles } from './styles';
  * 菜单项接口
  * @deprecated 使用 TreeMenuItem 代替
  */
-export interface MenuItem {
+export type MenuItem = {
   key: string;
   name: string;
   label?: string;
@@ -29,14 +29,14 @@ export interface MenuItem {
     label?: string;
     icon?: React.ReactNode;
     parent?: string;
-    [key: string]: any;
+    [key: string]: TODO;
   };
-}
+};
 
 /**
  * 侧边栏组件属性
  */
-interface ThemedSiderProps extends ThemedLayoutSiderProps {
+type ThemedSiderProps = {
   /** 菜单项列表（已废弃，使用 resources 代替） */
   menuItems?: MenuItem[];
   /** 当前选中的菜单项（已废弃，自动从路由计算） */
@@ -47,7 +47,7 @@ interface ThemedSiderProps extends ThemedLayoutSiderProps {
   onLogout?: () => void;
   /** 是否显示登出按钮 */
   showLogout?: boolean;
-}
+} & ThemedLayoutSiderProps;
 
 /**
  * 主题侧边栏组件

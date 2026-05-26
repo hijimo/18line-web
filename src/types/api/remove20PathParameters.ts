@@ -7,5 +7,5 @@
  */
 
 export type Remove20PathParameters = {
- dictIds: number[],
- }
+  dictIds: number[];
+};

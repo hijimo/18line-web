@@ -8,5 +8,5 @@
 import type { TravelTemplate } from './travelTemplate';
 
 export type List18Params = {
-template: TravelTemplate;
+  template: TravelTemplate;
 };

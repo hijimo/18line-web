@@ -7,8 +7,8 @@
  */
 
 export type Remove11Params = {
-/**
- * 配置ID，多个用逗号分隔
- */
-ids: string;
+  /**
+   * 配置ID，多个用逗号分隔
+   */
+  ids: string;
 };

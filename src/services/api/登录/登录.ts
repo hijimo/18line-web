@@ -5,52 +5,37 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult,
-  LoginBody
-} from '../../../types/api';
-
+import type { AjaxResult, LoginBody } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 登录方法
- */
-const login1 = (
-    loginBody: LoginBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/login`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: loginBody
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 获取路由信息
- */
-const getRouters = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/getRouters`, method: 'GET'
-    },
-      );
-    }
+   * @summary 登录方法
+   */
+  const login1 = (loginBody: LoginBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/login`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: loginBody,
+    });
+  };
   /**
- * @summary 获取用户信息
- */
-const getInfo32 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/getInfo`, method: 'GET'
-    },
-      );
-    }
-  return {login1,getRouters,getInfo32}};
-export type Login1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['login1']>>>
-export type GetRoutersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getRouters']>>>
-export type GetInfo32Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo32']>>>
+   * @summary 获取路由信息
+   */
+  const getRouters = () => {
+    return orvalMutator<AjaxResult>({ url: `/getRouters`, method: 'GET' });
+  };
+  /**
+   * @summary 获取用户信息
+   */
+  const getInfo32 = () => {
+    return orvalMutator<AjaxResult>({ url: `/getInfo`, method: 'GET' });
+  };
+  return { login1, getRouters, getInfo32 };
+};
+export type Login1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['login1']>>>;
+export type GetRoutersResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['getRouters']>>
+>;
+export type GetInfo32Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo32']>>>;

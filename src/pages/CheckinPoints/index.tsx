@@ -1,49 +1,94 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Switch, Checkbox, TimePicker, Space, Tag, message } from 'antd';
-import dayjs from 'dayjs';
 import { PlusOutlined } from '@ant-design/icons';
+import {
+  Button,
+  Checkbox,
+  Drawer,
+  Form,
+  Input,
+  InputNumber,
+  message,
+  Popconfirm,
+  Select,
+  Space,
+  Switch,
+  Tag,
+  TimePicker,
+} from 'antd';
+import dayjs from 'dayjs';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
-import { useTableRequest } from '@/hooks/useTableRequest';
-import { key, option } from '@/configurify/columns/baseColumns';
-import { get as getCheckinApi } from '@/services/api/打卡点管理/打卡点管理';
-import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
-import { FamilyFriendlyLabel, ClassicRatingOptions, IndoorOutdoorLabel, BadFactorsLabel, BlindStatusLabel, StatusEnum, StatusLabel } from '@/enums';
-
-import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
 import CoordinateInput from '@/components/CoordinateInput';
 import DictSelect from '@/components/DataSelect/DictSelect';
+import RegionSelect from '@/components/RegionSelect';
+import UploadList from '@/components/Upload';
 import { useDictMap } from '@/hooks/useDictMap';
+import { useTableRequest } from '@/hooks/useTableRequest';
+import { key, option } from '@/configurify/columns/baseColumns';
+import {
+  BadFactorsLabel,
+  BlindStatusLabel,
+  ClassicRatingOptions,
+  FamilyFriendlyLabel,
+  IndoorOutdoorLabel,
+  StatusEnum,
+  StatusLabel,
+} from '@/enums';
+import { get as getCheckinApi } from '@/services/api/打卡点管理/打卡点管理';
+import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
 
 const checkinApi = getCheckinApi();
 const attractionApi = getAttractionApi();
 
-const indoorOutdoorOptions = Object.entries(IndoorOutdoorLabel).map(([value, label]) => ({ label, value }));
-const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({ label, value }));
-const classicRatingValueEnum = Object.fromEntries(ClassicRatingOptions.map(({ value, label }) => [value, { text: label }]));
-const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({ label, value }));
+const indoorOutdoorOptions = Object.entries(IndoorOutdoorLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
+const badFactorsOptions = Object.entries(BadFactorsLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
+const classicRatingValueEnum = Object.fromEntries(
+  ClassicRatingOptions.map(({ value, label }) => [value, { text: label }]),
+);
+const blindStatusOptions = Object.entries(BlindStatusLabel).map(([value, label]) => ({
+  label,
+  value,
+}));
 
 const CheckinPoints: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
-  const [attractionOptions, setAttractionOptions] = useState<any[]>([]);
+  const [attractionOptions, setAttractionOptions] = useState<TODO[]>([]);
 
-  const request = useTableRequest(checkinApi.list6 as any);
+  const request = useTableRequest(checkinApi.list6 as TODO);
   const leisureMap = useDictMap('travel_leisure');
 
-  const openDrawer = async (record?: any) => {
+  const openDrawer = async (record?: TODO) => {
     setCurrentRecord(record || null);
     try {
-      const res = await attractionApi.list8({ pageNum: 1, pageSize: 1000 } as any);
-      setAttractionOptions((res as any).rows || []);
-    } catch {}
+      const res = await attractionApi.list8({ pageNum: 1, pageSize: 1000 } as TODO);
+      setAttractionOptions((res as TODO).rows || []);
+    } catch {
+      // Attraction options are best-effort; keep the drawer usable if preload fails.
+    }
     if (record) {
       const openTimeValue = record.openTime
         ? record.openTime.split(' - ').map((t: string) => dayjs(t, 'HH:mm'))
         : undefined;
-      form.setFieldsValue({ ...record, openTime: openTimeValue, region: { province: record.province, city: record.city, district: record.district }, badFactors: record.badFactors ? record.badFactors.split(',').map((s: string) => s.trim()).filter(Boolean) : [], attachments: record.attachments || [] });
+      form.setFieldsValue({
+        ...record,
+        openTime: openTimeValue,
+        region: { province: record.province, city: record.city, district: record.district },
+        badFactors: record.badFactors
+          ? record.badFactors
+              .split(',')
+              .map((s: string) => s.trim())
+              .filter(Boolean)
+          : [],
+        attachments: record.attachments || [],
+      });
     } else {
       form.resetFields();
     }
@@ -53,13 +98,19 @@ const CheckinPoints: React.FC = () => {
   const handleSubmit = async () => {
     const values = await form.validateFields();
     const { region, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, openTime: values.openTime?.map((t: any) => t?.format('HH:mm')).join(' - ') ?? '', badFactors: Array.isArray(rest.badFactors) ? rest.badFactors.join(',') : rest.badFactors, attachments: attachmentFiles || [] };
+    const params = {
+      ...rest,
+      ...region,
+      openTime: values.openTime?.map((t: TODO) => t?.format('HH:mm')).join(' - ') ?? '',
+      badFactors: Array.isArray(rest.badFactors) ? rest.badFactors.join(',') : rest.badFactors,
+      attachments: attachmentFiles || [],
+    };
     try {
       if (currentRecord) {
-        await checkinApi.editSave6({ ...params, checkinId: currentRecord.checkinId } as any);
+        await checkinApi.editSave6({ ...params, checkinId: currentRecord.checkinId } as TODO);
         message.success('编辑成功');
       } else {
-        await checkinApi.addSave7(params as any);
+        await checkinApi.addSave7(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -69,10 +120,10 @@ const CheckinPoints: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await checkinApi.editSave6({ checkinId: record.checkinId, status: newStatus } as any);
+      await checkinApi.editSave6({ checkinId: record.checkinId, status: newStatus } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -80,9 +131,9 @@ const CheckinPoints: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await checkinApi.remove8({ ids: record.checkinId } as any);
+      await checkinApi.remove8({ ids: record.checkinId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -94,17 +145,59 @@ const CheckinPoints: React.FC = () => {
     key,
     { title: '名称', dataIndex: 'checkinName', ellipsis: true },
     { title: '开放时间', dataIndex: 'openTime', search: false, ellipsis: true },
-    { title: '休闲指数', dataIndex: 'leisureRating', search: false, render: (_: any, r: any) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--' },
-    { title: '游玩时间', dataIndex: 'visitDuration', search: false, render: (v: number) => v ? `${v}分钟` : '--' },
+    {
+      title: '休闲指数',
+      dataIndex: 'leisureRating',
+      search: false,
+      render: (_: TODO, r: TODO) => leisureMap[r.leisureRating] ?? r.leisureRating ?? '--',
+    },
+    {
+      title: '游玩时间',
+      dataIndex: 'visitDuration',
+      search: false,
+      render: (v: number) => (v ? `${v}分钟` : '--'),
+    },
     { title: '地点', dataIndex: 'location', search: false },
-    { title: '是否全盲', dataIndex: 'blindStatus', search: false, valueEnum: Object.fromEntries(Object.entries(BlindStatusLabel).map(([k, v]) => [k, { text: v }])) },
-    { title: '是否亲子', dataIndex: 'familyFriendly', search: false, render: (v: string) => v === '1' ? <Tag color="blue">{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel]}</Tag> : <Tag>{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel]}</Tag> },
-    { title: '经典指数', dataIndex: 'classicRating', search: false, valueEnum: classicRatingValueEnum },
-    { title: '门票(成人)', dataIndex: 'ticketPriceA', search: false, render: (v: number) => v ? `${v}元` : '--' },
-    { title: '门票(儿童)', dataIndex: 'ticketPriceC', search: false, render: (v: number) => v ? `${v}元` : '--' },
+    {
+      title: '是否全盲',
+      dataIndex: 'blindStatus',
+      search: false,
+      valueEnum: Object.fromEntries(
+        Object.entries(BlindStatusLabel).map(([k, v]) => [k, { text: v }]),
+      ),
+    },
+    {
+      title: '是否亲子',
+      dataIndex: 'familyFriendly',
+      search: false,
+      render: (v: string) =>
+        v === '1' ? (
+          <Tag color="blue">{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel]}</Tag>
+        ) : (
+          <Tag>{FamilyFriendlyLabel[v as keyof typeof FamilyFriendlyLabel]}</Tag>
+        ),
+    },
+    {
+      title: '经典指数',
+      dataIndex: 'classicRating',
+      search: false,
+      valueEnum: classicRatingValueEnum,
+    },
+    {
+      title: '门票(成人)',
+      dataIndex: 'ticketPriceA',
+      search: false,
+      render: (v: number) => (v ? `${v}元` : '--'),
+    },
+    {
+      title: '门票(儿童)',
+      dataIndex: 'ticketPriceC',
+      search: false,
+      render: (v: number) => (v ? `${v}元` : '--'),
+    },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -124,8 +217,8 @@ const CheckinPoints: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加打卡点
@@ -142,16 +235,32 @@ const CheckinPoints: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="checkinName" label="名称" rules={[{ required: true, message: '请输入名称' }]}>
+          <Form.Item
+            name="checkinName"
+            label="名称"
+            rules={[{ required: true, message: '请输入名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item name="attractionId" label="关联景点" rules={[{ required: true, message: '请选择关联景点' }]}>
-            <Select placeholder="请选择" options={attractionOptions.map(a => ({ label: a.attractionName, value: a.attractionId }))} />
+          <Form.Item
+            name="attractionId"
+            label="关联景点"
+            rules={[{ required: true, message: '请选择关联景点' }]}
+          >
+            <Select
+              placeholder="请选择"
+              options={attractionOptions.map((a) => ({
+                label: a.attractionName,
+                value: a.attractionId,
+              }))}
+            />
           </Form.Item>
           <Form.Item name="checkinShortName" label="简称">
             <Input placeholder="请输入" />
@@ -198,7 +307,12 @@ const CheckinPoints: React.FC = () => {
               <InputNumber placeholder="请输入" addonAfter="元" style={{ width: '100%' }} />
             </Form.Item>
           </Space>
-          <Form.Item name="familyFriendly" label="亲子游" valuePropName="checked" normalize={(v) => v ? '1' : '0'}>
+          <Form.Item
+            name="familyFriendly"
+            label="亲子游"
+            valuePropName="checked"
+            normalize={(v) => (v ? '1' : '0')}
+          >
             <Switch />
           </Form.Item>
           <Form.Item name="reservationRequired" label="提前预约">

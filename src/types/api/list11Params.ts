@@ -7,7 +7,7 @@
  */
 
 export type List11Params = {
-province?: string;
-city?: string;
-district?: string;
+  province?: string;
+  city?: string;
+  district?: string;
 };

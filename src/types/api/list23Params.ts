@@ -8,5 +8,5 @@
 import type { SysPost } from './sysPost';
 
 export type List23Params = {
-post: SysPost;
+  post: SysPost;
 };

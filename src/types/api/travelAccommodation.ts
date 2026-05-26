@@ -8,7 +8,7 @@
 import type { TravelAccommodationAttachmentsItem } from './travelAccommodationAttachmentsItem';
 import type { TravelAccommodationParams } from './travelAccommodationParams';
 
-export interface TravelAccommodation {
+export type TravelAccommodation = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -33,4 +33,4 @@ export interface TravelAccommodation {
   status?: string;
   delFlag?: string;
   attachments?: TravelAccommodationAttachmentsItem[];
-}
+};

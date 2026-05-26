@@ -9,7 +9,7 @@
 /**
  * 用户实体
  */
-export interface UserEntity {
+export type UserEntity = {
   /** 用户ID */
   userId?: number;
   /** 用户名称 */
@@ -18,4 +18,4 @@ export interface UserEntity {
   password?: string;
   /** 用户手机 */
   mobile?: string;
-}
+};

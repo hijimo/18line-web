@@ -6,7 +6,7 @@ import type { IResourceItem } from '@/types/resource';
 /**
  * 扁平树项
  */
-export interface FlatTreeItem {
+export type FlatTreeItem = {
   key: string;
   name: string;
   identifier: string;
@@ -15,41 +15,41 @@ export interface FlatTreeItem {
   edit?: string;
   show?: string;
   clone?: string;
-  meta?: Record<string, any>;
+  meta?: Record<string, TODO>;
   children: FlatTreeItem[];
-}
+};
 
 /**
  * 树形菜单项
  */
-export interface TreeMenuItem extends Omit<FlatTreeItem, 'children'> {
+export type TreeMenuItem = {
   route?: string;
   icon?: React.ReactNode;
   label?: string;
   children: TreeMenuItem[];
-}
+} & Omit<FlatTreeItem, 'children'>;
 
 /**
  * useMenu 返回类型
  */
-export interface UseMenuReturnType {
+export type UseMenuReturnType = {
   /** 默认展开的菜单键 */
   defaultOpenKeys: string[];
   /** 当前选中的菜单键 */
   selectedKey: string;
   /** 菜单项列表 */
   menuItems: TreeMenuItem[];
-}
+};
 
 /**
  * useMenu 参数
  */
-export interface UseMenuProps {
+export type UseMenuProps = {
   /** 元数据 */
-  meta?: Record<string, any>;
+  meta?: Record<string, TODO>;
   /** 当缺少参数时是否隐藏 */
   hideOnMissingParameter?: boolean;
-}
+};
 
 /**
  * 创建资源键

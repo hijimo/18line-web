@@ -7,5 +7,5 @@
  */
 
 export type _DeletePathParameters = {
- userId: number,
- }
+  userId: number;
+};

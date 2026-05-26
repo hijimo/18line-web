@@ -7,7 +7,7 @@
  */
 import type { SysDictTypeParams } from './sysDictTypeParams';
 
-export interface SysDictType {
+export type SysDictType = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,15 +16,15 @@ export interface SysDictType {
   params?: SysDictTypeParams;
   dictId?: number;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   dictName: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     * @pattern ^[a-z][a-z0-9_]*$
-     */
+   * @minLength 0
+   * @maxLength 100
+   * @pattern ^[a-z][a-z0-9_]*$
+   */
   dictType: string;
   status?: string;
-}
+};

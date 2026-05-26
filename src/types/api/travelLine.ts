@@ -8,7 +8,7 @@
 import type { TravelLineAttachmentsItem } from './travelLineAttachmentsItem';
 import type { TravelLineParams } from './travelLineParams';
 
-export interface TravelLine {
+export type TravelLine = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -23,4 +23,4 @@ export interface TravelLine {
   status?: string;
   delFlag?: string;
   attachments?: TravelLineAttachmentsItem[];
-}
+};

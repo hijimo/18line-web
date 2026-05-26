@@ -8,7 +8,7 @@ export type ResourceRoutePath = string;
 /**
  * 资源组件路径配置
  */
-export interface IResourceComponents {
+export type IResourceComponents = {
   /** 列表页路径 */
   list?: ResourceRoutePath;
   /** 创建页路径 */
@@ -19,12 +19,12 @@ export interface IResourceComponents {
   edit?: ResourceRoutePath;
   /** 详情页路径 */
   show?: ResourceRoutePath;
-}
+};
 
 /**
  * 资源元数据
  */
-export interface ResourceMeta {
+export type ResourceMeta = {
   /**
    * 资源标签
    * 用于设置文档标题、面包屑和侧边栏组件中显示的文本
@@ -55,13 +55,13 @@ export interface ResourceMeta {
   /**
    * 其他自定义元数据
    */
-  [key: string]: any;
-}
+  [key: string]: TODO;
+};
 
 /**
  * 资源属性
  */
-export interface ResourceProps extends IResourceComponents {
+export type ResourceProps = {
   /** 资源名称 */
   name: string;
   /**
@@ -76,16 +76,16 @@ export interface ResourceProps extends IResourceComponents {
    * 可以使用 meta 存储与资源相关的任何数据
    */
   meta?: ResourceMeta;
-}
+} & IResourceComponents;
 
 /**
  * 资源项
  */
-export interface IResourceItem extends IResourceComponents, ResourceProps {}
+export type IResourceItem = {} & IResourceComponents & ResourceProps;
 
 /**
  * 资源上下文
  */
-export interface IResourceContext {
+export type IResourceContext = {
   resources: IResourceItem[];
-}
+};

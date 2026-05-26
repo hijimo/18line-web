@@ -12,91 +12,62 @@ import type {
   List4Params,
   Remove6Params,
   TableDataInfo,
-  TravelDish
+  TravelDish,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除菜品
- */
-const remove6 = (
-    params: Remove6Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dish/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询菜品列表
- */
-const list4 = (
-    params: List4Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/dish/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除菜品
+   */
+  const remove6 = (params: Remove6Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/dish/remove`, method: 'POST', params });
+  };
   /**
- * @summary 导出菜品列表
- */
-const export3 = (
-    params: Export3Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/dish/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询菜品列表
+   */
+  const list4 = (params: List4Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/dish/list`, method: 'POST', params });
+  };
   /**
- * @summary 修改保存菜品
- */
-const editSave4 = (
-    travelDish: TravelDish,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dish/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelDish
-    },
-      );
-    }
+   * @summary 导出菜品列表
+   */
+  const export3 = (params: Export3Params) => {
+    return orvalMutator<void>({ url: `/travel18/dish/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存菜品
- */
-const addSave5 = (
-    travelDish: TravelDish,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dish/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelDish
-    },
-      );
-    }
+   * @summary 修改保存菜品
+   */
+  const editSave4 = (travelDish: TravelDish) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/dish/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelDish,
+    });
+  };
   /**
- * @summary 获取菜品详情
- */
-const getInfo13 = (
-    { dishId }: GetInfo13PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/dish/${dishId}`, method: 'GET'
-    },
-      );
-    }
-  return {remove6,list4,export3,editSave4,addSave5,getInfo13}};
-export type Remove6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove6']>>>
-export type List4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list4']>>>
-export type Export3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export3']>>>
-export type EditSave4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave4']>>>
-export type AddSave5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave5']>>>
-export type GetInfo13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo13']>>>
+   * @summary 新增保存菜品
+   */
+  const addSave5 = (travelDish: TravelDish) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/dish/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelDish,
+    });
+  };
+  /**
+   * @summary 获取菜品详情
+   */
+  const getInfo13 = ({ dishId }: GetInfo13PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/dish/${dishId}`, method: 'GET' });
+  };
+  return { remove6, list4, export3, editSave4, addSave5, getInfo13 };
+};
+export type Remove6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove6']>>>;
+export type List4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list4']>>>;
+export type Export3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export3']>>>;
+export type EditSave4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave4']>>>;
+export type AddSave5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave5']>>>;
+export type GetInfo13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo13']>>>;

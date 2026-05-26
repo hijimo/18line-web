@@ -8,5 +8,5 @@
 import type { TravelPhotography } from './travelPhotography';
 
 export type List1Params = {
-photography: TravelPhotography;
+  photography: TravelPhotography;
 };

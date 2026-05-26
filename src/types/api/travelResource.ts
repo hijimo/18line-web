@@ -7,7 +7,7 @@
  */
 import type { TravelResourceParams } from './travelResourceParams';
 
-export interface TravelResource {
+export type TravelResource = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,18 +16,18 @@ export interface TravelResource {
   params?: TravelResourceParams;
   resourceId?: number;
   /**
-     * @minLength 0
-     * @maxLength 30
-     */
+   * @minLength 0
+   * @maxLength 30
+   */
   bizType: string;
   bizId: number;
   resourceType: string;
   resourcePurpose?: string;
   fileName?: string;
   /**
-     * @minLength 0
-     * @maxLength 500
-     */
+   * @minLength 0
+   * @maxLength 500
+   */
   fileUrl: string;
   fileSize?: number;
   mimeType?: string;
@@ -35,4 +35,4 @@ export interface TravelResource {
   sortOrder?: number;
   status?: string;
   delFlag?: string;
-}
+};

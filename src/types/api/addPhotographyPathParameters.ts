@@ -7,5 +7,5 @@
  */
 
 export type AddPhotographyPathParameters = {
- itineraryId: number,
- }
+  itineraryId: number;
+};

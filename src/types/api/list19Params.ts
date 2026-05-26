@@ -8,5 +8,5 @@
 import type { TravelTouristPreference } from './travelTouristPreference';
 
 export type List19Params = {
-preference: TravelTouristPreference;
+  preference: TravelTouristPreference;
 };

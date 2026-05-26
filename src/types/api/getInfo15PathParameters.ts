@@ -7,5 +7,5 @@
  */
 
 export type GetInfo15PathParameters = {
- checkinId: number,
- }
+  checkinId: number;
+};

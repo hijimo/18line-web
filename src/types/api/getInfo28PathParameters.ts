@@ -7,5 +7,5 @@
  */
 
 export type GetInfo28PathParameters = {
- deptId: number,
- }
+  deptId: number;
+};

@@ -8,5 +8,5 @@
 import type { SysDictData } from './sysDictData';
 
 export type List27Params = {
-dictData: SysDictData;
+  dictData: SysDictData;
 };

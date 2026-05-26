@@ -8,5 +8,5 @@
 import type { SysUser } from './sysUser';
 
 export type List21Params = {
-user: SysUser;
+  user: SysUser;
 };

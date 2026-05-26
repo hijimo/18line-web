@@ -5,66 +5,49 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult,
-  TravelTouristPreference
-} from '../../../types/api';
-
+import type { AjaxResult, TravelTouristPreference } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 查询游客喜好
- */
-const getByTouristId = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/preference`, method: 'GET'
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 更新游客喜好
- */
-const edit = (
-    travelTouristPreference: TravelTouristPreference,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/preference`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: travelTouristPreference
-    },
-      );
-    }
+   * @summary 查询游客喜好
+   */
+  const getByTouristId = () => {
+    return orvalMutator<AjaxResult>({ url: `/wx/preference`, method: 'GET' });
+  };
   /**
- * @summary 新增游客喜好
- */
-const add = (
-    travelTouristPreference: TravelTouristPreference,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/preference`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelTouristPreference
-    },
-      );
-    }
+   * @summary 更新游客喜好
+   */
+  const edit = (travelTouristPreference: TravelTouristPreference) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/preference`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelTouristPreference,
+    });
+  };
   /**
- * @summary 获取游客最近一次喜好配置
- */
-const getLatest = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/preference/latest`, method: 'GET'
-    },
-      );
-    }
-  return {getByTouristId,edit,add,getLatest}};
-export type GetByTouristIdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getByTouristId']>>>
-export type EditResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit']>>>
-export type AddResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add']>>>
-export type GetLatestResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getLatest']>>>
+   * @summary 新增游客喜好
+   */
+  const add = (travelTouristPreference: TravelTouristPreference) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/preference`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelTouristPreference,
+    });
+  };
+  /**
+   * @summary 获取游客最近一次喜好配置
+   */
+  const getLatest = () => {
+    return orvalMutator<AjaxResult>({ url: `/wx/preference/latest`, method: 'GET' });
+  };
+  return { getByTouristId, edit, add, getLatest };
+};
+export type GetByTouristIdResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['getByTouristId']>>
+>;
+export type EditResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit']>>>;
+export type AddResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add']>>>;
+export type GetLatestResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getLatest']>>>;

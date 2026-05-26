@@ -7,5 +7,5 @@
  */
 
 export type AuthRolePathParameters = {
- userId: number,
- }
+  userId: number;
+};

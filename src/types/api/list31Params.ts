@@ -7,6 +7,6 @@
  */
 
 export type List31Params = {
-ipaddr: string;
-userName: string;
+  ipaddr: string;
+  userName: string;
 };

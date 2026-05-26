@@ -7,5 +7,5 @@
  */
 
 export type ForceLogoutPathParameters = {
- tokenId: string,
- }
+  tokenId: string;
+};

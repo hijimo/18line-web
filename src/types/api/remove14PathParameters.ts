@@ -7,5 +7,5 @@
  */
 
 export type Remove14PathParameters = {
- preferenceIds: string,
- }
+  preferenceIds: string;
+};

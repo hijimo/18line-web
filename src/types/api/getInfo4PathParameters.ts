@@ -7,5 +7,5 @@
  */
 
 export type GetInfo4PathParameters = {
- carId: number,
- }
+  carId: number;
+};

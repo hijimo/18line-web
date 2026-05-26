@@ -13,114 +13,83 @@ import type {
   List29Params,
   Remove23PathParameters,
   SysConfig,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改参数配置
- */
-const edit11 = (
-    sysConfig: SysConfig,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/config`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysConfig
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 新增参数配置
- */
-const add12 = (
-    sysConfig: SysConfig,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/config`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysConfig
-    },
-      );
-    }
+   * @summary 修改参数配置
+   */
+  const edit11 = (sysConfig: SysConfig) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/config`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysConfig,
+    });
+  };
   /**
- * @summary 导出参数配置
- */
-const export14 = (
-    params: Export14Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/system/config/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 新增参数配置
+   */
+  const add12 = (sysConfig: SysConfig) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/config`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysConfig,
+    });
+  };
   /**
- * @summary 根据参数编号获取详细信息
- */
-const getInfo29 = (
-    { configId }: GetInfo29PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/config/${configId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 导出参数配置
+   */
+  const export14 = (params: Export14Params) => {
+    return orvalMutator<void>({ url: `/system/config/export`, method: 'POST', params });
+  };
   /**
- * @summary 获取参数配置列表
- */
-const list29 = (
-    params: List29Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/config/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 根据参数编号获取详细信息
+   */
+  const getInfo29 = ({ configId }: GetInfo29PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/config/${configId}`, method: 'GET' });
+  };
   /**
- * @summary 根据参数键名查询参数值
- */
-const getConfigKey = (
-    { configKey }: GetConfigKeyPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/config/configKey/${configKey}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取参数配置列表
+   */
+  const list29 = (params: List29Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/system/config/list`, method: 'GET', params });
+  };
   /**
- * @summary 删除参数配置
- */
-const remove23 = (
-    { configIds }: Remove23PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/config/${configIds}`, method: 'DELETE'
-    },
-      );
-    }
+   * @summary 根据参数键名查询参数值
+   */
+  const getConfigKey = ({ configKey }: GetConfigKeyPathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/config/configKey/${configKey}`,
+      method: 'GET',
+    });
+  };
   /**
- * @summary 刷新参数缓存
- */
-const refreshCache2 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/config/refreshCache`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit11,add12,export14,getInfo29,list29,getConfigKey,remove23,refreshCache2}};
-export type Edit11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit11']>>>
-export type Add12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add12']>>>
-export type Export14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export14']>>>
-export type GetInfo29Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo29']>>>
-export type List29Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list29']>>>
-export type GetConfigKeyResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getConfigKey']>>>
-export type Remove23Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove23']>>>
-export type RefreshCache2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['refreshCache2']>>>
+   * @summary 删除参数配置
+   */
+  const remove23 = ({ configIds }: Remove23PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/config/${configIds}`, method: 'DELETE' });
+  };
+  /**
+   * @summary 刷新参数缓存
+   */
+  const refreshCache2 = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/config/refreshCache`, method: 'DELETE' });
+  };
+  return { edit11, add12, export14, getInfo29, list29, getConfigKey, remove23, refreshCache2 };
+};
+export type Edit11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit11']>>>;
+export type Add12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add12']>>>;
+export type Export14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export14']>>>;
+export type GetInfo29Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo29']>>>;
+export type List29Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list29']>>>;
+export type GetConfigKeyResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['getConfigKey']>>
+>;
+export type Remove23Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove23']>>>;
+export type RefreshCache2Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['refreshCache2']>>
+>;

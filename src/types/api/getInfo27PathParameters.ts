@@ -7,5 +7,5 @@
  */
 
 export type GetInfo27PathParameters = {
- dictCode: number,
- }
+  dictCode: number;
+};

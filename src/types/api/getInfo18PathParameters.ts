@@ -7,5 +7,5 @@
  */
 
 export type GetInfo18PathParameters = {
- configId: number,
- }
+  configId: number;
+};

@@ -16,193 +16,151 @@ import type {
   List21Params,
   Remove15PathParameters,
   SysUser,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改用户
- */
-const edit3 = (
-    sysUser: SysUser,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysUser
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 新增用户
- */
-const add4 = (
-    sysUser: SysUser,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysUser
-    },
-      );
-    }
+   * @summary 修改用户
+   */
+  const edit3 = (sysUser: SysUser) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysUser,
+    });
+  };
   /**
- * @summary 重置密码
- */
-const resetPwd = (
-    sysUser: SysUser,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/resetPwd`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysUser
-    },
-      );
-    }
+   * @summary 新增用户
+   */
+  const add4 = (sysUser: SysUser) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysUser,
+    });
+  };
   /**
- * @summary 状态修改
- */
-const changeStatus = (
-    sysUser: SysUser,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/changeStatus`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysUser
-    },
-      );
-    }
+   * @summary 重置密码
+   */
+  const resetPwd = (sysUser: SysUser) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user/resetPwd`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysUser,
+    });
+  };
   /**
- * @summary 用户授权角色
- */
-const insertAuthRole = (
-    params: InsertAuthRoleParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/authRole`, method: 'PUT',
-        params
-    },
-      );
-    }
+   * @summary 状态修改
+   */
+  const changeStatus = (sysUser: SysUser) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user/changeStatus`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysUser,
+    });
+  };
   /**
- * @summary 下载导入模板
- */
-const importTemplate = (
-
- ) => {
-      return orvalMutator<void>(
-      {url: `/system/user/importTemplate`, method: 'POST'
-    },
-      );
-    }
+   * @summary 用户授权角色
+   */
+  const insertAuthRole = (params: InsertAuthRoleParams) => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/authRole`, method: 'PUT', params });
+  };
   /**
- * @summary 导入用户数据
- */
-const importData = (
-    params: ImportDataParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/importData`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 下载导入模板
+   */
+  const importTemplate = () => {
+    return orvalMutator<void>({ url: `/system/user/importTemplate`, method: 'POST' });
+  };
   /**
- * @summary 导出用户列表
- */
-const export9 = (
-    params: Export9Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/system/user/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 导入用户数据
+   */
+  const importData = (params: ImportDataParams) => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/importData`, method: 'POST', params });
+  };
   /**
- * @summary 获取用户列表
- */
-const list21 = (
-    params: List21Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/user/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 导出用户列表
+   */
+  const export9 = (params: Export9Params) => {
+    return orvalMutator<void>({ url: `/system/user/export`, method: 'POST', params });
+  };
   /**
- * @summary 获取部门树列表
- */
-const deptTree = (
-    params: DeptTreeParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/deptTree`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 获取用户列表
+   */
+  const list21 = (params: List21Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/system/user/list`, method: 'GET', params });
+  };
   /**
- * @summary 根据用户编号获取授权角色
- */
-const authRole = (
-    { userId }: AuthRolePathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/authRole/${userId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取部门树列表
+   */
+  const deptTree = (params: DeptTreeParams) => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/deptTree`, method: 'GET', params });
+  };
   /**
- * @summary 根据用户编号获取详细信息
- */
-const getInfo20 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/`, method: 'GET'
-    },
-      );
-    }
+   * @summary 根据用户编号获取授权角色
+   */
+  const authRole = ({ userId }: AuthRolePathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/authRole/${userId}`, method: 'GET' });
+  };
   /**
- * @summary 根据用户编号获取详细信息
- */
-const getInfo21 = (
-    { userId }: GetInfo21PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/${userId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 根据用户编号获取详细信息
+   */
+  const getInfo20 = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/`, method: 'GET' });
+  };
   /**
- * @summary 删除用户
- */
-const remove15 = (
-    { userIds }: Remove15PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/${userIds}`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit3,add4,resetPwd,changeStatus,insertAuthRole,importTemplate,importData,export9,list21,deptTree,authRole,getInfo20,getInfo21,remove15}};
-export type Edit3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit3']>>>
-export type Add4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add4']>>>
-export type ResetPwdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['resetPwd']>>>
-export type ChangeStatusResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['changeStatus']>>>
-export type InsertAuthRoleResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['insertAuthRole']>>>
-export type ImportTemplateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['importTemplate']>>>
-export type ImportDataResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['importData']>>>
-export type Export9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export9']>>>
-export type List21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list21']>>>
-export type DeptTreeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['deptTree']>>>
-export type AuthRoleResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['authRole']>>>
-export type GetInfo20Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo20']>>>
-export type GetInfo21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo21']>>>
-export type Remove15Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove15']>>>
+   * @summary 根据用户编号获取详细信息
+   */
+  const getInfo21 = ({ userId }: GetInfo21PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/${userId}`, method: 'GET' });
+  };
+  /**
+   * @summary 删除用户
+   */
+  const remove15 = ({ userIds }: Remove15PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/${userIds}`, method: 'DELETE' });
+  };
+  return {
+    edit3,
+    add4,
+    resetPwd,
+    changeStatus,
+    insertAuthRole,
+    importTemplate,
+    importData,
+    export9,
+    list21,
+    deptTree,
+    authRole,
+    getInfo20,
+    getInfo21,
+    remove15,
+  };
+};
+export type Edit3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit3']>>>;
+export type Add4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add4']>>>;
+export type ResetPwdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['resetPwd']>>>;
+export type ChangeStatusResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['changeStatus']>>
+>;
+export type InsertAuthRoleResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['insertAuthRole']>>
+>;
+export type ImportTemplateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['importTemplate']>>
+>;
+export type ImportDataResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['importData']>>
+>;
+export type Export9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export9']>>>;
+export type List21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list21']>>>;
+export type DeptTreeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['deptTree']>>>;
+export type AuthRoleResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['authRole']>>>;
+export type GetInfo20Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo20']>>>;
+export type GetInfo21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo21']>>>;
+export type Remove15Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove15']>>>;

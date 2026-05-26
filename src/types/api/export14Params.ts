@@ -8,5 +8,5 @@
 import type { SysConfig } from './sysConfig';
 
 export type Export14Params = {
-config: SysConfig;
+  config: SysConfig;
 };

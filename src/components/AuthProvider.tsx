@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useCurrentUser } from '@/hooks/services/useAuthentication';
 import { useAuthStore } from '@/stores/authStore';
 
-interface AuthProviderProps {
+type AuthProviderProps = {
   children: React.ReactNode;
-}
+};
 
 /**
  * 认证提供者组件

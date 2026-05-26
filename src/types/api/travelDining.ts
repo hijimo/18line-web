@@ -8,7 +8,7 @@
 import type { TravelDiningAttachmentsItem } from './travelDiningAttachmentsItem';
 import type { TravelDiningParams } from './travelDiningParams';
 
-export interface TravelDining {
+export type TravelDining = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -33,4 +33,4 @@ export interface TravelDining {
   status?: string;
   delFlag?: string;
   attachments?: TravelDiningAttachmentsItem[];
-}
+};

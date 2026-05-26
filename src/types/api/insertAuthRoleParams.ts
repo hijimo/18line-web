@@ -7,6 +7,6 @@
  */
 
 export type InsertAuthRoleParams = {
-userId: number;
-roleIds: number[];
+  userId: number;
+  roleIds: number[];
 };

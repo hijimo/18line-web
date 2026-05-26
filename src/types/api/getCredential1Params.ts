@@ -7,12 +7,12 @@
  */
 
 export type GetCredential1Params = {
-/**
- * 业务类型：attraction/checkin/accommodation/dining/car/photography
- */
-bizType: string;
-/**
- * 文件用途：cover/banner/detail/guide/manual/menu/other
- */
-resourcePurpose?: string;
+  /**
+   * 业务类型：attraction/checkin/accommodation/dining/car/photography
+   */
+  bizType: string;
+  /**
+   * 文件用途：cover/banner/detail/guide/manual/menu/other
+   */
+  resourcePurpose?: string;
 };

@@ -6,8 +6,8 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export interface TravelItineraryDining {
+export type TravelItineraryDining = {
   breakfastId?: number;
   lunchId?: number;
   dinnerId?: number;
-}
+};

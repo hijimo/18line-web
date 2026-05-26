@@ -7,5 +7,5 @@
  */
 
 export type List15Params = {
-keyword?: string;
+  keyword?: string;
 };

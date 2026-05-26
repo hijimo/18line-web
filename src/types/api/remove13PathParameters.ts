@@ -7,5 +7,5 @@
  */
 
 export type Remove13PathParameters = {
- touristIds: string,
- }
+  touristIds: string;
+};

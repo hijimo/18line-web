@@ -6,4 +6,4 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export type UnlockScreenBody = {[key: string]: string};
+export type UnlockScreenBody = { [key: string]: string };

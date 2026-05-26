@@ -7,9 +7,9 @@
  */
 import type { TableDataInfoRowsItem } from './tableDataInfoRowsItem';
 
-export interface TableDataInfo {
+export type TableDataInfo = {
   total?: number;
   rows?: TableDataInfoRowsItem[];
   code?: number;
   msg?: string;
-}
+};

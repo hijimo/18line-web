@@ -7,8 +7,8 @@
  */
 import type { UserEntity } from './userEntity';
 
-export interface RUserEntity {
+export type RUserEntity = {
   code?: number;
   msg?: string;
   data?: UserEntity;
-}
+};

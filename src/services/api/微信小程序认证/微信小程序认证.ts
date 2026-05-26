@@ -10,80 +10,69 @@ import type {
   BindPhoneBody,
   TestTokenBody,
   TravelTourist,
-  WxLoginBody
+  WxLoginBody,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 更新游客资料
- */
-const updateProfile = (
-    travelTourist: TravelTourist,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/auth/updateProfile`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: travelTourist
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 测试用-直接获取token（上线前删除）
- */
-const testToken = (
-    testTokenBody: TestTokenBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/auth/testToken`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: testTokenBody
-    },
-      );
-    }
+   * @summary 更新游客资料
+   */
+  const updateProfile = (travelTourist: TravelTourist) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/auth/updateProfile`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelTourist,
+    });
+  };
   /**
- * @summary 微信登录
- */
-const wxLogin = (
-    wxLoginBody: WxLoginBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/auth/login`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: wxLoginBody
-    },
-      );
-    }
+   * @summary 测试用-直接获取token（上线前删除）
+   */
+  const testToken = (testTokenBody: TestTokenBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/auth/testToken`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: testTokenBody,
+    });
+  };
   /**
- * @summary 绑定手机号
- */
-const bindPhone = (
-    bindPhoneBody: BindPhoneBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/auth/bindPhone`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: bindPhoneBody
-    },
-      );
-    }
+   * @summary 微信登录
+   */
+  const wxLogin = (wxLoginBody: WxLoginBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/auth/login`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: wxLoginBody,
+    });
+  };
   /**
- * @summary 获取游客信息
- */
-const getUserInfo = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/auth/getUserInfo`, method: 'GET'
-    },
-      );
-    }
-  return {updateProfile,testToken,wxLogin,bindPhone,getUserInfo}};
-export type UpdateProfileResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['updateProfile']>>>
-export type TestTokenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['testToken']>>>
-export type WxLoginResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['wxLogin']>>>
-export type BindPhoneResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['bindPhone']>>>
-export type GetUserInfoResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getUserInfo']>>>
+   * @summary 绑定手机号
+   */
+  const bindPhone = (bindPhoneBody: BindPhoneBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/wx/auth/bindPhone`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: bindPhoneBody,
+    });
+  };
+  /**
+   * @summary 获取游客信息
+   */
+  const getUserInfo = () => {
+    return orvalMutator<AjaxResult>({ url: `/wx/auth/getUserInfo`, method: 'GET' });
+  };
+  return { updateProfile, testToken, wxLogin, bindPhone, getUserInfo };
+};
+export type UpdateProfileResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['updateProfile']>>
+>;
+export type TestTokenResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['testToken']>>>;
+export type WxLoginResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['wxLogin']>>>;
+export type BindPhoneResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['bindPhone']>>>;
+export type GetUserInfoResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['getUserInfo']>>
+>;

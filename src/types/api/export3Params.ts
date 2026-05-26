@@ -8,5 +8,5 @@
 import type { TravelDish } from './travelDish';
 
 export type Export3Params = {
-dish: TravelDish;
+  dish: TravelDish;
 };

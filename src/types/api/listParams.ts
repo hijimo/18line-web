@@ -8,5 +8,5 @@
 import type { TravelResource } from './travelResource';
 
 export type ListParams = {
-resource: TravelResource;
+  resource: TravelResource;
 };

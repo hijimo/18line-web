@@ -1,12 +1,12 @@
-import React, { useMemo } from 'react';
 import { Select } from 'antd';
 import type { SelectProps } from 'antd';
+import React, { useMemo } from 'react';
 import { useDictData } from '@/hooks/useDictMap';
 
-interface DictSelectProps extends SelectProps {
+type DictSelectProps = {
   /** 字典类型编码 */
   code: string;
-}
+} & SelectProps;
 
 /**
  * 数据字典下拉组件
@@ -16,8 +16,8 @@ export const DictSelect: React.FC<DictSelectProps> = ({ code, ...selectProps }) 
   const { data, isLoading } = useDictData(code);
 
   const options = useMemo(() => {
-    const list = (data as any)?.data || [];
-    return list.map((item: any) => ({
+    const list = (data as TODO)?.data || [];
+    return list.map((item: TODO) => ({
       value: item.dictValue,
       label: item.dictLabel,
     }));

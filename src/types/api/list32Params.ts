@@ -8,5 +8,5 @@
 import type { SysLogininfor } from './sysLogininfor';
 
 export type List32Params = {
-logininfor: SysLogininfor;
+  logininfor: SysLogininfor;
 };

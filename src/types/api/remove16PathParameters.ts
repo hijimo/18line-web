@@ -7,5 +7,5 @@
  */
 
 export type Remove16PathParameters = {
- roleIds: number[],
- }
+  roleIds: number[];
+};

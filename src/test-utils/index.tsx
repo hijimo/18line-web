@@ -6,11 +6,11 @@
  */
 
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ConfigProvider } from 'antd';
 import { render } from '@testing-library/react';
 import type { RenderOptions } from '@testing-library/react';
-import React, { type ReactElement } from 'react';
+import { ConfigProvider } from 'antd';
 import { MemoryRouter } from 'react-router';
+import React, { type ReactElement } from 'react';
 
 /**
  * Creates a fresh QueryClient for each test to avoid shared state.
@@ -29,17 +29,17 @@ function createTestQueryClient() {
   });
 }
 
-interface CustomRenderOptions extends RenderOptions {
+type CustomRenderOptions = {
   /** Initial router routes */
   route?: string;
   /** Custom query client */
   queryClient?: QueryClient;
-}
+} & RenderOptions;
 
 /**
  * AllProviders wraps children with QueryClientProvider, ConfigProvider, and MemoryRouter.
  */
-function AllProviders({
+const AllProviders = ({
   children,
   queryClient,
   route = '/',
@@ -47,7 +47,7 @@ function AllProviders({
   children: React.ReactNode;
   queryClient?: QueryClient;
   route?: string;
-}) {
+}) => {
   const client = queryClient ?? createTestQueryClient();
 
   return (
@@ -57,7 +57,7 @@ function AllProviders({
       </ConfigProvider>
     </QueryClientProvider>
   );
-}
+};
 
 /**
  * Custom render that wraps UI with all required providers.

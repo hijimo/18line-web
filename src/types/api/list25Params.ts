@@ -8,5 +8,5 @@
 import type { SysMenu } from './sysMenu';
 
 export type List25Params = {
-menu: SysMenu;
+  menu: SysMenu;
 };

@@ -7,5 +7,5 @@
  */
 
 export type GetInfo10PathParameters = {
- preferenceId: number,
- }
+  preferenceId: number;
+};

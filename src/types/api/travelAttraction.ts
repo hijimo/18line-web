@@ -9,7 +9,7 @@ import type { TravelAttractionAttachmentsItem } from './travelAttractionAttachme
 import type { TravelAttractionParams } from './travelAttractionParams';
 import type { TravelLine } from './travelLine';
 
-export interface TravelAttraction {
+export type TravelAttraction = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -47,4 +47,4 @@ export interface TravelAttraction {
   status?: string;
   delFlag?: string;
   attachments?: TravelAttractionAttachmentsItem[];
-}
+};

@@ -7,5 +7,5 @@
  */
 
 export type GetInfo11PathParameters = {
- photographyId: number,
- }
+  photographyId: number;
+};

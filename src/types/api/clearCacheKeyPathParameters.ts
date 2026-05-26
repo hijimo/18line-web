@@ -7,5 +7,5 @@
  */
 
 export type ClearCacheKeyPathParameters = {
- cacheKey: string,
- }
+  cacheKey: string;
+};

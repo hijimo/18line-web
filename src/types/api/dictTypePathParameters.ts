@@ -7,5 +7,5 @@
  */
 
 export type DictTypePathParameters = {
- dictType: string,
- }
+  dictType: string;
+};

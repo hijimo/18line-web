@@ -7,5 +7,5 @@
  */
 
 export type HistoryPathParameters = {
- configId: number,
- }
+  configId: number;
+};

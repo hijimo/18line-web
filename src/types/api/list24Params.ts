@@ -8,5 +8,5 @@
 import type { SysNotice } from './sysNotice';
 
 export type List24Params = {
-notice: SysNotice;
+  notice: SysNotice;
 };

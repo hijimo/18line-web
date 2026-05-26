@@ -7,5 +7,5 @@
  */
 
 export type GetDishesByDiningPathParameters = {
- diningId: number,
- }
+  diningId: number;
+};

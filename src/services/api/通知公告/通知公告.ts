@@ -13,115 +13,78 @@ import type {
   MarkReadParams,
   Remove18PathParameters,
   SysNotice,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改通知公告
- */
-const edit6 = (
-    sysNotice: SysNotice,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysNotice
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 新增通知公告
- */
-const add7 = (
-    sysNotice: SysNotice,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysNotice
-    },
-      );
-    }
+   * @summary 修改通知公告
+   */
+  const edit6 = (sysNotice: SysNotice) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/notice`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysNotice,
+    });
+  };
   /**
- * @summary 标记公告已读
- */
-const markRead = (
-    params: MarkReadParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice/markRead`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 新增通知公告
+   */
+  const add7 = (sysNotice: SysNotice) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/notice`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysNotice,
+    });
+  };
   /**
- * @summary 批量标记已读
- */
-const markReadAll = (
-    params: MarkReadAllParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice/markReadAll`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 标记公告已读
+   */
+  const markRead = (params: MarkReadParams) => {
+    return orvalMutator<AjaxResult>({ url: `/system/notice/markRead`, method: 'POST', params });
+  };
   /**
- * @summary 根据通知公告编号获取详细信息
- */
-const getInfo24 = (
-    { noticeId }: GetInfo24PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice/${noticeId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 批量标记已读
+   */
+  const markReadAll = (params: MarkReadAllParams) => {
+    return orvalMutator<AjaxResult>({ url: `/system/notice/markReadAll`, method: 'POST', params });
+  };
   /**
- * @summary 获取通知公告列表
- */
-const list24 = (
-    params: List24Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/notice/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 根据通知公告编号获取详细信息
+   */
+  const getInfo24 = ({ noticeId }: GetInfo24PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/notice/${noticeId}`, method: 'GET' });
+  };
   /**
- * @summary 首页顶部公告列表
- */
-const listTop = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice/listTop`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取通知公告列表
+   */
+  const list24 = (params: List24Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/system/notice/list`, method: 'GET', params });
+  };
   /**
- * @summary 删除通知公告
- */
-const remove18 = (
-    { noticeIds }: Remove18PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/notice/${noticeIds}`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit6,add7,markRead,markReadAll,getInfo24,list24,listTop,remove18}};
-export type Edit6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit6']>>>
-export type Add7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add7']>>>
-export type MarkReadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['markRead']>>>
-export type MarkReadAllResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['markReadAll']>>>
-export type GetInfo24Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo24']>>>
-export type List24Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list24']>>>
-export type ListTopResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['listTop']>>>
-export type Remove18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove18']>>>
+   * @summary 首页顶部公告列表
+   */
+  const listTop = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/notice/listTop`, method: 'GET' });
+  };
+  /**
+   * @summary 删除通知公告
+   */
+  const remove18 = ({ noticeIds }: Remove18PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/notice/${noticeIds}`, method: 'DELETE' });
+  };
+  return { edit6, add7, markRead, markReadAll, getInfo24, list24, listTop, remove18 };
+};
+export type Edit6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit6']>>>;
+export type Add7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add7']>>>;
+export type MarkReadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['markRead']>>>;
+export type MarkReadAllResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['markReadAll']>>
+>;
+export type GetInfo24Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo24']>>>;
+export type List24Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list24']>>>;
+export type ListTopResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['listTop']>>>;
+export type Remove18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove18']>>>;

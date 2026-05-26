@@ -8,5 +8,5 @@
 import type { TravelAccommodation } from './travelAccommodation';
 
 export type Export8Params = {
-accommodation: TravelAccommodation;
+  accommodation: TravelAccommodation;
 };

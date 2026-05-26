@@ -1,5 +1,5 @@
-import type { AxiosRequestConfig } from 'axios'
-import request from '@/utils/request'
+import type { AxiosRequestConfig } from 'axios';
+import request from '@/utils/request';
 
 /**
  * Orval 自定义请求函数
@@ -9,20 +9,17 @@ import request from '@/utils/request'
  * @param config Axios 请求配置
  * @returns Promise<T> 返回响应数据
  */
-export const orvalMutator = async <T = any>(
-  config: AxiosRequestConfig,
-): Promise<T> => {
-  const { url, method, ...restConfig } = config
+export const orvalMutator = async <T = TODO>(config: AxiosRequestConfig): Promise<T> => {
+  const { url, method, ...restConfig } = config;
 
   if (!url) {
-    throw new Error('请求 URL 不能为空')
+    throw new Error('请求 URL 不能为空');
   }
 
   // Backend expects JSON body for add/edit/list, but query params for remove
-  const isRemove = url.includes('/remove')
-  const resolvedConfig = method === 'POST' && !isRemove
-    ? { ...restConfig, method, }
-    : { ...restConfig, method }
+  const isRemove = url.includes('/remove');
+  const resolvedConfig =
+    method === 'POST' && !isRemove ? { ...restConfig, method } : { ...restConfig, method };
 
-  return request<T>(url, resolvedConfig)
-}
+  return request<T>(url, resolvedConfig);
+};

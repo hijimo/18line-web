@@ -8,7 +8,7 @@
 import type { TravelPhotographyAttachmentsItem } from './travelPhotographyAttachmentsItem';
 import type { TravelPhotographyParams } from './travelPhotographyParams';
 
-export interface TravelPhotography {
+export type TravelPhotography = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -26,4 +26,4 @@ export interface TravelPhotography {
   status?: string;
   delFlag?: string;
   attachments?: TravelPhotographyAttachmentsItem[];
-}
+};

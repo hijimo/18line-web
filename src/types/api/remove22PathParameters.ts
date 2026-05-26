@@ -7,5 +7,5 @@
  */
 
 export type Remove22PathParameters = {
- deptId: number,
- }
+  deptId: number;
+};

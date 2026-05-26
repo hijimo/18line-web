@@ -8,5 +8,5 @@
 import type { TravelPhotography } from './travelPhotography';
 
 export type _ExportParams = {
-photography: TravelPhotography;
+  photography: TravelPhotography;
 };

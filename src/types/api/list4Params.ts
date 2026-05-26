@@ -8,5 +8,5 @@
 import type { TravelDish } from './travelDish';
 
 export type List4Params = {
-dish: TravelDish;
+  dish: TravelDish;
 };

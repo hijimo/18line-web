@@ -7,5 +7,5 @@
  */
 
 export type Remove7Params = {
-ids: string;
+  ids: string;
 };
