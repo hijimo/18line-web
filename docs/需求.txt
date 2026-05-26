@@ -1,59 +1,8 @@
 ## 微信小程序
-行程详情的地图点之间的线没有连接
+
 
 ## 管理后台
-1. 地方特色菜的省市区编辑要使用行程模板中的编辑组件
-2. 住宿 、包车、跟拍添加省市区编辑要使用行程模板中的编辑组件
 
 
 
 ## java后台
-
-1. 景点缺少最佳观景时间点。
-2. 缺少以端的跟拍列表、详情接口
-3.包车、跟拍添加省市区字段，同时需要支持返回省市区的Name名称。景点、包车、跟拍、餐饮、住宿开放省市区code搜索，对c端的接口也要也这些参数
-### java后台接口报错
-
-#### api/wx/itinerary/4/day/1/attraction
-localizedMessage: "Parameter 'itineraryId' not found. Available parameters are [arg1, arg0, param1, param2]"
-curl 'http://8.136.229.208:8080/api/wx/itinerary/4/day/1/attractions' \
-  -H 'Proxy-Connection: keep-alive' \
-  -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1 wechatdevtools/2.01.2510290 MicroMessenger/8.0.5 Language/zh_CN webview/ hash/503324810 sid/XObPAAVV7R' \
-  -H 'sys-version: pre' \
-  -H 'Authorization: eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX3R5cGUiOiJ0b3VyaXN0IiwibG9naW5fdXNlcl9rZXkiOiI2YTAyNmFiMS00MjA4LTRjMjgtOTQwOC03OWFiZWZkMDYzNzkifQ.vGt_GTx_VIJ4obFtnzsyTDTzB_Os1V943VI8gCovLxxux-XVfDoXxj8XxlY09nBnTuD7vUIvNq1qX-x-w-mAQQ' \
-  -H 'content-type: application/json' \
-  -H 'Accept: */*' \
-  -H 'Referer: https://servicewechat.com/wx7e2d15be1d570635/devtools/page-frame.html' \
-  -H 'Accept-Language: zh-CN,zh;q=0.9' \
-  --data-binary '108' \
-  --compressed \
-  --insecure
-
-  #### api/wx/itinerary/4/day/1/accommodation
-  localizedMessage: "Parameter 'itineraryId' not found. Available parameters are [arg1, arg0, param1, param2]"
-curl 'http://8.136.229.208:8080/api/wx/itinerary/4/day/1/accommodation' \
-  -H 'Proxy-Connection: keep-alive' \
-  -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1 wechatdevtools/2.01.2510290 MicroMessenger/8.0.5 Language/zh_CN webview/ hash/503324810 sid/XObPAAVV7R' \
-  -H 'sys-version: pre' \
-  -H 'Authorization: eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX3R5cGUiOiJ0b3VyaXN0IiwibG9naW5fdXNlcl9rZXkiOiI2YTAyNmFiMS00MjA4LTRjMjgtOTQwOC03OWFiZWZkMDYzNzkifQ.vGt_GTx_VIJ4obFtnzsyTDTzB_Os1V943VI8gCovLxxux-XVfDoXxj8XxlY09nBnTuD7vUIvNq1qX-x-w-mAQQ' \
-  -H 'content-type: application/json' \
-  -H 'Accept: */*' \
-  -H 'Referer: https://servicewechat.com/wx7e2d15be1d570635/devtools/page-frame.html' \
-  -H 'Accept-Language: zh-CN,zh;q=0.9' \
-  --data-binary '64' \
-  --compressed \
-  --insecure
-#### api/wx/itinerary/4/day/1/dining
-localizedMessage: "nested exception is org.apache.ibatis.binding.BindingException: Parameter 'itineraryId' not found. Available parameters are [arg1, arg0, param1, param2]"
-curl 'http://8.136.229.208:8080/api/wx/itinerary/4/day/1/dining' \
-  -H 'Proxy-Connection: keep-alive' \
-  -H 'User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1 wechatdevtools/2.01.2510290 MicroMessenger/8.0.5 Language/zh_CN webview/ hash/503324810 sid/XObPAAVV7R' \
-  -H 'sys-version: pre' \
-  -H 'Authorization: eyJhbGciOiJIUzUxMiJ9.eyJ1c2VyX3R5cGUiOiJ0b3VyaXN0IiwibG9naW5fdXNlcl9rZXkiOiI2YTAyNmFiMS00MjA4LTRjMjgtOTQwOC03OWFiZWZkMDYzNzkifQ.vGt_GTx_VIJ4obFtnzsyTDTzB_Os1V943VI8gCovLxxux-XVfDoXxj8XxlY09nBnTuD7vUIvNq1qX-x-w-mAQQ' \
-  -H 'content-type: application/json' \
-  -H 'Accept: */*' \
-  -H 'Referer: https://servicewechat.com/wx7e2d15be1d570635/devtools/page-frame.html' \
-  -H 'Accept-Language: zh-CN,zh;q=0.9' \
-  --data-binary '{"breakfastId":55}' \
-  --compressed \
-  --insecure
