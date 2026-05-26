@@ -8,5 +8,5 @@
 import type { SysUser } from './sysUser';
 
 export type UnallocatedListParams = {
-user: SysUser;
+  user: SysUser;
 };

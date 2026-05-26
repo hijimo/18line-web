@@ -7,5 +7,5 @@
  */
 
 export type GetInfo13PathParameters = {
- dishId: number,
- }
+  dishId: number;
+};

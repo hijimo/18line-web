@@ -1,11 +1,11 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, Tag, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, InputNumber, message, Popconfirm, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { get as getDictTypeApi } from '@/services/api/字典类型/字典类型';
 import { get as getDictDataApi } from '@/services/api/字典数据/字典数据';
+import { get as getDictTypeApi } from '@/services/api/字典类型/字典类型';
 
 const dictTypeApi = getDictTypeApi();
 const dictDataApi = getDictDataApi();
@@ -20,23 +20,23 @@ const STATUS_ENUM: Record<string, { text: string; status: string }> = {
 };
 
 const DictType: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
   // 字典数据相关状态
-  const dataActionRef = useRef<any>(null);
+  const dataActionRef = useRef<TODO>(null);
   const [dataDrawerOpen, setDataDrawerOpen] = useState(false);
   const [currentDictType, setCurrentDictType] = useState<string>('');
-  const [currentDataRecord, setCurrentDataRecord] = useState<any>(null);
+  const [currentDataRecord, setCurrentDataRecord] = useState<TODO>(null);
   const [dataForm] = Form.useForm();
 
-  const request = useTableRequest(dictTypeApi.list26 as any);
+  const request = useTableRequest(dictTypeApi.list26 as TODO);
 
   // ========== 字典类型 CRUD ==========
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue(record);
@@ -50,10 +50,10 @@ const DictType: React.FC = () => {
     const values = await form.validateFields();
     try {
       if (currentRecord) {
-        await dictTypeApi.edit8({ ...values, dictId: currentRecord.dictId } as any);
+        await dictTypeApi.edit8({ ...values, dictId: currentRecord.dictId } as TODO);
         message.success('编辑成功');
       } else {
-        await dictTypeApi.add9(values as any);
+        await dictTypeApi.add9(values as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -63,9 +63,9 @@ const DictType: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await dictTypeApi.remove20({ dictIds: record.dictId } as any);
+      await dictTypeApi.remove20({ dictIds: record.dictId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -82,13 +82,13 @@ const DictType: React.FC = () => {
     setTimeout(() => dataActionRef.current?.reload(), 100);
   };
 
-  const dataRequest = useTableRequest(dictDataApi.list27 as any, undefined, () => ({
+  const dataRequest = useTableRequest(dictDataApi.list27 as TODO, undefined, () => ({
     dictType: currentDictType,
   }));
 
   const [dataEditOpen, setDataEditOpen] = useState(false);
 
-  const openDataEdit = (record?: any) => {
+  const openDataEdit = (record?: TODO) => {
     setCurrentDataRecord(record || null);
     if (record) {
       dataForm.setFieldsValue(record);
@@ -103,10 +103,10 @@ const DictType: React.FC = () => {
     const values = await dataForm.validateFields();
     try {
       if (currentDataRecord) {
-        await dictDataApi.edit9({ ...values, dictCode: currentDataRecord.dictCode } as any);
+        await dictDataApi.edit9({ ...values, dictCode: currentDataRecord.dictCode } as TODO);
         message.success('编辑成功');
       } else {
-        await dictDataApi.add10(values as any);
+        await dictDataApi.add10(values as TODO);
         message.success('新增成功');
       }
       setDataEditOpen(false);
@@ -116,9 +116,9 @@ const DictType: React.FC = () => {
     }
   };
 
-  const handleDataDelete = async (record: any) => {
+  const handleDataDelete = async (record: TODO) => {
     try {
-      await dictDataApi.remove21({ dictCodes: record.dictCode } as any);
+      await dictDataApi.remove21({ dictCodes: record.dictCode } as TODO);
       message.success('删除成功');
       dataActionRef.current?.reload();
     } catch {
@@ -131,12 +131,17 @@ const DictType: React.FC = () => {
   const columns = [
     key,
     { title: '字典名称', dataIndex: 'dictName', ellipsis: true },
-    { title: '字典类型', dataIndex: 'dictType', ellipsis: true, render: (v: string) => <a onClick={() => openDataDrawer(v)}>{v}</a> },
+    {
+      title: '字典类型',
+      dataIndex: 'dictType',
+      ellipsis: true,
+      render: (v: string) => <a onClick={() => openDataDrawer(v)}>{v}</a>,
+    },
     { title: '状态', dataIndex: 'status', search: false, valueEnum: STATUS_ENUM },
     { title: '备注', dataIndex: 'remark', search: false, ellipsis: true },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <a onClick={() => openDataDrawer(record.dictType)}>字典数据</a>
@@ -157,7 +162,7 @@ const DictType: React.FC = () => {
     { title: '备注', dataIndex: 'remark', search: false, ellipsis: true },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDataEdit(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDataDelete(record)}>
@@ -172,8 +177,8 @@ const DictType: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             +字典类型
@@ -191,15 +196,31 @@ const DictType: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="dictName" label="字典名称" rules={[{ required: true, message: '请输入字典名称' }]}>
+          <Form.Item
+            name="dictName"
+            label="字典名称"
+            rules={[{ required: true, message: '请输入字典名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
-          <Form.Item name="dictType" label="字典类型" rules={[{ required: true, message: '请输入字典类型' }, { pattern: /^[a-z][a-z0-9_]*$/, message: '小写字母开头，仅允许小写字母、数字、下划线' }]}>
+          <Form.Item
+            name="dictType"
+            label="字典类型"
+            rules={[
+              { required: true, message: '请输入字典类型' },
+              {
+                pattern: /^[a-z][a-z0-9_]*$/,
+                message: '小写字母开头，仅允许小写字母、数字、下划线',
+              },
+            ]}
+          >
             <Input placeholder="如 sys_normal_disable" disabled={!!currentRecord} />
           </Form.Item>
           <Form.Item name="status" label="状态" initialValue="0">
@@ -220,8 +241,8 @@ const DictType: React.FC = () => {
       >
         <CommonTable
           actionRef={dataActionRef}
-          request={dataRequest as any}
-          columns={dataColumns as any}
+          request={dataRequest as TODO}
+          columns={dataColumns as TODO}
           toolBarRender={() => [
             <Button type="primary" icon={<PlusOutlined />} onClick={() => openDataEdit()}>
               +字典数据
@@ -239,7 +260,9 @@ const DictType: React.FC = () => {
           extra={
             <Space>
               <Button onClick={() => setDataEditOpen(false)}>取消</Button>
-              <Button type="primary" onClick={handleDataSubmit}>确定</Button>
+              <Button type="primary" onClick={handleDataSubmit}>
+                确定
+              </Button>
             </Space>
           }
         >
@@ -247,10 +270,18 @@ const DictType: React.FC = () => {
             <Form.Item name="dictType" label="字典类型">
               <Input disabled />
             </Form.Item>
-            <Form.Item name="dictLabel" label="字典标签" rules={[{ required: true, message: '请输入字典标签' }]}>
+            <Form.Item
+              name="dictLabel"
+              label="字典标签"
+              rules={[{ required: true, message: '请输入字典标签' }]}
+            >
               <Input placeholder="请输入" />
             </Form.Item>
-            <Form.Item name="dictValue" label="字典键值" rules={[{ required: true, message: '请输入字典键值' }]}>
+            <Form.Item
+              name="dictValue"
+              label="字典键值"
+              rules={[{ required: true, message: '请输入字典键值' }]}
+            >
               <Input placeholder="请输入" />
             </Form.Item>
             <Form.Item name="dictSort" label="排序" initialValue={0}>
@@ -260,14 +291,16 @@ const DictType: React.FC = () => {
               <Input placeholder="请输入" />
             </Form.Item>
             <Form.Item name="listClass" label="回显样式" initialValue="default">
-              <Select options={[
-                { label: '默认', value: 'default' },
-                { label: '主要', value: 'primary' },
-                { label: '成功', value: 'success' },
-                { label: '信息', value: 'info' },
-                { label: '警告', value: 'warning' },
-                { label: '危险', value: 'danger' },
-              ]} />
+              <Select
+                options={[
+                  { label: '默认', value: 'default' },
+                  { label: '主要', value: 'primary' },
+                  { label: '成功', value: 'success' },
+                  { label: '信息', value: 'info' },
+                  { label: '警告', value: 'warning' },
+                  { label: '危险', value: 'danger' },
+                ]}
+              />
             </Form.Item>
             <Form.Item name="status" label="状态" initialValue="0">
               <Select options={STATUS_OPTIONS} />

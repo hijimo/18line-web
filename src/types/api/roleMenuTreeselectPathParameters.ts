@@ -7,5 +7,5 @@
  */
 
 export type RoleMenuTreeselectPathParameters = {
- roleId: number,
- }
+  roleId: number;
+};

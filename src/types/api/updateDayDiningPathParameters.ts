@@ -7,6 +7,6 @@
  */
 
 export type UpdateDayDiningPathParameters = {
- itineraryId: number,
-    dayNumber: number,
- }
+  itineraryId: number;
+  dayNumber: number;
+};

@@ -7,7 +7,7 @@
  */
 import type { SysRoleParams } from './sysRoleParams';
 
-export interface SysRole {
+export type SysRole = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,14 +16,14 @@ export interface SysRole {
   params?: SysRoleParams;
   roleId?: number;
   /**
-     * @minLength 0
-     * @maxLength 30
-     */
+   * @minLength 0
+   * @maxLength 30
+   */
   roleName: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   roleKey: string;
   roleSort: number;
   dataScope?: string;
@@ -36,4 +36,4 @@ export interface SysRole {
   deptIds?: number[];
   permissions?: string[];
   admin?: boolean;
-}
+};

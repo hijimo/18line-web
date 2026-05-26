@@ -6,7 +6,7 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export interface RegisterBody {
+export type RegisterBody = {
   /** 用户名 */
   username: string;
   /** 密码 */
@@ -15,4 +15,4 @@ export interface RegisterBody {
   code?: string;
   /** 验证码唯一标识 */
   uuid?: string;
-}
+};

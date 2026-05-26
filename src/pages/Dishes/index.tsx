@@ -1,33 +1,44 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, InputNumber, message, Popconfirm, Select, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import DictSelect from '@/components/DataSelect/DictSelect';
+import UploadList from '@/components/Upload';
+import { useDictMap } from '@/hooks/useDictMap';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { SpecialStarOptions, SeasonalLabel, ReservationLabel, StatusEnum, StatusLabel } from '@/enums';
-
+import {
+  ReservationLabel,
+  SeasonalLabel,
+  SpecialStarOptions,
+  StatusEnum,
+  StatusLabel,
+} from '@/enums';
 import { get as getDishApi } from '@/services/api/菜品管理/菜品管理';
-import UploadList from '@/components/Upload';
-import DictSelect from '@/components/DataSelect/DictSelect';
-import { useDictMap } from '@/hooks/useDictMap';
 
 const dishApi = getDishApi();
 
 const YES_NO_OPTIONS = Object.entries(SeasonalLabel).map(([value, label]) => ({ label, value }));
-const specialStarValueEnum = Object.fromEntries(SpecialStarOptions.map(o => [o.value, { text: o.label }]));
-const seasonalValueEnum = Object.fromEntries(Object.entries(SeasonalLabel).map(([k, v]) => [k, { text: v }]));
-const reservationValueEnum = Object.fromEntries(Object.entries(ReservationLabel).map(([k, v]) => [k, { text: v }]));
+const specialStarValueEnum = Object.fromEntries(
+  SpecialStarOptions.map((o) => [o.value, { text: o.label }]),
+);
+const seasonalValueEnum = Object.fromEntries(
+  Object.entries(SeasonalLabel).map(([k, v]) => [k, { text: v }]),
+);
+const reservationValueEnum = Object.fromEntries(
+  Object.entries(ReservationLabel).map(([k, v]) => [k, { text: v }]),
+);
 
 const Dishes: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(dishApi.list4 as any);
+  const request = useTableRequest(dishApi.list4 as TODO);
   const darkLevelMap = useDictMap('travel_dark_level');
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
       form.setFieldsValue({ ...record, attachments: record.attachments || [] });
@@ -43,10 +54,10 @@ const Dishes: React.FC = () => {
     const params = { ...rest, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await dishApi.editSave4({ ...params, dishId: currentRecord.dishId } as any);
+        await dishApi.editSave4({ ...params, dishId: currentRecord.dishId } as TODO);
         message.success('编辑成功');
       } else {
-        await dishApi.addSave5(params as any);
+        await dishApi.addSave5(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -56,10 +67,10 @@ const Dishes: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await dishApi.editSave4({ dishId: record.dishId, status: newStatus } as any);
+      await dishApi.editSave4({ dishId: record.dishId, status: newStatus } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -67,9 +78,9 @@ const Dishes: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await dishApi.remove6({ ids: record.dishId } as any);
+      await dishApi.remove6({ ids: record.dishId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -80,14 +91,24 @@ const Dishes: React.FC = () => {
   const columns = [
     key,
     { title: '菜品名称', dataIndex: 'dishName', ellipsis: true },
-    { title: '黑暗程度', dataIndex: 'darkLevel', search: false, render: (_: any, r: any) => darkLevelMap[r.darkLevel] ?? r.darkLevel ?? '--' },
+    {
+      title: '黑暗程度',
+      dataIndex: 'darkLevel',
+      search: false,
+      render: (_: TODO, r: TODO) => darkLevelMap[r.darkLevel] ?? r.darkLevel ?? '--',
+    },
     { title: '特色星级', dataIndex: 'specialStar', search: false, valueEnum: specialStarValueEnum },
-    { title: '价格', dataIndex: 'price', search: false, render: (v: number) => v ? `${v}元` : '--' },
+    {
+      title: '价格',
+      dataIndex: 'price',
+      search: false,
+      render: (v: number) => (v ? `${v}元` : '--'),
+    },
     { title: '是否时令菜', dataIndex: 'seasonal', search: false, valueEnum: seasonalValueEnum },
     { title: '提前预约', dataIndex: 'reservation', search: false, valueEnum: reservationValueEnum },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -107,8 +128,8 @@ const Dishes: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加菜品
@@ -125,12 +146,18 @@ const Dishes: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="dishName" label="菜品名称" rules={[{ required: true, message: '请输入菜品名称' }]}>
+          <Form.Item
+            name="dishName"
+            label="菜品名称"
+            rules={[{ required: true, message: '请输入菜品名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="dishDesc" label="描述">

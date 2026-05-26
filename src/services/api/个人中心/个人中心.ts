@@ -5,70 +5,54 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult,
-  AvatarBody,
-  SysUser,
-  UpdatePwdBody
-} from '../../../types/api';
-
+import type { AjaxResult, AvatarBody, SysUser, UpdatePwdBody } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 个人信息
- */
-const profile = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/profile`, method: 'GET'
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 修改用户
- */
-const updateProfile1 = (
-    sysUser: SysUser,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/profile`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysUser
-    },
-      );
-    }
+   * @summary 个人信息
+   */
+  const profile = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/user/profile`, method: 'GET' });
+  };
   /**
- * @summary 重置密码
- */
-const updatePwd = (
-    updatePwdBody: UpdatePwdBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/profile/updatePwd`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updatePwdBody
-    },
-      );
-    }
+   * @summary 修改用户
+   */
+  const updateProfile1 = (sysUser: SysUser) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user/profile`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysUser,
+    });
+  };
   /**
- * @summary 头像上传
- */
-const avatar = (
-    avatarBody?: AvatarBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/user/profile/avatar`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: avatarBody
-    },
-      );
-    }
-  return {profile,updateProfile1,updatePwd,avatar}};
-export type ProfileResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['profile']>>>
-export type UpdateProfile1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['updateProfile1']>>>
-export type UpdatePwdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['updatePwd']>>>
-export type AvatarResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['avatar']>>>
+   * @summary 重置密码
+   */
+  const updatePwd = (updatePwdBody: UpdatePwdBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user/profile/updatePwd`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: updatePwdBody,
+    });
+  };
+  /**
+   * @summary 头像上传
+   */
+  const avatar = (avatarBody?: AvatarBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/user/profile/avatar`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: avatarBody,
+    });
+  };
+  return { profile, updateProfile1, updatePwd, avatar };
+};
+export type ProfileResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['profile']>>>;
+export type UpdateProfile1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['updateProfile1']>>
+>;
+export type UpdatePwdResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['updatePwd']>>>;
+export type AvatarResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['avatar']>>>;

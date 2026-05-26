@@ -8,7 +8,7 @@
 import type { TravelCheckinAttachmentsItem } from './travelCheckinAttachmentsItem';
 import type { TravelCheckinParams } from './travelCheckinParams';
 
-export interface TravelCheckin {
+export type TravelCheckin = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -45,4 +45,4 @@ export interface TravelCheckin {
   status?: string;
   delFlag?: string;
   attachments?: TravelCheckinAttachmentsItem[];
-}
+};

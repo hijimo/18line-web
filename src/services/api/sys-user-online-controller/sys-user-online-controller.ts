@@ -9,31 +9,22 @@ import type {
   AjaxResult,
   ForceLogoutPathParameters,
   List31Params,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getSysUserOnlineController = () => {
-const list31 = (
-    params: List31Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/monitor/online/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  const forceLogout = (
-    { tokenId }: ForceLogoutPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/online/${tokenId}`, method: 'DELETE'
-    },
-      );
-    }
-  return {list31,forceLogout}};
-export type List31Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysUserOnlineController>['list31']>>>
-export type ForceLogoutResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysUserOnlineController>['forceLogout']>>>
+export const getSysUserOnlineController = () => {
+  const list31 = (params: List31Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/monitor/online/list`, method: 'GET', params });
+  };
+  const forceLogout = ({ tokenId }: ForceLogoutPathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/online/${tokenId}`, method: 'DELETE' });
+  };
+  return { list31, forceLogout };
+};
+export type List31Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysUserOnlineController>['list31']>>
+>;
+export type ForceLogoutResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysUserOnlineController>['forceLogout']>>
+>;

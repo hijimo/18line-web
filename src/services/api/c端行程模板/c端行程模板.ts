@@ -5,38 +5,23 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult,
-  GetInfoPathParameters
-} from '../../../types/api';
-
+import type { AjaxResult, GetInfoPathParameters } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getC = () => {
-/**
- * @summary 查询模板详情（含日程明细）
- */
-const getInfo = (
-    { templateId }: GetInfoPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/template/${templateId}`, method: 'GET'
-    },
-      );
-    }
+export const getC = () => {
   /**
- * @summary 查询行程模板列表
- */
-const list10 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/template/list`, method: 'GET'
-    },
-      );
-    }
-  return {getInfo,list10}};
-export type GetInfoResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo']>>>
-export type List10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list10']>>>
+   * @summary 查询模板详情（含日程明细）
+   */
+  const getInfo = ({ templateId }: GetInfoPathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/template/${templateId}`, method: 'GET' });
+  };
+  /**
+   * @summary 查询行程模板列表
+   */
+  const list10 = () => {
+    return orvalMutator<AjaxResult>({ url: `/wx/template/list`, method: 'GET' });
+  };
+  return { getInfo, list10 };
+};
+export type GetInfoResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo']>>>;
+export type List10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list10']>>>;

@@ -7,6 +7,6 @@
  */
 
 export type ImportDataParams = {
-file: Blob;
-updateSupport: boolean;
+  file: Blob;
+  updateSupport: boolean;
 };

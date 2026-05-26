@@ -6,8 +6,8 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export interface RString {
+export type RString = {
   code?: number;
   msg?: string;
   data?: string;
-}
+};

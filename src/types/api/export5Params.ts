@@ -8,5 +8,5 @@
 import type { TravelCheckin } from './travelCheckin';
 
 export type Export5Params = {
-checkin: TravelCheckin;
+  checkin: TravelCheckin;
 };

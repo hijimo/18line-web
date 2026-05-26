@@ -101,10 +101,11 @@ export default [
         {
           selector: 'typeLike',
           format: ['PascalCase'],
+          leadingUnderscore: 'allow',
         },
         {
           selector: 'enumMember',
-          format: ['PascalCase'],
+          format: ['PascalCase', 'UPPER_CASE'],
         },
       ],
       '@typescript-eslint/no-explicit-any': 'error',

@@ -7,5 +7,5 @@
  */
 
 export type ExcludeChildPathParameters = {
- deptId: number,
- }
+  deptId: number;
+};

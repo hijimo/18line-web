@@ -5,40 +5,23 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult,
-  GetInfo3PathParameters,
-  List13Params
-} from '../../../types/api';
-
+import type { AjaxResult, GetInfo3PathParameters, List13Params } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getC = () => {
-/**
- * @summary 查询餐饮详情（含图片）
- */
-const getInfo3 = (
-    { diningId }: GetInfo3PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/dining/${diningId}`, method: 'GET'
-    },
-      );
-    }
+export const getC = () => {
   /**
- * @summary 查询餐饮列表
- */
-const list13 = (
-    params?: List13Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/wx/dining/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {getInfo3,list13}};
-export type GetInfo3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo3']>>>
-export type List13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list13']>>>
+   * @summary 查询餐饮详情（含图片）
+   */
+  const getInfo3 = ({ diningId }: GetInfo3PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/dining/${diningId}`, method: 'GET' });
+  };
+  /**
+   * @summary 查询餐饮列表
+   */
+  const list13 = (params?: List13Params) => {
+    return orvalMutator<AjaxResult>({ url: `/wx/dining/list`, method: 'GET', params });
+  };
+  return { getInfo3, list13 };
+};
+export type GetInfo3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['getInfo3']>>>;
+export type List13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['list13']>>>;

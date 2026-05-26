@@ -12,81 +12,62 @@ import type {
   List23Params,
   Remove17PathParameters,
   SysPost,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getSysPostController = () => {
-const edit5 = (
-    sysPost: SysPost,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/post`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysPost
-    },
-      );
-    }
-  const add6 = (
-    sysPost: SysPost,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/post`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysPost
-    },
-      );
-    }
-  const export11 = (
-    params: Export11Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/system/post/export`, method: 'POST',
-        params
-    },
-      );
-    }
-  const getInfo23 = (
-    { postId }: GetInfo23PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/post/${postId}`, method: 'GET'
-    },
-      );
-    }
-  const optionselect1 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/post/optionselect`, method: 'GET'
-    },
-      );
-    }
-  const list23 = (
-    params: List23Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/post/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  const remove17 = (
-    { postIds }: Remove17PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/post/${postIds}`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit5,add6,export11,getInfo23,optionselect1,list23,remove17}};
-export type Edit5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['edit5']>>>
-export type Add6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['add6']>>>
-export type Export11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['export11']>>>
-export type GetInfo23Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['getInfo23']>>>
-export type Optionselect1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['optionselect1']>>>
-export type List23Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['list23']>>>
-export type Remove17Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysPostController>['remove17']>>>
+export const getSysPostController = () => {
+  const edit5 = (sysPost: SysPost) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/post`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysPost,
+    });
+  };
+  const add6 = (sysPost: SysPost) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/post`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysPost,
+    });
+  };
+  const export11 = (params: Export11Params) => {
+    return orvalMutator<void>({ url: `/system/post/export`, method: 'POST', params });
+  };
+  const getInfo23 = ({ postId }: GetInfo23PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/post/${postId}`, method: 'GET' });
+  };
+  const optionselect1 = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/post/optionselect`, method: 'GET' });
+  };
+  const list23 = (params: List23Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/system/post/list`, method: 'GET', params });
+  };
+  const remove17 = ({ postIds }: Remove17PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/post/${postIds}`, method: 'DELETE' });
+  };
+  return { edit5, add6, export11, getInfo23, optionselect1, list23, remove17 };
+};
+export type Edit5Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['edit5']>>
+>;
+export type Add6Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['add6']>>
+>;
+export type Export11Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['export11']>>
+>;
+export type GetInfo23Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['getInfo23']>>
+>;
+export type Optionselect1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['optionselect1']>>
+>;
+export type List23Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['list23']>>
+>;
+export type Remove17Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysPostController>['remove17']>>
+>;

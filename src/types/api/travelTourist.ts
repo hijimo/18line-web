@@ -7,7 +7,7 @@
  */
 import type { TravelTouristParams } from './travelTouristParams';
 
-export interface TravelTourist {
+export type TravelTourist = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -28,4 +28,4 @@ export interface TravelTourist {
   delFlag?: string;
   loginIp?: string;
   loginDate?: Date;
-}
+};

@@ -6,97 +6,79 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type {
+  _ExportParams,
   AjaxResult,
   GetInfo11PathParameters,
   List1Params,
   Remove3Params,
   TableDataInfo,
   TravelPhotography,
-  _ExportParams
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除跟拍
- */
-const remove3 = (
-    params: Remove3Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/photography/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询跟拍列表
- */
-const list1 = (
-    params: List1Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/photography/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除跟拍
+   */
+  const remove3 = (params: Remove3Params) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/photography/remove`,
+      method: 'POST',
+      params,
+    });
+  };
   /**
- * @summary 导出跟拍列表
- */
-const _export = (
-    params: _ExportParams,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/photography/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询跟拍列表
+   */
+  const list1 = (params: List1Params) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/photography/list`,
+      method: 'POST',
+      params,
+    });
+  };
   /**
- * @summary 修改保存跟拍
- */
-const editSave1 = (
-    travelPhotography: TravelPhotography,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/photography/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelPhotography
-    },
-      );
-    }
+   * @summary 导出跟拍列表
+   */
+  const _export = (params: _ExportParams) => {
+    return orvalMutator<void>({ url: `/travel18/photography/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存跟拍
- */
-const addSave2 = (
-    travelPhotography: TravelPhotography,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/photography/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelPhotography
-    },
-      );
-    }
+   * @summary 修改保存跟拍
+   */
+  const editSave1 = (travelPhotography: TravelPhotography) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/photography/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelPhotography,
+    });
+  };
   /**
- * @summary 获取跟拍详情
- */
-const getInfo11 = (
-    { photographyId }: GetInfo11PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/photography/${photographyId}`, method: 'GET'
-    },
-      );
-    }
-  return {remove3,list1,_export,editSave1,addSave2,getInfo11}};
-export type Remove3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove3']>>>
-export type List1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list1']>>>
-export type _ExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['_export']>>>
-export type EditSave1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave1']>>>
-export type AddSave2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave2']>>>
-export type GetInfo11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo11']>>>
+   * @summary 新增保存跟拍
+   */
+  const addSave2 = (travelPhotography: TravelPhotography) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/photography/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelPhotography,
+    });
+  };
+  /**
+   * @summary 获取跟拍详情
+   */
+  const getInfo11 = ({ photographyId }: GetInfo11PathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/photography/${photographyId}`,
+      method: 'GET',
+    });
+  };
+  return { remove3, list1, _export, editSave1, addSave2, getInfo11 };
+};
+export type Remove3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove3']>>>;
+export type List1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list1']>>>;
+export type _ExportResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['_export']>>>;
+export type EditSave1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave1']>>>;
+export type AddSave2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave2']>>>;
+export type GetInfo11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo11']>>>;

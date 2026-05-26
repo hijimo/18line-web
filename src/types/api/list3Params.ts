@@ -8,5 +8,5 @@
 import type { TravelLine } from './travelLine';
 
 export type List3Params = {
-line: TravelLine;
+  line: TravelLine;
 };

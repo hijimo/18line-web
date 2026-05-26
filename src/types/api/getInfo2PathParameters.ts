@@ -7,5 +7,5 @@
  */
 
 export type GetInfo2PathParameters = {
- itineraryId: number,
- }
+  itineraryId: number;
+};

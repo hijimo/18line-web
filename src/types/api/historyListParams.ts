@@ -8,5 +8,5 @@
 import type { TravelAlgorithmConfigHistory } from './travelAlgorithmConfigHistory';
 
 export type HistoryListParams = {
-history: TravelAlgorithmConfigHistory;
+  history: TravelAlgorithmConfigHistory;
 };

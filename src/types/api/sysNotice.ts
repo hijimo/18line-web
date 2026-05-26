@@ -7,7 +7,7 @@
  */
 import type { SysNoticeParams } from './sysNoticeParams';
 
-export interface SysNotice {
+export type SysNotice = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,12 +16,12 @@ export interface SysNotice {
   params?: SysNoticeParams;
   noticeId?: number;
   /**
-     * @minLength 0
-     * @maxLength 50
-     */
+   * @minLength 0
+   * @maxLength 50
+   */
   noticeTitle: string;
   noticeType?: string;
   noticeContent?: string;
   status?: string;
   isRead?: boolean;
-}
+};

@@ -8,5 +8,5 @@
 import type { UserEntity } from './userEntity';
 
 export type SaveParams = {
-user: UserEntity;
+  user: UserEntity;
 };

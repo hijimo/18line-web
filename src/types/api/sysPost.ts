@@ -7,7 +7,7 @@
  */
 import type { SysPostParams } from './sysPostParams';
 
-export interface SysPost {
+export type SysPost = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,16 +16,16 @@ export interface SysPost {
   params?: SysPostParams;
   postId?: number;
   /**
-     * @minLength 0
-     * @maxLength 64
-     */
+   * @minLength 0
+   * @maxLength 64
+   */
   postCode: string;
   /**
-     * @minLength 0
-     * @maxLength 50
-     */
+   * @minLength 0
+   * @maxLength 50
+   */
   postName: string;
   postSort: number;
   status?: string;
   flag?: boolean;
-}
+};

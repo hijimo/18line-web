@@ -11,12 +11,12 @@ export const ResourceContext = createContext<IResourceContext>({
 /**
  * 资源上下文 Provider 属性
  */
-interface ResourceContextProviderProps {
+type ResourceContextProviderProps = {
   /** 资源配置列表 */
   resources: ResourceProps[];
   /** 子组件 */
   children: React.ReactNode;
-}
+};
 
 /**
  * 资源上下文 Provider

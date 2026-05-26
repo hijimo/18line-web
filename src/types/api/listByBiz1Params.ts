@@ -7,12 +7,12 @@
  */
 
 export type ListByBiz1Params = {
-/**
- * 业务类型
- */
-bizType: string;
-/**
- * 业务实体ID
- */
-bizId: number;
+  /**
+   * 业务类型
+   */
+  bizType: string;
+  /**
+   * 业务实体ID
+   */
+  bizId: number;
 };

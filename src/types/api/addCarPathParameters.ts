@@ -7,5 +7,5 @@
  */
 
 export type AddCarPathParameters = {
- itineraryId: number,
- }
+  itineraryId: number;
+};

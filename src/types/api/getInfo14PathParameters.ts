@@ -7,5 +7,5 @@
  */
 
 export type GetInfo14PathParameters = {
- diningId: number,
- }
+  diningId: number;
+};

@@ -7,7 +7,7 @@
  */
 import type { SysDictDataParams } from './sysDictDataParams';
 
-export interface SysDictData {
+export type SysDictData = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -17,27 +17,27 @@ export interface SysDictData {
   dictCode?: number;
   dictSort?: number;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   dictLabel: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   dictValue: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   dictType: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   cssClass?: string;
   listClass?: string;
   isDefault?: string;
   status?: string;
   default?: boolean;
-}
+};

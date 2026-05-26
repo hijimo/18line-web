@@ -7,5 +7,5 @@
  */
 
 export type CheckinListPathParameters = {
- attractionId: number,
- }
+  attractionId: number;
+};

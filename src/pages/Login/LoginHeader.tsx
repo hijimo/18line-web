@@ -1,4 +1,4 @@
-import type { LoginHeaderProps } from './types'
+import type { LoginHeaderProps } from './types';
 
 /**
  * 登录页面头部组件
@@ -21,5 +21,5 @@ export const LoginHeader: React.FC<LoginHeaderProps> = ({
       {/* 副标题 */}
       {subtitle && <p className="text-sm text-gray-500">{subtitle}</p>}
     </div>
-  )
-}
+  );
+};

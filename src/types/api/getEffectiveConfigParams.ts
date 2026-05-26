@@ -7,16 +7,16 @@
  */
 
 export type GetEffectiveConfigParams = {
-/**
- * 省份代码
- */
-provinceCode?: string;
-/**
- * 城市代码
- */
-cityCode?: string;
-/**
- * 区县代码
- */
-districtCode?: string;
+  /**
+   * 省份代码
+   */
+  provinceCode?: string;
+  /**
+   * 城市代码
+   */
+  cityCode?: string;
+  /**
+   * 区县代码
+   */
+  districtCode?: string;
 };

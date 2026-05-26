@@ -7,5 +7,5 @@
  */
 
 export type GetInfo23PathParameters = {
- postId: number,
- }
+  postId: number;
+};

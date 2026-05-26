@@ -8,5 +8,5 @@
 import type { SysUser } from './sysUser';
 
 export type Export9Params = {
-user: SysUser;
+  user: SysUser;
 };

@@ -7,5 +7,5 @@
  */
 
 export type List16Params = {
-keyword?: string;
+  keyword?: string;
 };

@@ -8,5 +8,5 @@
 import type { SysUser } from './sysUser';
 
 export type AllocatedListParams = {
-user: SysUser;
+  user: SysUser;
 };

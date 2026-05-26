@@ -8,5 +8,5 @@
 import type { SysDictType } from './sysDictType';
 
 export type List26Params = {
-dictType: SysDictType;
+  dictType: SysDictType;
 };

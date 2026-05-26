@@ -7,5 +7,5 @@
  */
 
 export type ResourceDownloadParams = {
-resource: string;
+  resource: string;
 };

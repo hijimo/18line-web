@@ -12,7 +12,7 @@ import type { TravelDining } from './travelDining';
 import type { TravelItineraryDayParams } from './travelItineraryDayParams';
 import type { TravelPhotography } from './travelPhotography';
 
-export interface TravelItineraryDay {
+export type TravelItineraryDay = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -54,4 +54,4 @@ export interface TravelItineraryDay {
   car?: TravelCar;
   touristCar?: TravelCar;
   delFlag?: string;
-}
+};

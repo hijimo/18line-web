@@ -7,5 +7,5 @@
  */
 
 export type GetInfo21PathParameters = {
- userId: number,
- }
+  userId: number;
+};

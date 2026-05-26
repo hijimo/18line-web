@@ -7,5 +7,5 @@
  */
 
 export type Remove23PathParameters = {
- configIds: number[],
- }
+  configIds: number[];
+};

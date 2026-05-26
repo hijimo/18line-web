@@ -18,208 +18,186 @@ import type {
   SysRole,
   SysUserRole,
   TableDataInfo,
-  UnallocatedListParams
+  UnallocatedListParams,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改保存角色
- */
-const edit4 = (
-    sysRole: SysRole,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysRole
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 新增角色
- */
-const add5 = (
-    sysRole: SysRole,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysRole
-    },
-      );
-    }
+   * @summary 修改保存角色
+   */
+  const edit4 = (sysRole: SysRole) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysRole,
+    });
+  };
   /**
- * @summary 修改保存数据权限
- */
-const dataScope = (
-    sysRole: SysRole,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/dataScope`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysRole
-    },
-      );
-    }
+   * @summary 新增角色
+   */
+  const add5 = (sysRole: SysRole) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysRole,
+    });
+  };
   /**
- * @summary 状态修改
- */
-const changeStatus1 = (
-    sysRole: SysRole,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/changeStatus`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysRole
-    },
-      );
-    }
+   * @summary 修改保存数据权限
+   */
+  const dataScope = (sysRole: SysRole) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role/dataScope`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysRole,
+    });
+  };
   /**
- * @summary 批量选择用户授权
- */
-const selectAuthUserAll = (
-    params: SelectAuthUserAllParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/authUser/selectAll`, method: 'PUT',
-        params
-    },
-      );
-    }
+   * @summary 状态修改
+   */
+  const changeStatus1 = (sysRole: SysRole) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role/changeStatus`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysRole,
+    });
+  };
   /**
- * @summary 取消授权用户
- */
-const cancelAuthUser = (
-    sysUserRole: SysUserRole,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/authUser/cancel`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysUserRole
-    },
-      );
-    }
+   * @summary 批量选择用户授权
+   */
+  const selectAuthUserAll = (params: SelectAuthUserAllParams) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role/authUser/selectAll`,
+      method: 'PUT',
+      params,
+    });
+  };
   /**
- * @summary 批量取消授权用户
- */
-const cancelAuthUserAll = (
-    params: CancelAuthUserAllParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/authUser/cancelAll`, method: 'PUT',
-        params
-    },
-      );
-    }
+   * @summary 取消授权用户
+   */
+  const cancelAuthUser = (sysUserRole: SysUserRole) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role/authUser/cancel`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysUserRole,
+    });
+  };
   /**
- * @summary 导出角色列表
- */
-const export10 = (
-    params: Export10Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/system/role/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 批量取消授权用户
+   */
+  const cancelAuthUserAll = (params: CancelAuthUserAllParams) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/role/authUser/cancelAll`,
+      method: 'PUT',
+      params,
+    });
+  };
   /**
- * @summary 根据角色编号获取详细信息
- */
-const getInfo22 = (
-    { roleId }: GetInfo22PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/${roleId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 导出角色列表
+   */
+  const export10 = (params: Export10Params) => {
+    return orvalMutator<void>({ url: `/system/role/export`, method: 'POST', params });
+  };
   /**
- * @summary 获取角色选择框列表
- */
-const optionselect = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/optionselect`, method: 'GET'
-    },
-      );
-    }
+   * @summary 根据角色编号获取详细信息
+   */
+  const getInfo22 = ({ roleId }: GetInfo22PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/role/${roleId}`, method: 'GET' });
+  };
   /**
- * @summary 获取角色列表
- */
-const list22 = (
-    params: List22Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/role/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 获取角色选择框列表
+   */
+  const optionselect = () => {
+    return orvalMutator<AjaxResult>({ url: `/system/role/optionselect`, method: 'GET' });
+  };
   /**
- * @summary 获取对应角色部门树列表
- */
-const deptTree1 = (
-    { roleId }: DeptTree1PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/deptTree/${roleId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取角色列表
+   */
+  const list22 = (params: List22Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/system/role/list`, method: 'GET', params });
+  };
   /**
- * @summary 查询未分配用户角色列表
- */
-const unallocatedList = (
-    params: UnallocatedListParams,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/role/authUser/unallocatedList`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 获取对应角色部门树列表
+   */
+  const deptTree1 = ({ roleId }: DeptTree1PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/role/deptTree/${roleId}`, method: 'GET' });
+  };
   /**
- * @summary 查询已分配用户角色列表
- */
-const allocatedList = (
-    params: AllocatedListParams,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/role/authUser/allocatedList`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 查询未分配用户角色列表
+   */
+  const unallocatedList = (params: UnallocatedListParams) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/system/role/authUser/unallocatedList`,
+      method: 'GET',
+      params,
+    });
+  };
   /**
- * @summary 删除角色
- */
-const remove16 = (
-    { roleIds }: Remove16PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/role/${roleIds}`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit4,add5,dataScope,changeStatus1,selectAuthUserAll,cancelAuthUser,cancelAuthUserAll,export10,getInfo22,optionselect,list22,deptTree1,unallocatedList,allocatedList,remove16}};
-export type Edit4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit4']>>>
-export type Add5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add5']>>>
-export type DataScopeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['dataScope']>>>
-export type ChangeStatus1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['changeStatus1']>>>
-export type SelectAuthUserAllResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['selectAuthUserAll']>>>
-export type CancelAuthUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['cancelAuthUser']>>>
-export type CancelAuthUserAllResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['cancelAuthUserAll']>>>
-export type Export10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export10']>>>
-export type GetInfo22Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo22']>>>
-export type OptionselectResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['optionselect']>>>
-export type List22Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list22']>>>
-export type DeptTree1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['deptTree1']>>>
-export type UnallocatedListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['unallocatedList']>>>
-export type AllocatedListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['allocatedList']>>>
-export type Remove16Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove16']>>>
+   * @summary 查询已分配用户角色列表
+   */
+  const allocatedList = (params: AllocatedListParams) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/system/role/authUser/allocatedList`,
+      method: 'GET',
+      params,
+    });
+  };
+  /**
+   * @summary 删除角色
+   */
+  const remove16 = ({ roleIds }: Remove16PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/role/${roleIds}`, method: 'DELETE' });
+  };
+  return {
+    edit4,
+    add5,
+    dataScope,
+    changeStatus1,
+    selectAuthUserAll,
+    cancelAuthUser,
+    cancelAuthUserAll,
+    export10,
+    getInfo22,
+    optionselect,
+    list22,
+    deptTree1,
+    unallocatedList,
+    allocatedList,
+    remove16,
+  };
+};
+export type Edit4Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit4']>>>;
+export type Add5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add5']>>>;
+export type DataScopeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['dataScope']>>>;
+export type ChangeStatus1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['changeStatus1']>>
+>;
+export type SelectAuthUserAllResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['selectAuthUserAll']>>
+>;
+export type CancelAuthUserResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['cancelAuthUser']>>
+>;
+export type CancelAuthUserAllResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['cancelAuthUserAll']>>
+>;
+export type Export10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export10']>>>;
+export type GetInfo22Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo22']>>>;
+export type OptionselectResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['optionselect']>>
+>;
+export type List22Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list22']>>>;
+export type DeptTree1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['deptTree1']>>>;
+export type UnallocatedListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['unallocatedList']>>
+>;
+export type AllocatedListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['allocatedList']>>
+>;
+export type Remove16Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove16']>>>;

@@ -11,59 +11,43 @@ import type {
   List32Params,
   Remove25PathParameters,
   TableDataInfo,
-  UnlockPathParameters
+  UnlockPathParameters,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getSysLogininforController = () => {
-const export16 = (
-    params: Export16Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/monitor/logininfor/export`, method: 'POST',
-        params
-    },
-      );
-    }
-  const unlock = (
-    { userName }: UnlockPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/logininfor/unlock/${userName}`, method: 'GET'
-    },
-      );
-    }
-  const list32 = (
-    params: List32Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/monitor/logininfor/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  const remove25 = (
-    { infoIds }: Remove25PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/logininfor/${infoIds}`, method: 'DELETE'
-    },
-      );
-    }
-  const clean1 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/logininfor/clean`, method: 'DELETE'
-    },
-      );
-    }
-  return {export16,unlock,list32,remove25,clean1}};
-export type Export16Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['export16']>>>
-export type UnlockResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['unlock']>>>
-export type List32Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['list32']>>>
-export type Remove25Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['remove25']>>>
-export type Clean1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['clean1']>>>
+export const getSysLogininforController = () => {
+  const export16 = (params: Export16Params) => {
+    return orvalMutator<void>({ url: `/monitor/logininfor/export`, method: 'POST', params });
+  };
+  const unlock = ({ userName }: UnlockPathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/monitor/logininfor/unlock/${userName}`,
+      method: 'GET',
+    });
+  };
+  const list32 = (params: List32Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/monitor/logininfor/list`, method: 'GET', params });
+  };
+  const remove25 = ({ infoIds }: Remove25PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/logininfor/${infoIds}`, method: 'DELETE' });
+  };
+  const clean1 = () => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/logininfor/clean`, method: 'DELETE' });
+  };
+  return { export16, unlock, list32, remove25, clean1 };
+};
+export type Export16Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['export16']>>
+>;
+export type UnlockResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['unlock']>>
+>;
+export type List32Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['list32']>>
+>;
+export type Remove25Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['remove25']>>
+>;
+export type Clean1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getSysLogininforController>['clean1']>>
+>;

@@ -8,5 +8,5 @@
 import type { SysMenu } from './sysMenu';
 
 export type TreeselectParams = {
-menu: SysMenu;
+  menu: SysMenu;
 };

@@ -2,10 +2,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { App as AntdApp, ConfigProvider } from 'antd';
 import { RouterProvider } from 'react-router';
 import React from 'react';
-import useTheme, { ThemeProvider } from '@/hooks/useTheme';
+import useTheme from '@/hooks/useTheme';
 import { getThemeConfig } from '@/theme';
-import ErrorBoundary from './components/ErrorBoundary';
 import { AntdStaticProvider } from './components/AntdStaticProvider';
+import ErrorBoundary from './components/ErrorBoundary';
 import router from './router';
 
 // 创建QueryClient实例

@@ -1,23 +1,23 @@
-import clsx from 'clsx'
-import React from 'react'
+import clsx from 'clsx';
+import React from 'react';
 
 const sizes = {
   lg: 'h-16 w-16',
   md: 'h-8 w-8',
   sm: 'h-4 w-4',
   xl: 'h-24 w-24',
-}
+};
 
 const variants = {
   light: 'text-white',
   primary: 'text-blue-200',
-}
+};
 
 export type SpinnerProps = {
-  className?: string
-  size?: keyof typeof sizes
-  variant?: keyof typeof variants
-}
+  className?: string;
+  size?: keyof typeof sizes;
+  variant?: keyof typeof variants;
+};
 
 const Spinner: React.FC<SpinnerProps> = ({
   className = '',
@@ -27,12 +27,7 @@ const Spinner: React.FC<SpinnerProps> = ({
   return (
     <>
       <svg
-        className={clsx(
-          'animate-spin',
-          sizes[size],
-          variants[variant],
-          className,
-        )}
+        className={clsx('animate-spin', sizes[size], variants[variant], className)}
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"
@@ -54,9 +49,9 @@ const Spinner: React.FC<SpinnerProps> = ({
       </svg>
       <span className="sr-only">Loading</span>
     </>
-  )
-}
+  );
+};
 
-Spinner.displayName = 'Spinner'
+Spinner.displayName = 'Spinner';
 
-export default Spinner
+export default Spinner;

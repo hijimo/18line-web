@@ -8,7 +8,7 @@
 import type { TravelCarAttachmentsItem } from './travelCarAttachmentsItem';
 import type { TravelCarParams } from './travelCarParams';
 
-export interface TravelCar {
+export type TravelCar = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -27,4 +27,4 @@ export interface TravelCar {
   status?: string;
   delFlag?: string;
   attachments?: TravelCarAttachmentsItem[];
-}
+};

@@ -8,5 +8,5 @@
 import type { TravelLocalSpecialtyDish } from './travelLocalSpecialtyDish';
 
 export type Export1Params = {
-specialty: TravelLocalSpecialtyDish;
+  specialty: TravelLocalSpecialtyDish;
 };

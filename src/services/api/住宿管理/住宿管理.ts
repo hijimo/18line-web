@@ -12,91 +12,73 @@ import type {
   List9Params,
   Remove12Params,
   TableDataInfo,
-  TravelAccommodation
+  TravelAccommodation,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除住宿
- */
-const remove12 = (
-    params: Remove12Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/accommodation/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询住宿列表
- */
-const list9 = (
-    params: List9Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/accommodation/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除住宿
+   */
+  const remove12 = (params: Remove12Params) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/accommodation/remove`,
+      method: 'POST',
+      params,
+    });
+  };
   /**
- * @summary 导出住宿列表
- */
-const export8 = (
-    params: Export8Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/accommodation/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询住宿列表
+   */
+  const list9 = (params: List9Params) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/accommodation/list`,
+      method: 'POST',
+      params,
+    });
+  };
   /**
- * @summary 修改保存住宿
- */
-const editSave9 = (
-    travelAccommodation: TravelAccommodation,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/accommodation/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelAccommodation
-    },
-      );
-    }
+   * @summary 导出住宿列表
+   */
+  const export8 = (params: Export8Params) => {
+    return orvalMutator<void>({ url: `/travel18/accommodation/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存住宿
- */
-const addSave10 = (
-    travelAccommodation: TravelAccommodation,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/accommodation/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelAccommodation
-    },
-      );
-    }
+   * @summary 修改保存住宿
+   */
+  const editSave9 = (travelAccommodation: TravelAccommodation) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/accommodation/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelAccommodation,
+    });
+  };
   /**
- * @summary 获取住宿详情
- */
-const getInfo19 = (
-    { accommodationId }: GetInfo19PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/accommodation/${accommodationId}`, method: 'GET'
-    },
-      );
-    }
-  return {remove12,list9,export8,editSave9,addSave10,getInfo19}};
-export type Remove12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove12']>>>
-export type List9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list9']>>>
-export type Export8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export8']>>>
-export type EditSave9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave9']>>>
-export type AddSave10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave10']>>>
-export type GetInfo19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo19']>>>
+   * @summary 新增保存住宿
+   */
+  const addSave10 = (travelAccommodation: TravelAccommodation) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/accommodation/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelAccommodation,
+    });
+  };
+  /**
+   * @summary 获取住宿详情
+   */
+  const getInfo19 = ({ accommodationId }: GetInfo19PathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/accommodation/${accommodationId}`,
+      method: 'GET',
+    });
+  };
+  return { remove12, list9, export8, editSave9, addSave10, getInfo19 };
+};
+export type Remove12Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove12']>>>;
+export type List9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list9']>>>;
+export type Export8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export8']>>>;
+export type EditSave9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave9']>>>;
+export type AddSave10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave10']>>>;
+export type GetInfo19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo19']>>>;

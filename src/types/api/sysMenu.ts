@@ -7,7 +7,7 @@
  */
 import type { SysMenuParams } from './sysMenuParams';
 
-export interface SysMenu {
+export type SysMenu = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -16,22 +16,22 @@ export interface SysMenu {
   params?: SysMenuParams;
   menuId?: number;
   /**
-     * @minLength 0
-     * @maxLength 50
-     */
+   * @minLength 0
+   * @maxLength 50
+   */
   menuName: string;
   parentName?: string;
   parentId?: number;
   orderNum: number;
   /**
-     * @minLength 0
-     * @maxLength 200
-     */
+   * @minLength 0
+   * @maxLength 200
+   */
   path?: string;
   /**
-     * @minLength 0
-     * @maxLength 200
-     */
+   * @minLength 0
+   * @maxLength 200
+   */
   component?: string;
   query?: string;
   routeName?: string;
@@ -41,10 +41,10 @@ export interface SysMenu {
   visible?: string;
   status?: string;
   /**
-     * @minLength 0
-     * @maxLength 100
-     */
+   * @minLength 0
+   * @maxLength 100
+   */
   perms?: string;
   icon?: string;
   children?: SysMenu[];
-}
+};

@@ -7,6 +7,6 @@
  */
 
 export type UpdateDayAccommodationPathParameters = {
- itineraryId: number,
-    dayNumber: number,
- }
+  itineraryId: number;
+  dayNumber: number;
+};

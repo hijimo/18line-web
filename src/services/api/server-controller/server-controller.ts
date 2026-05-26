@@ -5,22 +5,15 @@
  * 十八线——小众旅游
  * OpenAPI spec version: 版本号:0.0.1
  */
-import type {
-  AjaxResult
-} from '../../../types/api';
-
+import type { AjaxResult } from '../../../types/api';
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getServerController = () => {
-const getInfo30 = (
-
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/monitor/server`, method: 'GET'
-    },
-      );
-    }
-  return {getInfo30}};
-export type GetInfo30Result = NonNullable<Awaited<ReturnType<ReturnType<typeof getServerController>['getInfo30']>>>
+export const getServerController = () => {
+  const getInfo30 = () => {
+    return orvalMutator<AjaxResult>({ url: `/monitor/server`, method: 'GET' });
+  };
+  return { getInfo30 };
+};
+export type GetInfo30Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getServerController>['getInfo30']>>
+>;

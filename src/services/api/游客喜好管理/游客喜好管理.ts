@@ -11,63 +11,46 @@ import type {
   List19Params,
   Remove14PathParameters,
   TableDataInfo,
-  TravelTouristPreference
+  TravelTouristPreference,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改游客喜好
- */
-const edit2 = (
-    travelTouristPreference: TravelTouristPreference,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/preference`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: travelTouristPreference
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 获取游客喜好详情
- */
-const getInfo10 = (
-    { preferenceId }: GetInfo10PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/preference/${preferenceId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 修改游客喜好
+   */
+  const edit2 = (travelTouristPreference: TravelTouristPreference) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/preference`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelTouristPreference,
+    });
+  };
   /**
- * @summary 查询游客喜好列表
- */
-const list19 = (
-    params: List19Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/preference/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 获取游客喜好详情
+   */
+  const getInfo10 = ({ preferenceId }: GetInfo10PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/preference/${preferenceId}`, method: 'GET' });
+  };
   /**
- * @summary 删除游客喜好
- */
-const remove14 = (
-    { preferenceIds }: Remove14PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/preference/${preferenceIds}`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit2,getInfo10,list19,remove14}};
-export type Edit2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit2']>>>
-export type GetInfo10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo10']>>>
-export type List19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list19']>>>
-export type Remove14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove14']>>>
+   * @summary 查询游客喜好列表
+   */
+  const list19 = (params: List19Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/preference/list`, method: 'GET', params });
+  };
+  /**
+   * @summary 删除游客喜好
+   */
+  const remove14 = ({ preferenceIds }: Remove14PathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/preference/${preferenceIds}`,
+      method: 'DELETE',
+    });
+  };
+  return { edit2, getInfo10, list19, remove14 };
+};
+export type Edit2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit2']>>>;
+export type GetInfo10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo10']>>>;
+export type List19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list19']>>>;
+export type Remove14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove14']>>>;

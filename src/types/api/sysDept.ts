@@ -7,7 +7,7 @@
  */
 import type { SysDeptParams } from './sysDeptParams';
 
-export interface SysDept {
+export type SysDept = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -18,24 +18,24 @@ export interface SysDept {
   parentId?: number;
   ancestors?: string;
   /**
-     * @minLength 0
-     * @maxLength 30
-     */
+   * @minLength 0
+   * @maxLength 30
+   */
   deptName: string;
   orderNum: number;
   leader?: string;
   /**
-     * @minLength 0
-     * @maxLength 11
-     */
+   * @minLength 0
+   * @maxLength 11
+   */
   phone?: string;
   /**
-     * @minLength 0
-     * @maxLength 50
-     */
+   * @minLength 0
+   * @maxLength 50
+   */
   email?: string;
   status?: string;
   delFlag?: string;
   parentName?: string;
   children?: SysDept[];
-}
+};

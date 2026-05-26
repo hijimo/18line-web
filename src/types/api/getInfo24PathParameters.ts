@@ -7,5 +7,5 @@
  */
 
 export type GetInfo24PathParameters = {
- noticeId: number,
- }
+  noticeId: number;
+};

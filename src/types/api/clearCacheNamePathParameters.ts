@@ -7,5 +7,5 @@
  */
 
 export type ClearCacheNamePathParameters = {
- cacheName: string,
- }
+  cacheName: string;
+};

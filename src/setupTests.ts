@@ -1,6 +1,5 @@
-import '@testing-library/jest-dom/vitest'
-
-import { server } from '../mocks/server'
+import '@testing-library/jest-dom/vitest';
+import { server } from '../mocks/server';
 
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
@@ -16,8 +15,8 @@ Object.defineProperty(window, 'matchMedia', {
   })),
 });
 
-beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }))
+beforeAll(() => server.listen({ onUnhandledRequest: 'warn' }));
 
-afterEach(() => server.resetHandlers())
+afterEach(() => server.resetHandlers());
 
-afterAll(() => server.close())
+afterAll(() => server.close());

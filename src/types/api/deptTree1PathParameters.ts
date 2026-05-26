@@ -7,5 +7,5 @@
  */
 
 export type DeptTree1PathParameters = {
- roleId: number,
- }
+  roleId: number;
+};

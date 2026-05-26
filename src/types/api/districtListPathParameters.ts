@@ -7,5 +7,5 @@
  */
 
 export type DistrictListPathParameters = {
- cityCode: string,
- }
+  cityCode: string;
+};

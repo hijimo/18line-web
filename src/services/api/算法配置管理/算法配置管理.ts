@@ -14,116 +14,102 @@ import type {
   List20Params,
   Remove11Params,
   TableDataInfo,
-  TravelAlgorithmConfig
+  TravelAlgorithmConfig,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 新增算法配置
- */
-const add3 = (
-    travelAlgorithmConfig: TravelAlgorithmConfig,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/algorithm/config`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelAlgorithmConfig
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 删除算法配置
- */
-const remove11 = (
-    params: Remove11Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/algorithm/config/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 新增算法配置
+   */
+  const add3 = (travelAlgorithmConfig: TravelAlgorithmConfig) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/algorithm/config`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelAlgorithmConfig,
+    });
+  };
   /**
- * @summary 修改算法配置
- */
-const edit14 = (
-    travelAlgorithmConfig: TravelAlgorithmConfig,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/algorithm/config/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelAlgorithmConfig
-    },
-      );
-    }
+   * @summary 删除算法配置
+   */
+  const remove11 = (params: Remove11Params) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/algorithm/config/remove`,
+      method: 'POST',
+      params,
+    });
+  };
   /**
- * @summary 查询配置详情
- */
-const getInfo18 = (
-    { configId }: GetInfo18PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/algorithm/config/${configId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 修改算法配置
+   */
+  const edit14 = (travelAlgorithmConfig: TravelAlgorithmConfig) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/algorithm/config/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelAlgorithmConfig,
+    });
+  };
   /**
- * @summary 分页查询算法配置列表
- */
-const list20 = (
-    params: List20Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/algorithm/config/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 查询配置详情
+   */
+  const getInfo18 = ({ configId }: GetInfo18PathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/algorithm/config/${configId}`,
+      method: 'GET',
+    });
+  };
   /**
- * @summary 查询配置历史
- */
-const history = (
-    { configId }: HistoryPathParameters,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/algorithm/config/history/${configId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 分页查询算法配置列表
+   */
+  const list20 = (params: List20Params) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/algorithm/config/list`,
+      method: 'GET',
+      params,
+    });
+  };
   /**
- * @summary 分页查询配置历史
- */
-const historyList = (
-    params: HistoryListParams,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/algorithm/config/history/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 查询配置历史
+   */
+  const history = ({ configId }: HistoryPathParameters) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/algorithm/config/history/${configId}`,
+      method: 'GET',
+    });
+  };
   /**
- * @summary 查询生效配置
- */
-const getEffectiveConfig = (
-    params?: GetEffectiveConfigParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/algorithm/config/effective`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {add3,remove11,edit14,getInfo18,list20,history,historyList,getEffectiveConfig}};
-export type Add3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add3']>>>
-export type Remove11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove11']>>>
-export type Edit14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit14']>>>
-export type GetInfo18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo18']>>>
-export type List20Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list20']>>>
-export type HistoryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['history']>>>
-export type HistoryListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['historyList']>>>
-export type GetEffectiveConfigResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getEffectiveConfig']>>>
+   * @summary 分页查询配置历史
+   */
+  const historyList = (params: HistoryListParams) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/algorithm/config/history/list`,
+      method: 'GET',
+      params,
+    });
+  };
+  /**
+   * @summary 查询生效配置
+   */
+  const getEffectiveConfig = (params?: GetEffectiveConfigParams) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/algorithm/config/effective`,
+      method: 'GET',
+      params,
+    });
+  };
+  return { add3, remove11, edit14, getInfo18, list20, history, historyList, getEffectiveConfig };
+};
+export type Add3Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add3']>>>;
+export type Remove11Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove11']>>>;
+export type Edit14Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit14']>>>;
+export type GetInfo18Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo18']>>>;
+export type List20Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list20']>>>;
+export type HistoryResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['history']>>>;
+export type HistoryListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['historyList']>>
+>;
+export type GetEffectiveConfigResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['getEffectiveConfig']>>
+>;

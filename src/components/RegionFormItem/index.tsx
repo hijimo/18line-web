@@ -1,11 +1,11 @@
-import React from 'react';
 import { Form } from 'antd';
+import React from 'react';
 import RegionSelect from '@/components/RegionSelect';
 
-interface RegionFormItemProps {
+type RegionFormItemProps = {
   label?: string;
   required?: boolean;
-}
+};
 
 const RegionFormItem: React.FC<RegionFormItemProps> = ({ label = '地区', required = false }) => (
   <Form.Item

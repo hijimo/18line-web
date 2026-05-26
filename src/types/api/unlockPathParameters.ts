@@ -7,5 +7,5 @@
  */
 
 export type UnlockPathParameters = {
- userName: string,
- }
+  userName: string;
+};

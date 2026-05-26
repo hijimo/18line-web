@@ -7,5 +7,5 @@
  */
 
 export type Remove15PathParameters = {
- userIds: number[],
- }
+  userIds: number[];
+};

@@ -9,7 +9,7 @@ import type { TravelTemplateAttachmentsItem } from './travelTemplateAttachmentsI
 import type { TravelTemplateDay } from './travelTemplateDay';
 import type { TravelTemplateParams } from './travelTemplateParams';
 
-export interface TravelTemplate {
+export type TravelTemplate = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -34,4 +34,4 @@ export interface TravelTemplate {
   delFlag?: string;
   days?: TravelTemplateDay[];
   attachments?: TravelTemplateAttachmentsItem[];
-}
+};

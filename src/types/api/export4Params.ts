@@ -8,5 +8,5 @@
 import type { TravelDining } from './travelDining';
 
 export type Export4Params = {
-dining: TravelDining;
+  dining: TravelDining;
 };

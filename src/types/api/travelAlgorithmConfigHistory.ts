@@ -7,7 +7,7 @@
  */
 import type { TravelAlgorithmConfigHistoryParams } from './travelAlgorithmConfigHistoryParams';
 
-export interface TravelAlgorithmConfigHistory {
+export type TravelAlgorithmConfigHistory = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -24,4 +24,4 @@ export interface TravelAlgorithmConfigHistory {
   newConfigSnapshot?: string;
   operateTime?: Date;
   operateBy?: string;
-}
+};

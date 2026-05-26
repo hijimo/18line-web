@@ -7,5 +7,5 @@
  */
 
 export type GetInfo3PathParameters = {
- diningId: number,
- }
+  diningId: number;
+};

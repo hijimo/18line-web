@@ -7,5 +7,5 @@
  */
 
 export type Remove17PathParameters = {
- postIds: number[],
- }
+  postIds: number[];
+};

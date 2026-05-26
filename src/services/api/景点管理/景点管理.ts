@@ -13,103 +13,78 @@ import type {
   List8Params,
   Remove10Params,
   TableDataInfo,
-  TravelAttraction
+  TravelAttraction,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除景点
- */
-const remove10 = (
-    params: Remove10Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/attraction/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询景点列表
- */
-const list8 = (
-    params: List8Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/attraction/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除景点
+   */
+  const remove10 = (params: Remove10Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/attraction/remove`, method: 'POST', params });
+  };
   /**
- * @summary 导出景点列表
- */
-const export7 = (
-    params: Export7Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/attraction/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询景点列表
+   */
+  const list8 = (params: List8Params) => {
+    return orvalMutator<TableDataInfo>({
+      url: `/travel18/attraction/list`,
+      method: 'POST',
+      params,
+    });
+  };
   /**
- * @summary 修改保存景点
- */
-const editSave8 = (
-    travelAttraction: TravelAttraction,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/attraction/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelAttraction
-    },
-      );
-    }
+   * @summary 导出景点列表
+   */
+  const export7 = (params: Export7Params) => {
+    return orvalMutator<void>({ url: `/travel18/attraction/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存景点
- */
-const addSave9 = (
-    travelAttraction: TravelAttraction,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/attraction/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelAttraction
-    },
-      );
-    }
+   * @summary 修改保存景点
+   */
+  const editSave8 = (travelAttraction: TravelAttraction) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/attraction/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelAttraction,
+    });
+  };
   /**
- * @summary 查询景点详情
- */
-const getInfo17 = (
-    { attractionId }: GetInfo17PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/attraction/${attractionId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 新增保存景点
+   */
+  const addSave9 = (travelAttraction: TravelAttraction) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/attraction/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelAttraction,
+    });
+  };
   /**
- * @summary 查询景点下的打卡点列表
- */
-const checkinList = (
-    { attractionId }: CheckinListPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/attraction/checkin/${attractionId}`, method: 'GET'
-    },
-      );
-    }
-  return {remove10,list8,export7,editSave8,addSave9,getInfo17,checkinList}};
-export type Remove10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove10']>>>
-export type List8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list8']>>>
-export type Export7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export7']>>>
-export type EditSave8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave8']>>>
-export type AddSave9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave9']>>>
-export type GetInfo17Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo17']>>>
-export type CheckinListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['checkinList']>>>
+   * @summary 查询景点详情
+   */
+  const getInfo17 = ({ attractionId }: GetInfo17PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/attraction/${attractionId}`, method: 'GET' });
+  };
+  /**
+   * @summary 查询景点下的打卡点列表
+   */
+  const checkinList = ({ attractionId }: CheckinListPathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/attraction/checkin/${attractionId}`,
+      method: 'GET',
+    });
+  };
+  return { remove10, list8, export7, editSave8, addSave9, getInfo17, checkinList };
+};
+export type Remove10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove10']>>>;
+export type List8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list8']>>>;
+export type Export7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export7']>>>;
+export type EditSave8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave8']>>>;
+export type AddSave9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave9']>>>;
+export type GetInfo17Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo17']>>>;
+export type CheckinListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['checkinList']>>
+>;

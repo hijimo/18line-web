@@ -8,5 +8,5 @@
 import type { SysOperLog } from './sysOperLog';
 
 export type List30Params = {
-operLog: SysOperLog;
+  operLog: SysOperLog;
 };

@@ -1,9 +1,9 @@
 import { v1 as uuidv1 } from 'uuid';
 import docPngUrl from '@/components/Upload/assets/doc.png';
+import otherPngUrl from '@/components/Upload/assets/other.png';
 import pdfPngUrl from '@/components/Upload/assets/pdf.png';
 import txtPngUrl from '@/components/Upload/assets/txt.png';
 import xlsPngUrl from '@/components/Upload/assets/xls.png';
-import otherPngUrl from '@/components/Upload/assets/other.png';
 
 type FileIconMap = Record<string, string>;
 
@@ -54,7 +54,7 @@ export function getExtname(filename = '') {
 
   return `.${names[names.length - 1].toLowerCase()}`;
 }
-export function getFileIcon(filename = ''): any {
+export function getFileIcon(filename = ''): TODO {
   return fileIconMap[getExtname(filename)] || otherIcon;
 }
 export function getFileMIME(filename = '') {

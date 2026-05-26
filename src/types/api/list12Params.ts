@@ -7,5 +7,5 @@
  */
 
 export type List12Params = {
-status?: string;
+  status?: string;
 };

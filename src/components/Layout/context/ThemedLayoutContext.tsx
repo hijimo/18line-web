@@ -14,11 +14,11 @@ export const ThemedLayoutContext = React.createContext<IThemedLayoutContext>({
 /**
  * 主题布局上下文提供者属性
  */
-interface ThemedLayoutContextProviderProps {
+type ThemedLayoutContextProviderProps = {
   children: ReactNode;
   initialSiderCollapsed?: boolean;
   onSiderCollapsed?: (collapsed: boolean) => void;
-}
+};
 
 /**
  * 主题布局上下文提供者

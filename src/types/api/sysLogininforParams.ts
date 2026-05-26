@@ -6,4 +6,4 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 
-export type SysLogininforParams = {[key: string]: { [key: string]: unknown }};
+export type SysLogininforParams = { [key: string]: { [key: string]: unknown } };

@@ -6,8 +6,8 @@
  * 此模块用于将 App.useApp() 获取的实例暴露给非组件代码（如 axios 拦截器）。
  */
 import type { MessageInstance } from 'antd/es/message/interface';
-import type { NotificationInstance } from 'antd/es/notification/interface';
 import type { ModalStaticFunctions } from 'antd/es/modal/confirm';
+import type { NotificationInstance } from 'antd/es/notification/interface';
 
 let messageInstance: MessageInstance;
 let notificationInstance: NotificationInstance;

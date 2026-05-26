@@ -7,5 +7,5 @@
  */
 
 export type GetInfo20PathParameters = {
- dictId: number,
- }
+  dictId: number;
+};

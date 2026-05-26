@@ -8,5 +8,5 @@
 import type { TravelCar } from './travelCar';
 
 export type Export6Params = {
-car: TravelCar;
+  car: TravelCar;
 };

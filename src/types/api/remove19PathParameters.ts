@@ -7,5 +7,5 @@
  */
 
 export type Remove19PathParameters = {
- menuId: number,
- }
+  menuId: number;
+};

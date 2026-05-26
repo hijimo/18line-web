@@ -12,91 +12,64 @@ import type {
   ListParams,
   Remove2Params,
   TableDataInfo,
-  TravelResource
+  TravelResource,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除资源
- */
-const remove2 = (
-    params: Remove2Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/resource/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询资源列表
- */
-const list = (
-    params: ListParams,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/resource/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除资源
+   */
+  const remove2 = (params: Remove2Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/resource/remove`, method: 'POST', params });
+  };
   /**
- * @summary 修改资源
- */
-const editSave = (
-    travelResource: TravelResource,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/resource/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelResource
-    },
-      );
-    }
+   * @summary 查询资源列表
+   */
+  const list = (params: ListParams) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/resource/list`, method: 'POST', params });
+  };
   /**
- * @summary 新增资源
- */
-const addSave1 = (
-    travelResource: TravelResource,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/resource/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelResource
-    },
-      );
-    }
+   * @summary 修改资源
+   */
+  const editSave = (travelResource: TravelResource) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/resource/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelResource,
+    });
+  };
   /**
- * @summary 获取资源详情
- */
-const getInfo9 = (
-    { resourceId }: GetInfo9PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/resource/${resourceId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 新增资源
+   */
+  const addSave1 = (travelResource: TravelResource) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/resource/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelResource,
+    });
+  };
   /**
- * @summary 按业务查询资源列表
- */
-const listByBiz1 = (
-    params: ListByBiz1Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/resource/biz`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {remove2,list,editSave,addSave1,getInfo9,listByBiz1}};
-export type Remove2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove2']>>>
-export type ListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list']>>>
-export type EditSaveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave']>>>
-export type AddSave1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave1']>>>
-export type GetInfo9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo9']>>>
-export type ListByBiz1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['listByBiz1']>>>
+   * @summary 获取资源详情
+   */
+  const getInfo9 = ({ resourceId }: GetInfo9PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/resource/${resourceId}`, method: 'GET' });
+  };
+  /**
+   * @summary 按业务查询资源列表
+   */
+  const listByBiz1 = (params: ListByBiz1Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/resource/biz`, method: 'GET', params });
+  };
+  return { remove2, list, editSave, addSave1, getInfo9, listByBiz1 };
+};
+export type Remove2Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove2']>>>;
+export type ListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list']>>>;
+export type EditSaveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave']>>>;
+export type AddSave1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave1']>>>;
+export type GetInfo9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo9']>>>;
+export type ListByBiz1Result = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['listByBiz1']>>
+>;

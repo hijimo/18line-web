@@ -7,5 +7,5 @@
  */
 
 export type GetInfo7PathParameters = {
- touristId: number,
- }
+  touristId: number;
+};

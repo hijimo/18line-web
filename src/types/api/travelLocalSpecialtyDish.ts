@@ -8,7 +8,7 @@
 import type { TravelLocalSpecialtyDishAttachmentsItem } from './travelLocalSpecialtyDishAttachmentsItem';
 import type { TravelLocalSpecialtyDishParams } from './travelLocalSpecialtyDishParams';
 
-export interface TravelLocalSpecialtyDish {
+export type TravelLocalSpecialtyDish = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -29,4 +29,4 @@ export interface TravelLocalSpecialtyDish {
   status?: string;
   delFlag?: string;
   attachments?: TravelLocalSpecialtyDishAttachmentsItem[];
-}
+};

@@ -8,5 +8,5 @@
 import type { SysPost } from './sysPost';
 
 export type Export11Params = {
-post: SysPost;
+  post: SysPost;
 };

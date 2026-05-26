@@ -8,5 +8,5 @@
 import type { SysDept } from './sysDept';
 
 export type DeptTreeParams = {
-dept: SysDept;
+  dept: SysDept;
 };

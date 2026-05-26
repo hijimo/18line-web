@@ -7,5 +7,5 @@
  */
 
 export type CityList1PathParameters = {
- provinceCode: string,
- }
+  provinceCode: string;
+};

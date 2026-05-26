@@ -1,20 +1,19 @@
-import type { ClipboardEvent, FC, FocusEvent } from 'react';
 import { Form, Input } from 'antd';
 import type { NamePath } from 'antd/es/form/interface';
-
-import styles from './index.module.css';
+import type { ClipboardEvent, FC, FocusEvent } from 'react';
 import {
   normalizeCoordinateValue,
   parseCoordinatePair,
   validateLatitude,
   validateLongitude,
 } from './coordinateUtils';
+import styles from './index.module.css';
 
-interface CoordinateInputProps {
+type CoordinateInputProps = {
   longitudeName?: NamePath;
   latitudeName?: NamePath;
   label?: string;
-}
+};
 
 const hasPairSeparator = (value: string) => /[,，\s]/.test(value.trim());
 
@@ -83,11 +82,10 @@ const CoordinateInput: FC<CoordinateInputProps> = ({
           getValueFromEvent={createValueFromEvent(longitudeName)}
           rules={[
             {
-              validator: (_, value) => (
+              validator: (_, value) =>
                 validateLongitude(value)
                   ? Promise.resolve()
-                  : Promise.reject(new Error('经度范围应为 -180 到 180'))
-              ),
+                  : Promise.reject(new Error('经度范围应为 -180 到 180')),
             },
           ]}
           noStyle={false}
@@ -107,11 +105,10 @@ const CoordinateInput: FC<CoordinateInputProps> = ({
           getValueFromEvent={createValueFromEvent(latitudeName)}
           rules={[
             {
-              validator: (_, value) => (
+              validator: (_, value) =>
                 validateLatitude(value)
                   ? Promise.resolve()
-                  : Promise.reject(new Error('纬度范围应为 -90 到 90'))
-              ),
+                  : Promise.reject(new Error('纬度范围应为 -90 到 90')),
             },
           ]}
           noStyle={false}

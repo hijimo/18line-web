@@ -6,66 +6,51 @@
  * OpenAPI spec version: 版本号:0.0.1
  */
 import type {
+  _DeletePathParameters,
   GetUserPathParameters,
   RListUserEntity,
   RString,
   RUserEntity,
   SaveParams,
   UserEntity,
-  _DeletePathParameters
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const getTestController = () => {
-const update = (
-    userEntity: UserEntity,
- ) => {
-      return orvalMutator<RString>(
-      {url: `/test/user/update`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: userEntity
-    },
-      );
-    }
-  const save = (
-    params: SaveParams,
- ) => {
-      return orvalMutator<RString>(
-      {url: `/test/user/save`, method: 'POST',
-        params
-    },
-      );
-    }
-  const getUser = (
-    { userId }: GetUserPathParameters,
- ) => {
-      return orvalMutator<RUserEntity>(
-      {url: `/test/user/${userId}`, method: 'GET'
-    },
-      );
-    }
-  const _delete = (
-    { userId }: _DeletePathParameters,
- ) => {
-      return orvalMutator<RString>(
-      {url: `/test/user/${userId}`, method: 'DELETE'
-    },
-      );
-    }
-  const userList = (
-
- ) => {
-      return orvalMutator<RListUserEntity>(
-      {url: `/test/user/list`, method: 'GET'
-    },
-      );
-    }
-  return {update,save,getUser,_delete,userList}};
-export type UpdateResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTestController>['update']>>>
-export type SaveResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTestController>['save']>>>
-export type GetUserResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTestController>['getUser']>>>
-export type _DeleteResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTestController>['_delete']>>>
-export type UserListResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getTestController>['userList']>>>
+export const getTestController = () => {
+  const update = (userEntity: UserEntity) => {
+    return orvalMutator<RString>({
+      url: `/test/user/update`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: userEntity,
+    });
+  };
+  const save = (params: SaveParams) => {
+    return orvalMutator<RString>({ url: `/test/user/save`, method: 'POST', params });
+  };
+  const getUser = ({ userId }: GetUserPathParameters) => {
+    return orvalMutator<RUserEntity>({ url: `/test/user/${userId}`, method: 'GET' });
+  };
+  const _delete = ({ userId }: _DeletePathParameters) => {
+    return orvalMutator<RString>({ url: `/test/user/${userId}`, method: 'DELETE' });
+  };
+  const userList = () => {
+    return orvalMutator<RListUserEntity>({ url: `/test/user/list`, method: 'GET' });
+  };
+  return { update, save, getUser, _delete, userList };
+};
+export type UpdateResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTestController>['update']>>
+>;
+export type SaveResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTestController>['save']>>
+>;
+export type GetUserResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTestController>['getUser']>>
+>;
+export type _DeleteResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTestController>['_delete']>>
+>;
+export type UserListResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof getTestController>['userList']>>
+>;

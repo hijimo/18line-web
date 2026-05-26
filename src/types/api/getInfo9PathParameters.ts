@@ -7,5 +7,5 @@
  */
 
 export type GetInfo9PathParameters = {
- resourceId: number,
- }
+  resourceId: number;
+};

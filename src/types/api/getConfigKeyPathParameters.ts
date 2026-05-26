@@ -7,5 +7,5 @@
  */
 
 export type GetConfigKeyPathParameters = {
- configKey: string,
- }
+  configKey: string;
+};

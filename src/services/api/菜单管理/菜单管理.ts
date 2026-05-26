@@ -13,116 +13,90 @@ import type {
   RoleMenuTreeselectPathParameters,
   SysMenu,
   TreeselectParams,
-  UpdateSortBody
+  UpdateSortBody,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改菜单
- */
-const edit7 = (
-    sysMenu: SysMenu,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysMenu
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 新增菜单
- */
-const add8 = (
-    sysMenu: SysMenu,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysMenu
-    },
-      );
-    }
+   * @summary 修改菜单
+   */
+  const edit7 = (sysMenu: SysMenu) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/menu`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysMenu,
+    });
+  };
   /**
- * @summary 保存菜单排序
- */
-const updateSort = (
-    updateSortBody: UpdateSortBody,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu/updateSort`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: updateSortBody
-    },
-      );
-    }
+   * @summary 新增菜单
+   */
+  const add8 = (sysMenu: SysMenu) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/menu`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysMenu,
+    });
+  };
   /**
- * @summary 根据菜单编号获取详细信息
- */
-const getInfo25 = (
-    { menuId }: GetInfo25PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu/${menuId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 保存菜单排序
+   */
+  const updateSort = (updateSortBody: UpdateSortBody) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/menu/updateSort`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: updateSortBody,
+    });
+  };
   /**
- * @summary 删除菜单
- */
-const remove19 = (
-    { menuId }: Remove19PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu/${menuId}`, method: 'DELETE'
-    },
-      );
-    }
+   * @summary 根据菜单编号获取详细信息
+   */
+  const getInfo25 = ({ menuId }: GetInfo25PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/menu/${menuId}`, method: 'GET' });
+  };
   /**
- * @summary 获取菜单下拉树列表
- */
-const treeselect = (
-    params: TreeselectParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu/treeselect`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 删除菜单
+   */
+  const remove19 = ({ menuId }: Remove19PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/menu/${menuId}`, method: 'DELETE' });
+  };
   /**
- * @summary 加载对应角色菜单列表树
- */
-const roleMenuTreeselect = (
-    { roleId }: RoleMenuTreeselectPathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu/roleMenuTreeselect/${roleId}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 获取菜单下拉树列表
+   */
+  const treeselect = (params: TreeselectParams) => {
+    return orvalMutator<AjaxResult>({ url: `/system/menu/treeselect`, method: 'GET', params });
+  };
   /**
- * @summary 获取菜单列表
- */
-const list25 = (
-    params: List25Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/menu/list`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {edit7,add8,updateSort,getInfo25,remove19,treeselect,roleMenuTreeselect,list25}};
-export type Edit7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit7']>>>
-export type Add8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add8']>>>
-export type UpdateSortResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['updateSort']>>>
-export type GetInfo25Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo25']>>>
-export type Remove19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove19']>>>
-export type TreeselectResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['treeselect']>>>
-export type RoleMenuTreeselectResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['roleMenuTreeselect']>>>
-export type List25Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list25']>>>
+   * @summary 加载对应角色菜单列表树
+   */
+  const roleMenuTreeselect = ({ roleId }: RoleMenuTreeselectPathParameters) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/menu/roleMenuTreeselect/${roleId}`,
+      method: 'GET',
+    });
+  };
+  /**
+   * @summary 获取菜单列表
+   */
+  const list25 = (params: List25Params) => {
+    return orvalMutator<AjaxResult>({ url: `/system/menu/list`, method: 'GET', params });
+  };
+  return { edit7, add8, updateSort, getInfo25, remove19, treeselect, roleMenuTreeselect, list25 };
+};
+export type Edit7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit7']>>>;
+export type Add8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add8']>>>;
+export type UpdateSortResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['updateSort']>>
+>;
+export type GetInfo25Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo25']>>>;
+export type Remove19Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove19']>>>;
+export type TreeselectResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['treeselect']>>
+>;
+export type RoleMenuTreeselectResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['roleMenuTreeselect']>>
+>;
+export type List25Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list25']>>>;

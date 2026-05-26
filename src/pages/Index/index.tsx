@@ -5,7 +5,7 @@ import logo from '../../logo.svg';
 import Counter from './Counter';
 import styles from './index.module.css';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const Index: React.FC<Props> = memo(() => {
   return (

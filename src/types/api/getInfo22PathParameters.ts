@@ -7,5 +7,5 @@
  */
 
 export type GetInfo22PathParameters = {
- roleId: number,
- }
+  roleId: number;
+};

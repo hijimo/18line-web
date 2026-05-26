@@ -7,5 +7,5 @@
  */
 
 export type GetInfo12PathParameters = {
- specialtyId: number,
- }
+  specialtyId: number;
+};

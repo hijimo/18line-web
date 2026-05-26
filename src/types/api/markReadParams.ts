@@ -7,5 +7,5 @@
  */
 
 export type MarkReadParams = {
-noticeId: number;
+  noticeId: number;
 };

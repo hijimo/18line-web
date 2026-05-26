@@ -7,7 +7,7 @@
  */
 import type { SysLogininforParams } from './sysLogininforParams';
 
-export interface SysLogininfor {
+export type SysLogininfor = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -23,4 +23,4 @@ export interface SysLogininfor {
   os?: string;
   msg?: string;
   loginTime?: Date;
-}
+};

@@ -8,5 +8,5 @@
 import type { SysConfig } from './sysConfig';
 
 export type List29Params = {
-config: SysConfig;
+  config: SysConfig;
 };

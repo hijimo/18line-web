@@ -9,7 +9,7 @@ import type { SysDept } from './sysDept';
 import type { SysRole } from './sysRole';
 import type { SysUserParams } from './sysUserParams';
 
-export interface SysUser {
+export type SysUser = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -19,24 +19,24 @@ export interface SysUser {
   userId?: number;
   deptId?: number;
   /**
-     * @minLength 0
-     * @maxLength 30
-     */
+   * @minLength 0
+   * @maxLength 30
+   */
   userName: string;
   /**
-     * @minLength 0
-     * @maxLength 30
-     */
+   * @minLength 0
+   * @maxLength 30
+   */
   nickName?: string;
   /**
-     * @minLength 0
-     * @maxLength 50
-     */
+   * @minLength 0
+   * @maxLength 50
+   */
   email?: string;
   /**
-     * @minLength 0
-     * @maxLength 11
-     */
+   * @minLength 0
+   * @maxLength 11
+   */
   phonenumber?: string;
   sex?: string;
   avatar?: string;
@@ -52,4 +52,4 @@ export interface SysUser {
   postIds?: number[];
   roleId?: number;
   admin?: boolean;
-}
+};

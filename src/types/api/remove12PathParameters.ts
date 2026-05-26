@@ -7,5 +7,5 @@
  */
 
 export type Remove12PathParameters = {
- touristIds: string,
- }
+  touristIds: string;
+};

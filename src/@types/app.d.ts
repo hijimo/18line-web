@@ -1,5 +1,5 @@
-declare interface Doc {
-  name: string
-  url: URLType
-}
-declare type DocList = Doc[]
+declare type Doc = {
+  name: string;
+  url: URLType;
+};
+declare type DocList = Doc[];

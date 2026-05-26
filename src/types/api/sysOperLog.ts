@@ -7,7 +7,7 @@
  */
 import type { SysOperLogParams } from './sysOperLogParams';
 
-export interface SysOperLog {
+export type SysOperLog = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -32,4 +32,4 @@ export interface SysOperLog {
   errorMsg?: string;
   operTime?: Date;
   costTime?: number;
-}
+};

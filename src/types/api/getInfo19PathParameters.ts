@@ -7,5 +7,5 @@
  */
 
 export type GetInfo19PathParameters = {
- accommodationId: number,
- }
+  accommodationId: number;
+};

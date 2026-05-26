@@ -10,64 +10,46 @@ import type {
   FileDownloadParams,
   ResourceDownloadParams,
   UploadFileParams,
-  UploadFilesParams
+  UploadFilesParams,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 通用上传请求（多个）
- */
-const uploadFiles = (
-    params: UploadFilesParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/common/uploads`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 通用上传请求（单个）
- */
-const uploadFile = (
-    params: UploadFileParams,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/common/upload`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 通用上传请求（多个）
+   */
+  const uploadFiles = (params: UploadFilesParams) => {
+    return orvalMutator<AjaxResult>({ url: `/common/uploads`, method: 'POST', params });
+  };
   /**
- * @summary 通用下载请求
- */
-const fileDownload = (
-    params: FileDownloadParams,
- ) => {
-      return orvalMutator<void>(
-      {url: `/common/download`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 通用上传请求（单个）
+   */
+  const uploadFile = (params: UploadFileParams) => {
+    return orvalMutator<AjaxResult>({ url: `/common/upload`, method: 'POST', params });
+  };
   /**
- * @summary 本地资源通用下载
- */
-const resourceDownload = (
-    params: ResourceDownloadParams,
- ) => {
-      return orvalMutator<void>(
-      {url: `/common/download/resource`, method: 'GET',
-        params
-    },
-      );
-    }
-  return {uploadFiles,uploadFile,fileDownload,resourceDownload}};
-export type UploadFilesResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['uploadFiles']>>>
-export type UploadFileResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['uploadFile']>>>
-export type FileDownloadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['fileDownload']>>>
-export type ResourceDownloadResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['resourceDownload']>>>
+   * @summary 通用下载请求
+   */
+  const fileDownload = (params: FileDownloadParams) => {
+    return orvalMutator<void>({ url: `/common/download`, method: 'GET', params });
+  };
+  /**
+   * @summary 本地资源通用下载
+   */
+  const resourceDownload = (params: ResourceDownloadParams) => {
+    return orvalMutator<void>({ url: `/common/download/resource`, method: 'GET', params });
+  };
+  return { uploadFiles, uploadFile, fileDownload, resourceDownload };
+};
+export type UploadFilesResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['uploadFiles']>>
+>;
+export type UploadFileResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['uploadFile']>>
+>;
+export type FileDownloadResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['fileDownload']>>
+>;
+export type ResourceDownloadResult = NonNullable<
+  Awaited<ReturnType<ReturnType<typeof get>['resourceDownload']>>
+>;

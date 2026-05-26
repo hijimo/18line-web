@@ -5,27 +5,27 @@
 /**
  * 工具调用结果
  */
-export interface ToolCallResult {
+export type ToolCallResult = {
   /** 状态 */
   status: 'success' | 'error';
   /** 数据 */
-  data?: any;
-}
+  data?: TODO;
+};
 
 /**
  * 工具调用错误
  */
-export interface ToolCallError {
+export type ToolCallError = {
   /** 错误码 */
   code: string;
   /** 错误信息 */
   message: string;
-}
+};
 
 /**
  * 工具调用详情
  */
-export interface ToolCallDetail {
+export type ToolCallDetail = {
   /** 工具名称 */
   tool_name: string;
   /** 工具ID */
@@ -36,24 +36,24 @@ export interface ToolCallDetail {
   result?: ToolCallResult;
   /** 错误 */
   error?: ToolCallError;
-}
+};
 
 /**
  * 搜索详情
  */
-export interface SearchDetail {
+export type SearchDetail = {
   /** 空间名称 */
   space_name?: string;
   /** 空间数量 */
   space_count?: number;
   /** 文档数量 */
   doc_count?: number;
-}
+};
 
 /**
  * 资源检索详情
  */
-export interface ResourceRetrievalDetail {
+export type ResourceRetrievalDetail = {
   /** 查询关键词 */
   query: string;
   /** 资源类型 */
@@ -61,13 +61,13 @@ export interface ResourceRetrievalDetail {
   /** 资源数量 */
   resource_count?: number;
   /** 资源列表 */
-  resources?: any[];
-}
+  resources?: TODO[];
+};
 
 /**
  * 处理过程信息
  */
-export interface ProcessInfo {
+export type ProcessInfo = {
   /** 当前阶段 */
   stage: string;
   /** 阶段描述信息 */
@@ -78,49 +78,49 @@ export interface ProcessInfo {
   content: string;
   /** 详细信息 */
   detail: ToolCallDetail | SearchDetail | ResourceRetrievalDetail | null;
-}
+};
 
 /**
  * 文件信息
  */
-export interface FileInfo {
+export type FileInfo = {
   target_id: string;
   target_type: string;
-}
+};
 
 /**
  * 会议信息
  */
-export interface MeetingInfo {
+export type MeetingInfo = {
   cover_url: string;
   start_time: number;
-}
+};
 
 /**
  * 所有者信息
  */
-export interface Owner {
+export type Owner = {
   avatar: string;
   display_name: string;
-}
+};
 
 /**
  * 空间信息
  */
-export interface SpaceInfo {
+export type SpaceInfo = {
   id: string;
   name: string;
-}
+};
 
 /**
  * 引用文档片段
  */
-export interface ReferenceChunk {
+export type ReferenceChunk = {
   block_id: string;
   content: string;
   content_with_mllm: string;
   file_info: FileInfo;
-  file_pages: any;
+  file_pages: TODO;
   file_type: string;
   meeting_info: MeetingInfo;
   owner: Owner;
@@ -130,24 +130,24 @@ export interface ReferenceChunk {
   title: string;
   updated_at: number;
   url: string;
-}
+};
 
 /**
  * 引用文档
  */
-export interface ReferenceDoc {
+export type ReferenceDoc = {
   block_id: string;
   file_type: string;
   target_id: string;
   target_type: string;
   title: string;
   url: string;
-}
+};
 
 /**
  * 附加内容
  */
-export interface AdditionalContent {
+export type AdditionalContent = {
   /** 引用片段数量限制 */
   context_limit_reference_chunks_top_n?: number;
   /** 引用的文档片段 */
@@ -158,12 +158,12 @@ export interface AdditionalContent {
   reference_docs?: ReferenceDoc[];
   /** 场景 */
   scenario?: string;
-}
+};
 
 /**
  * 腾讯云流式消息
  */
-export interface TencentCloudMessage {
+export type TencentCloudMessage = {
   /** 本次对话的唯一标识 */
   completion_id: string;
   /** 会话ID */
@@ -182,7 +182,7 @@ export interface TencentCloudMessage {
   answer_source: string;
   /** 附加内容 */
   additional_content?: AdditionalContent | null;
-}
+};
 
 /**
  * 流式阶段类型
@@ -202,7 +202,7 @@ export type StreamStage =
 /**
  * 流式状态
  */
-export interface StreamState {
+export type StreamState = {
   /** 当前阶段 */
   stage: StreamStage;
   /** 阶段消息 */
@@ -227,4 +227,4 @@ export interface StreamState {
   sessionId?: string;
   /** 完成ID */
   completionId?: string;
-}
+};

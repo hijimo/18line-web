@@ -1,5 +1,5 @@
-import { useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { useMemo } from 'react';
 import { get as getDictApi } from '@/services/api/字典数据/字典数据';
 
 const dictApi = getDictApi();
@@ -18,7 +18,7 @@ export const useDictData = (code: string) => {
 export const useDictMap = (code: string): Record<string, string> => {
   const { data } = useDictData(code);
   return useMemo(() => {
-    const list = (data as any)?.data || [];
-    return Object.fromEntries(list.map((item: any) => [item.dictValue, item.dictLabel]));
+    const list = (data as TODO)?.data || [];
+    return Object.fromEntries(list.map((item: TODO) => [item.dictValue, item.dictLabel]));
   }, [data]);
 };

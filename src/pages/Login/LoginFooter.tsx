@@ -1,4 +1,4 @@
-import type { LoginFooterProps } from './types'
+import type { LoginFooterProps } from './types';
 
 /**
  * 登录页面底部组件
@@ -14,21 +14,21 @@ export const LoginFooter: React.FC<LoginFooterProps> = ({
    * 处理"忘记密码"链接点击
    */
   const handleForgotPassword = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    onForgotPassword?.()
-  }
+    e.preventDefault();
+    onForgotPassword?.();
+  };
 
   /**
    * 处理"注册账号"链接点击
    */
   const handleRegister = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault()
-    onRegister?.()
-  }
+    e.preventDefault();
+    onRegister?.();
+  };
 
   // 如果两个链接都不显示，则不渲染组件
   if (!showForgotPassword && !showRegister) {
-    return null
+    return null;
   }
 
   return (
@@ -45,9 +45,7 @@ export const LoginFooter: React.FC<LoginFooterProps> = ({
       )}
 
       {/* 分隔符 */}
-      {showForgotPassword && showRegister && (
-        <span className="text-gray-400">|</span>
-      )}
+      {showForgotPassword && showRegister && <span className="text-gray-400">|</span>}
 
       {/* 注册账号链接 */}
       {showRegister && (
@@ -60,5 +58,5 @@ export const LoginFooter: React.FC<LoginFooterProps> = ({
         </a>
       )}
     </div>
-  )
-}
+  );
+};

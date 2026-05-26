@@ -12,91 +12,62 @@ import type {
   List6Params,
   Remove8Params,
   TableDataInfo,
-  TravelCheckin
+  TravelCheckin,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 删除打卡点
- */
-const remove8 = (
-    params: Remove8Params,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/checkin/remove`, method: 'POST',
-        params
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 查询打卡点列表
- */
-const list6 = (
-    params: List6Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/travel18/checkin/list`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 删除打卡点
+   */
+  const remove8 = (params: Remove8Params) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/checkin/remove`, method: 'POST', params });
+  };
   /**
- * @summary 导出打卡点列表
- */
-const export5 = (
-    params: Export5Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/travel18/checkin/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 查询打卡点列表
+   */
+  const list6 = (params: List6Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/travel18/checkin/list`, method: 'POST', params });
+  };
   /**
- * @summary 修改保存打卡点
- */
-const editSave6 = (
-    travelCheckin: TravelCheckin,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/checkin/edit`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelCheckin
-    },
-      );
-    }
+   * @summary 导出打卡点列表
+   */
+  const export5 = (params: Export5Params) => {
+    return orvalMutator<void>({ url: `/travel18/checkin/export`, method: 'POST', params });
+  };
   /**
- * @summary 新增保存打卡点
- */
-const addSave7 = (
-    travelCheckin: TravelCheckin,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/checkin/add`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: travelCheckin
-    },
-      );
-    }
+   * @summary 修改保存打卡点
+   */
+  const editSave6 = (travelCheckin: TravelCheckin) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/checkin/edit`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelCheckin,
+    });
+  };
   /**
- * @summary 查询打卡点详情
- */
-const getInfo15 = (
-    { checkinId }: GetInfo15PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/travel18/checkin/${checkinId}`, method: 'GET'
-    },
-      );
-    }
-  return {remove8,list6,export5,editSave6,addSave7,getInfo15}};
-export type Remove8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove8']>>>
-export type List6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list6']>>>
-export type Export5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export5']>>>
-export type EditSave6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave6']>>>
-export type AddSave7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave7']>>>
-export type GetInfo15Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo15']>>>
+   * @summary 新增保存打卡点
+   */
+  const addSave7 = (travelCheckin: TravelCheckin) => {
+    return orvalMutator<AjaxResult>({
+      url: `/travel18/checkin/add`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: travelCheckin,
+    });
+  };
+  /**
+   * @summary 查询打卡点详情
+   */
+  const getInfo15 = ({ checkinId }: GetInfo15PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/travel18/checkin/${checkinId}`, method: 'GET' });
+  };
+  return { remove8, list6, export5, editSave6, addSave7, getInfo15 };
+};
+export type Remove8Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove8']>>>;
+export type List6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list6']>>>;
+export type Export5Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export5']>>>;
+export type EditSave6Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['editSave6']>>>;
+export type AddSave7Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['addSave7']>>>;
+export type GetInfo15Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo15']>>>;

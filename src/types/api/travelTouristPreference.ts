@@ -11,7 +11,7 @@ import type { TravelTouristPreferenceParams } from './travelTouristPreferencePar
 import type { TravelTouristPreferenceStayPrefListItem } from './travelTouristPreferenceStayPrefListItem';
 import type { TravelTouristPreferenceTravelLikesListItem } from './travelTouristPreferenceTravelLikesListItem';
 
-export interface TravelTouristPreference {
+export type TravelTouristPreference = {
   createBy?: string;
   createTime?: Date;
   updateBy?: string;
@@ -37,4 +37,4 @@ export interface TravelTouristPreference {
   stayPrefList?: TravelTouristPreferenceStayPrefListItem[];
   healthTagsList?: TravelTouristPreferenceHealthTagsListItem[];
   blindModeLabel?: string;
-}
+};

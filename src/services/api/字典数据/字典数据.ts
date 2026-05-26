@@ -13,102 +13,69 @@ import type {
   List27Params,
   Remove21PathParameters,
   SysDictData,
-  TableDataInfo
+  TableDataInfo,
 } from '../../../types/api';
-
 import { orvalMutator } from '../../../utils/orval-mutator';
 
-
-
-  export const get = () => {
-/**
- * @summary 修改保存字典类型
- */
-const edit9 = (
-    sysDictData: SysDictData,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dict/data`, method: 'PUT',
-      headers: {'Content-Type': 'application/json', },
-      data: sysDictData
-    },
-      );
-    }
+export const get = () => {
   /**
- * @summary 新增字典类型
- */
-const add10 = (
-    sysDictData: SysDictData,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dict/data`, method: 'POST',
-      headers: {'Content-Type': 'application/json', },
-      data: sysDictData
-    },
-      );
-    }
+   * @summary 修改保存字典类型
+   */
+  const edit9 = (sysDictData: SysDictData) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/dict/data`,
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysDictData,
+    });
+  };
   /**
- * @summary 导出字典数据
- */
-const export13 = (
-    params: Export13Params,
- ) => {
-      return orvalMutator<void>(
-      {url: `/system/dict/data/export`, method: 'POST',
-        params
-    },
-      );
-    }
+   * @summary 新增字典类型
+   */
+  const add10 = (sysDictData: SysDictData) => {
+    return orvalMutator<AjaxResult>({
+      url: `/system/dict/data`,
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      data: sysDictData,
+    });
+  };
   /**
- * @summary 查询字典数据详细
- */
-const getInfo27 = (
-    { dictCode }: GetInfo27PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dict/data/${dictCode}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 导出字典数据
+   */
+  const export13 = (params: Export13Params) => {
+    return orvalMutator<void>({ url: `/system/dict/data/export`, method: 'POST', params });
+  };
   /**
- * @summary 根据字典类型查询字典数据信息
- */
-const dictType = (
-    { dictType }: DictTypePathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dict/data/type/${dictType}`, method: 'GET'
-    },
-      );
-    }
+   * @summary 查询字典数据详细
+   */
+  const getInfo27 = ({ dictCode }: GetInfo27PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dict/data/${dictCode}`, method: 'GET' });
+  };
   /**
- * @summary 获取字典数据列表
- */
-const list27 = (
-    params: List27Params,
- ) => {
-      return orvalMutator<TableDataInfo>(
-      {url: `/system/dict/data/list`, method: 'GET',
-        params
-    },
-      );
-    }
+   * @summary 根据字典类型查询字典数据信息
+   */
+  const dictType = ({ dictType }: DictTypePathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dict/data/type/${dictType}`, method: 'GET' });
+  };
   /**
- * @summary 删除字典类型
- */
-const remove21 = (
-    { dictCodes }: Remove21PathParameters,
- ) => {
-      return orvalMutator<AjaxResult>(
-      {url: `/system/dict/data/${dictCodes}`, method: 'DELETE'
-    },
-      );
-    }
-  return {edit9,add10,export13,getInfo27,dictType,list27,remove21}};
-export type Edit9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit9']>>>
-export type Add10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add10']>>>
-export type Export13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export13']>>>
-export type GetInfo27Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo27']>>>
-export type DictTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['dictType']>>>
-export type List27Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list27']>>>
-export type Remove21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove21']>>>
+   * @summary 获取字典数据列表
+   */
+  const list27 = (params: List27Params) => {
+    return orvalMutator<TableDataInfo>({ url: `/system/dict/data/list`, method: 'GET', params });
+  };
+  /**
+   * @summary 删除字典类型
+   */
+  const remove21 = ({ dictCodes }: Remove21PathParameters) => {
+    return orvalMutator<AjaxResult>({ url: `/system/dict/data/${dictCodes}`, method: 'DELETE' });
+  };
+  return { edit9, add10, export13, getInfo27, dictType, list27, remove21 };
+};
+export type Edit9Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['edit9']>>>;
+export type Add10Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['add10']>>>;
+export type Export13Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['export13']>>>;
+export type GetInfo27Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo27']>>>;
+export type DictTypeResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['dictType']>>>;
+export type List27Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['list27']>>>;
+export type Remove21Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['remove21']>>>;

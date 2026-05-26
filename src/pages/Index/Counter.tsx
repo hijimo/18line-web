@@ -1,9 +1,9 @@
-import React, { memo, useState } from 'react'
+import React, { memo, useState } from 'react';
 
-interface Props {}
+type Props = Record<string, never>;
 
 const Counter: React.FC<Props> = memo(() => {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -14,8 +14,8 @@ const Counter: React.FC<Props> = memo(() => {
         count is: {count}
       </button>
     </>
-  )
-})
-Counter.displayName = 'Counter'
+  );
+});
+Counter.displayName = 'Counter';
 
-export default Counter
+export default Counter;

@@ -8,5 +8,5 @@
 import type { TravelDining } from './travelDining';
 
 export type List5Params = {
-dining: TravelDining;
+  dining: TravelDining;
 };

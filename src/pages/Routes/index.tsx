@@ -1,29 +1,32 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Space, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Button, Drawer, Form, Input, message, Popconfirm, Space } from 'antd';
+import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import RegionSelect from '@/components/RegionSelect';
+import UploadList from '@/components/Upload';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
 import { StatusEnum, StatusLabel } from '@/enums';
-
 import { get as getRouteApi } from '@/services/api/线路管理/线路管理';
-import UploadList from '@/components/Upload';
-import RegionSelect from '@/components/RegionSelect';
 
 const routeApi = getRouteApi();
 
 const Routes: React.FC = () => {
-  const actionRef = useRef<any>(null);
+  const actionRef = useRef<TODO>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [currentRecord, setCurrentRecord] = useState<any>(null);
+  const [currentRecord, setCurrentRecord] = useState<TODO>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(routeApi.list3 as any);
+  const request = useTableRequest(routeApi.list3 as TODO);
 
-  const openDrawer = (record?: any) => {
+  const openDrawer = (record?: TODO) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
+      form.setFieldsValue({
+        ...record,
+        region: { province: record.province, city: record.city, district: record.district },
+        attachments: record.attachments || [],
+      });
     } else {
       form.resetFields();
     }
@@ -36,10 +39,10 @@ const Routes: React.FC = () => {
     const params = { ...rest, ...region, attachments: attachmentFiles || [] };
     try {
       if (currentRecord) {
-        await routeApi.editSave3({ ...params, lineId: currentRecord.lineId } as any);
+        await routeApi.editSave3({ ...params, lineId: currentRecord.lineId } as TODO);
         message.success('编辑成功');
       } else {
-        await routeApi.addSave4(params as any);
+        await routeApi.addSave4(params as TODO);
         message.success('新增成功');
       }
       setDrawerOpen(false);
@@ -49,10 +52,10 @@ const Routes: React.FC = () => {
     }
   };
 
-  const handleToggleStatus = async (record: any) => {
+  const handleToggleStatus = async (record: TODO) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await routeApi.editSave3({ lineId: record.lineId, status: newStatus } as any);
+      await routeApi.editSave3({ lineId: record.lineId, status: newStatus } as TODO);
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -60,9 +63,9 @@ const Routes: React.FC = () => {
     }
   };
 
-  const handleDelete = async (record: any) => {
+  const handleDelete = async (record: TODO) => {
     try {
-      await routeApi.remove5({ ids: record.lineId } as any);
+      await routeApi.remove5({ ids: record.lineId } as TODO);
       message.success('删除成功');
       actionRef.current?.reload();
     } catch {
@@ -76,7 +79,7 @@ const Routes: React.FC = () => {
     { title: '地点', dataIndex: 'location', search: false },
     {
       ...option,
-      render: (_: any, record: any) => (
+      render: (_: TODO, record: TODO) => (
         <Space>
           <a onClick={() => openDrawer(record)}>编辑</a>
           <Popconfirm title="确定删除吗？" onConfirm={() => handleDelete(record)}>
@@ -96,8 +99,8 @@ const Routes: React.FC = () => {
     <>
       <CommonTable
         actionRef={actionRef}
-        request={request as any}
-        columns={columns as any}
+        request={request as TODO}
+        columns={columns as TODO}
         toolBarRender={() => [
           <Button type="primary" icon={<PlusOutlined />} onClick={() => openDrawer()}>
             添加线路
@@ -114,12 +117,18 @@ const Routes: React.FC = () => {
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="lineName" label="线路名称" rules={[{ required: true, message: '请输入线路名称' }]}>
+          <Form.Item
+            name="lineName"
+            label="线路名称"
+            rules={[{ required: true, message: '请输入线路名称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           <Form.Item name="region" label="地区">
