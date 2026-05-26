@@ -1,20 +1,19 @@
-import type { ClipboardEvent, FC, FocusEvent } from 'react';
 import { Form, Input } from 'antd';
 import type { NamePath } from 'antd/es/form/interface';
-
-import styles from './index.module.css';
+import type { ClipboardEvent, FC, FocusEvent } from 'react';
 import {
   normalizeCoordinateValue,
   parseCoordinatePair,
   validateLatitude,
   validateLongitude,
 } from './coordinateUtils';
+import styles from './index.module.css';
 
-interface CoordinateInputProps {
+type CoordinateInputProps = {
   longitudeName?: NamePath;
   latitudeName?: NamePath;
   label?: string;
-}
+};
 
 const hasPairSeparator = (value: string) => /[,，\s]/.test(value.trim());
 
@@ -77,41 +76,16 @@ const CoordinateInput: FC<CoordinateInputProps> = ({
       <div className={styles.label}>{label}</div>
       <div className={styles.compact}>
         <Form.Item
-          className={`${styles.item} ${styles.longitude}`}
-          name={longitudeName}
-          validateStatus={longitudeError ? 'error' : undefined}
-          getValueFromEvent={createValueFromEvent(longitudeName)}
-          rules={[
-            {
-              validator: (_, value) => (
-                validateLongitude(value)
-                  ? Promise.resolve()
-                  : Promise.reject(new Error('经度范围应为 -180 到 180'))
-              ),
-            },
-          ]}
-          noStyle={false}
-        >
-          <Input
-            inputMode="decimal"
-            placeholder="经度"
-            onBlur={createBlurHandler(longitudeName)}
-            onPaste={createPasteHandler()}
-          />
-        </Form.Item>
-        <span className={styles.separator}>,</span>
-        <Form.Item
           className={`${styles.item} ${styles.latitude}`}
           name={latitudeName}
           validateStatus={latitudeError ? 'error' : undefined}
           getValueFromEvent={createValueFromEvent(latitudeName)}
           rules={[
             {
-              validator: (_, value) => (
+              validator: (_, value) =>
                 validateLatitude(value)
                   ? Promise.resolve()
-                  : Promise.reject(new Error('纬度范围应为 -90 到 90'))
-              ),
+                  : Promise.reject(new Error('纬度范围应为 -90 到 90')),
             },
           ]}
           noStyle={false}
@@ -120,6 +94,29 @@ const CoordinateInput: FC<CoordinateInputProps> = ({
             inputMode="decimal"
             placeholder="纬度"
             onBlur={createBlurHandler(latitudeName)}
+            onPaste={createPasteHandler()}
+          />
+        </Form.Item>
+        <span className={styles.separator}>,</span>
+        <Form.Item
+          className={`${styles.item} ${styles.longitude}`}
+          name={longitudeName}
+          validateStatus={longitudeError ? 'error' : undefined}
+          getValueFromEvent={createValueFromEvent(longitudeName)}
+          rules={[
+            {
+              validator: (_, value) =>
+                validateLongitude(value)
+                  ? Promise.resolve()
+                  : Promise.reject(new Error('经度范围应为 -180 到 180')),
+            },
+          ]}
+          noStyle={false}
+        >
+          <Input
+            inputMode="decimal"
+            placeholder="经度"
+            onBlur={createBlurHandler(longitudeName)}
             onPaste={createPasteHandler()}
           />
         </Form.Item>
