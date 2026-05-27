@@ -1,0 +1,5 @@
+openai>=1.0
+oss2
+requests
+python-dotenv
+jellyfish
