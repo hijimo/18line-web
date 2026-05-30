@@ -7,3 +7,5 @@ chatbot-ui-main
 .env
 .env.development
 .env.production
+playwright-report/
+test-results/
