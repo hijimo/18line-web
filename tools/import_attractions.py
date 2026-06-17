@@ -7,7 +7,7 @@ import time
 
 import requests
 
-API_BASE = "http://18line-admin.asyncb.com/api"
+API_BASE = "https://18line-admin.asyncb.com/api"
 
 
 def login(username, password):
