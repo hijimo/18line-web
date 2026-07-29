@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, message } from 'antd';
+import { Button, Drawer, Form, Input, InputNumber, Popconfirm, Select, Space, TimePicker, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
 import CommonTable from '@/components/CommonTable';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
@@ -22,6 +24,17 @@ const YES_NO_OPTIONS = Object.entries(SeasonalLabel).map(([value, label]) => ({ 
 const specialStarValueEnum = Object.fromEntries(SpecialStarOptions.map(o => [o.value, { text: o.label }]));
 const seasonalValueEnum = Object.fromEntries(Object.entries(SeasonalLabel).map(([k, v]) => [k, { text: v }]));
 const reservationValueEnum = Object.fromEntries(Object.entries(ReservationLabel).map(([k, v]) => [k, { text: v }]));
+
+// dayjs 核心不支持按 format 解析字符串，'HH:mm' 需要该插件。
+// antd 的 TimePicker 会通过 rc-picker 间接注册它，这里显式声明，避免依赖内部实现。
+// extend 是幂等的，重复注册无副作用。
+dayjs.extend(customParseFormat);
+
+const HH_MM = 'HH:mm';
+const toTimeValue = (v?: string) => (v ? dayjs(v, HH_MM) : undefined);
+// 清空时必须回传 ''：后端 mapper 用 `xxx != null` 做判断，
+// 传 undefined 会被 JSON.stringify 丢掉，导致旧值永远清不掉。
+const fromTimeValue = (v?: any) => (v ? v.format(HH_MM) : '');
 
 const DishesPanel: React.FC<{ diningId: number }> = ({ diningId }) => {
   const actionRef = useRef<any>(null);
@@ -181,11 +194,18 @@ const Dining: React.FC = () => {
 
   const request = useTableRequest(diningApi.list5 as any);
   const diningNatureMap = useDictMap('travel_dining_nature');
+  const diningCategoryMap = useDictMap('travel_dining_category');
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue({ ...record, region: { province: record.province, city: record.city, district: record.district }, attachments: record.attachments || [] });
+      form.setFieldsValue({
+        ...record,
+        region: { province: record.province, city: record.city, district: record.district },
+        attachments: record.attachments || [],
+        openTime: toTimeValue(record.openTime),
+        closeTime: toTimeValue(record.closeTime),
+      });
     } else {
       form.resetFields();
     }
@@ -194,8 +214,16 @@ const Dining: React.FC = () => {
 
   const handleSubmit = async () => {
     const values = await form.validateFields();
-    const { region, attachments: attachmentFiles, ...rest } = values;
-    const params = { ...rest, ...region, attachments: attachmentFiles || [] };
+    const { region, attachments: attachmentFiles, openTime, closeTime, ...rest } = values;
+    const params = {
+      ...rest,
+      ...region,
+      attachments: attachmentFiles || [],
+      // 同理，类别清空也要显式回传 '' 才能真正清掉
+      diningCategory: rest.diningCategory ?? '',
+      openTime: fromTimeValue(openTime),
+      closeTime: fromTimeValue(closeTime),
+    };
     try {
       if (currentRecord) {
         await diningApi.editSave5({ ...params, diningId: currentRecord.diningId } as any);
@@ -242,7 +270,25 @@ const Dining: React.FC = () => {
     key,
     { title: '名称', dataIndex: 'diningName', ellipsis: true },
     { title: '性质', dataIndex: 'diningNature', search: false, render: (_: any, r: any) => diningNatureMap[r.diningNature] ?? r.diningNature ?? '--' },
+    {
+      title: '类别',
+      dataIndex: 'diningCategory',
+      search: false,
+      render: (_: any, r: any) => {
+        return diningCategoryMap[r.diningCategory] || r.diningCategory || '--';
+      },
+    },
     { title: '人均', dataIndex: 'avgCost', search: false, render: (v: number) => v ? `${v}元/位` : '--' },
+    {
+      title: '营业时间',
+      dataIndex: 'openTime',
+      search: false,
+      // 只填了一头时也要显示出来，否则看起来像没录入
+      render: (_: any, r: any) =>
+        r.openTime && r.closeTime
+          ? `${r.openTime}-${r.closeTime}`
+          : r.openTime || r.closeTime || '--',
+    },
     { title: '口碑评分', dataIndex: 'recommendRating', search: false, valueEnum: Object.fromEntries(DiningRecommendRatingOptions.map(({ value, label }) => [value, { text: label }])) },
     { title: '宠物友好', dataIndex: 'petFriendly', search: false, valueEnum: PetFriendlyLabel },
     { title: '停车位', dataIndex: 'parkingAvailable', search: false, valueEnum: ParkingAvailableLabel },
@@ -303,8 +349,17 @@ const Dining: React.FC = () => {
           <Form.Item name="diningNature" label="餐饮性质">
             <DictSelect code="travel_dining_nature" />
           </Form.Item>
+          <Form.Item name="diningCategory" label="餐饮类别">
+            <DictSelect code="travel_dining_category" />
+          </Form.Item>
           <Form.Item name="avgCost" label="人均消费">
             <InputNumber placeholder="请输入" addonAfter="元/位" style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="openTime" label="营业开始时间">
+            <TimePicker format={HH_MM} placeholder="请选择" style={{ width: '100%' }} />
+          </Form.Item>
+          <Form.Item name="closeTime" label="营业结束时间">
+            <TimePicker format={HH_MM} placeholder="请选择" style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item name="address" label="地址">
             <Input placeholder="请输入" />

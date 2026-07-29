@@ -4,6 +4,7 @@
 - 黑暗程度	travel_dark_level
 餐饮管理
 - 餐饮性质	travel_dining_nature
+- 餐饮类别	travel_dining_category
 景点管理
 - 休闲指数 travel_leisure
 游客喜好管理
