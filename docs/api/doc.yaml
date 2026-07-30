@@ -5739,6 +5739,8 @@ components:
           type: string
         familyFriendly:
           type: string
+        waterActivity:
+          type: string
         ticketPriceA:
           type: number
         ticketPriceC:

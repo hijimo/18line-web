@@ -93,6 +93,26 @@ export const FamilyFriendlyLabel = {
   [FamilyFriendlyEnum.YES]: '是',
 } as const;
 
+/** 水上活动：0无 1游泳 2浆板 */
+export const WaterActivityEnum = {
+  NONE: '0',
+  SWIMMING: '1',
+  PADDLEBOARD: '2',
+} as const;
+export type WaterActivity = (typeof WaterActivityEnum)[keyof typeof WaterActivityEnum];
+
+export const WaterActivityLabel = {
+  [WaterActivityEnum.NONE]: '无',
+  [WaterActivityEnum.SWIMMING]: '游泳',
+  [WaterActivityEnum.PADDLEBOARD]: '浆板',
+} as const;
+
+/** 水上活动勾选项（不含"无"，两项互斥，后端为单值字段） */
+export const WaterActivityOptions = [
+  { label: '游泳', value: WaterActivityEnum.SWIMMING },
+  { label: '浆板', value: WaterActivityEnum.PADDLEBOARD },
+];
+
 /** 休闲指数：0轻松 1休闲 2中强度 3高强度 4暴虐强度 */
 export const LeisureRatingEnum = {
   EASY: '0',
@@ -111,8 +131,8 @@ export const LeisureRatingLabel = {
   [LeisureRatingEnum.EXTREME]: '暴虐强度',
 } as const;
 
-/** 经典指数：1-10星 */
-export const ClassicRatingOptions = Array.from({ length: 10 }, (_, i) => ({
+/** 经典指数：1-5星 */
+export const ClassicRatingOptions = Array.from({ length: 5 }, (_, i) => ({
   label: `${i + 1}星`,
   value: String(i + 1),
 }));

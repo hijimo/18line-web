@@ -35,6 +35,7 @@ export interface TravelAttraction {
   visitDuration?: string;
   openTime?: string;
   familyFriendly?: string;
+  waterActivity?: string;
   ticketPriceA?: number;
   ticketPriceC?: number;
   reservationRequired?: string;

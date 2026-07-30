@@ -31,6 +31,8 @@ import {
   FamilyFriendlyLabel,
   StatusEnum,
   StatusLabel,
+  WaterActivityEnum,
+  WaterActivityOptions,
 } from '@/enums';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
 
@@ -67,6 +69,10 @@ const Attractions: React.FC = () => {
               .map((s: string) => s.trim())
               .filter(Boolean)
           : [],
+        waterActivity:
+          record.waterActivity && record.waterActivity !== WaterActivityEnum.NONE
+            ? [record.waterActivity]
+            : [],
         attachments: record.attachments || [],
       });
     } else {
@@ -82,6 +88,9 @@ const Attractions: React.FC = () => {
       ...rest,
       ...region,
       badFactors: Array.isArray(rest.badFactors) ? rest.badFactors.join(',') : rest.badFactors,
+      waterActivity: Array.isArray(rest.waterActivity)
+        ? rest.waterActivity[0] || WaterActivityEnum.NONE
+        : rest.waterActivity || WaterActivityEnum.NONE,
       attachments: attachmentFiles || [],
     };
     try {
@@ -272,6 +281,20 @@ const Attractions: React.FC = () => {
             getValueFromEvent={(checked) => (checked ? '1' : '0')}
           >
             <Switch />
+          </Form.Item>
+          <Form.Item
+            name="waterActivity"
+            label="水上活动"
+            extra="游泳与浆板互斥，最多勾选一项，不勾选即为无"
+            normalize={(value: string[], prevValue: string[]) => {
+              if (value.length > 1) {
+                const added = value.filter((item) => !prevValue?.includes(item));
+                return added.length > 0 ? added.slice(-1) : value.slice(-1);
+              }
+              return value;
+            }}
+          >
+            <Checkbox.Group options={WaterActivityOptions} />
           </Form.Item>
           <Form.Item name="attractionNotes" label="注意事项">
             <Input.TextArea placeholder="请输入" rows={3} />
