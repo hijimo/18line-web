@@ -15,8 +15,9 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
-// 配置
-const API_DOC_URL = 'http://8.136.229.208:8080/api/v3/api-docs.yaml'
+// 配置（可用环境变量 API_DOC_URL 覆盖；远端后端部署后可改回远端地址）
+const API_DOC_URL =
+  process.env.API_DOC_URL || 'http://127.0.0.1:8080/api/v3/api-docs.yaml'
 const OUTPUT_DIR = path.join(__dirname, '../docs/api')
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'doc.yaml')
 

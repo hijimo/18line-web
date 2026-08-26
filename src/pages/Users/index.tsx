@@ -1,13 +1,18 @@
-import React, { useRef, useState } from 'react';
-import { Button, Drawer, Form, Input, Popconfirm, Select, Space, Tag, Badge, message } from 'antd';
 import { PlusOutlined } from '@ant-design/icons';
+import { Badge, Button, Drawer, Form, Input, message, Popconfirm, Select, Space, Tag } from 'antd';
+import React, { useEffect, useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
+import RegionCodeSelect from '@/components/RegionCodeSelect';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { key, option } from '@/configurify/columns/baseColumns';
-import { StatusEnum, StatusLabel, GenderLabel } from '@/enums';
+import { GenderLabel, StatusEnum, StatusLabel } from '@/enums';
 import { get as getUserApi } from '@/services/api/用户管理/用户管理';
+import { get as getRegionApi } from '@/services/api/省市区编码管理/省市区编码管理';
+import { get as getRoleApi } from '@/services/api/角色管理/角色管理';
 
 const userApi = getUserApi();
+const regionApi = getRegionApi();
+const roleApi = getRoleApi();
 
 /** 用户性别：0男 1女 2未知 */
 const SEX_OPTIONS = Object.entries(GenderLabel).map(([value, label]) => ({ label, value }));
@@ -21,13 +26,57 @@ const Users: React.FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
+  const [regionMap, setRegionMap] = useState<Map<string, string>>(new Map());
+  const [roleOptions, setRoleOptions] = useState<{ label: string; value: number }[]>([]);
 
-  const request = useTableRequest(userApi.list21 as any);
+  const request = useTableRequest(userApi.list24 as any);
 
-  const openDrawer = (record?: any) => {
+  useEffect(() => {
+    const flattenRegions = (nodes: any[], map: Map<string, string>) => {
+      nodes.forEach((node) => {
+        if (node?.regionCode) {
+          map.set(node.regionCode, node.regionName);
+        }
+        if (node?.children?.length) {
+          flattenRegions(node.children, map);
+        }
+      });
+    };
+    regionApi
+      .regionTree()
+      .then((res: any) => {
+        if (res.code === 200) {
+          const map = new Map<string, string>();
+          flattenRegions(res.data || [], map);
+          setRegionMap(map);
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  useEffect(() => {
+    roleApi
+      .list25({ status: '0', pageNum: 1, pageSize: 100 } as any)
+      .then((res: any) => {
+        if (res.code === 200) {
+          setRoleOptions(
+            (res.rows || []).map((role: any) => ({ label: role.roleName, value: role.roleId })),
+          );
+        }
+      })
+      .catch(() => {});
+  }, []);
+
+  const openDrawer = async (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
-      form.setFieldsValue(record);
+      try {
+        const res: any = await userApi.getInfo23({ userId: record.userId });
+        form.setFieldsValue({ ...record, roleIds: res?.roleIds || [] });
+      } catch {
+        message.error('获取用户信息失败');
+        return;
+      }
     } else {
       form.resetFields();
     }
@@ -102,11 +151,20 @@ const Users: React.FC = () => {
       valueType: 'select',
       fieldProps: { options: STATUS_OPTIONS },
       render: (_: any, record: any) =>
-        record.status === StatusEnum.NORMAL
-          ? <Badge status="success" text="正常" />
-          : <Badge status="error" text="停用" />,
+        record.status === StatusEnum.NORMAL ? (
+          <Badge status="success" text="正常" />
+        ) : (
+          <Badge status="error" text="停用" />
+        ),
     },
     { title: '部门', dataIndex: ['dept', 'deptName'], search: false },
+    {
+      title: '区域',
+      dataIndex: 'regionCode',
+      search: false,
+      render: (_: any, record: any) =>
+        record.regionCode ? (regionMap.get(record.regionCode) ?? record.regionCode) : '--',
+    },
     { title: '创建时间', dataIndex: 'createTime', search: false, width: 180 },
     {
       ...option,
@@ -133,7 +191,7 @@ const Users: React.FC = () => {
   return (
     <>
       <CommonTable
-      rowKey='userId'
+        rowKey="userId"
         actionRef={actionRef}
         request={request as any}
         columns={columns as any}
@@ -148,24 +206,39 @@ const Users: React.FC = () => {
       <Drawer
         title={currentRecord ? '编辑用户' : '新增用户'}
         width={640}
+        destroyOnClose
         open={drawerOpen}
         onClose={() => setDrawerOpen(false)}
         extra={
           <Space>
             <Button onClick={() => setDrawerOpen(false)}>取消</Button>
-            <Button type="primary" onClick={handleSubmit}>确定</Button>
+            <Button type="primary" onClick={handleSubmit}>
+              确定
+            </Button>
           </Space>
         }
       >
         <Form form={form} layout="vertical">
-          <Form.Item name="userName" label="用户名" rules={[{ required: true, message: '请输入用户名' }]}>
+          <Form.Item
+            name="userName"
+            label="用户名"
+            rules={[{ required: true, message: '请输入用户名' }]}
+          >
             <Input placeholder="请输入" disabled={!!currentRecord} />
           </Form.Item>
-          <Form.Item name="nickName" label="昵称" rules={[{ required: true, message: '请输入昵称' }]}>
+          <Form.Item
+            name="nickName"
+            label="昵称"
+            rules={[{ required: true, message: '请输入昵称' }]}
+          >
             <Input placeholder="请输入" />
           </Form.Item>
           {!currentRecord && (
-            <Form.Item name="password" label="密码" rules={[{ required: true, message: '请输入密码' }]}>
+            <Form.Item
+              name="password"
+              label="密码"
+              rules={[{ required: true, message: '请输入密码' }]}
+            >
               <Input.Password placeholder="请输入" />
             </Form.Item>
           )}
@@ -180,6 +253,12 @@ const Users: React.FC = () => {
           </Form.Item>
           <Form.Item name="status" label="状态">
             <Select placeholder="请选择" options={STATUS_OPTIONS} />
+          </Form.Item>
+          <Form.Item name="roleIds" label="角色">
+            <Select mode="multiple" placeholder="请选择角色" options={roleOptions} />
+          </Form.Item>
+          <Form.Item name="regionCode" label="区域">
+            <RegionCodeSelect />
           </Form.Item>
           <Form.Item name="remark" label="备注">
             <Input.TextArea placeholder="请输入" rows={3} />

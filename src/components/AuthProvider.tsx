@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { useCurrentUser } from '@/hooks/services/useAuthentication';
 import { useAuthStore } from '@/stores/authStore';
 
-interface AuthProviderProps {
+type AuthProviderProps = {
   children: React.ReactNode;
-}
+};
 
 /**
  * 认证提供者组件
@@ -26,9 +26,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const { data: userResponse, isError } = useCurrentUser(shouldFetchUser);
 
   useEffect(() => {
-    // RuoYi response: {code, msg, roles, posts, ...}
+    // RuoYi /getInfo response: {code, msg, user, roles, permissions}
     if (userResponse?.code === 200) {
-      const user = { roles: userResponse.roles, posts: userResponse.posts };
+      const user = { roles: userResponse.roles, permissions: userResponse.permissions };
       updateUser(user);
       if (!isAuthenticated && token) {
         login(token, user, rememberMe);

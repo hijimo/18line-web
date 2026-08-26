@@ -4,7 +4,7 @@ import request from '@/utils/request';
 export const useCurrentUser = (enabled: boolean = true) => {
   return useQuery({
     queryKey: ['currentUser'],
-    queryFn: () => request('/system/user/', { method: 'GET' }),
+    queryFn: () => request('/getInfo', { method: 'GET' }),
     enabled,
   });
 };

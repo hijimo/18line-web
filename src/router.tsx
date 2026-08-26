@@ -1,19 +1,20 @@
 import {
+  BankOutlined,
   BookOutlined,
-  CarOutlined,
-  CameraOutlined,
   CalendarOutlined,
-  HomeOutlined,
+  CameraOutlined,
+  CarOutlined,
+  CoffeeOutlined,
+  EnvironmentOutlined,
   HeartOutlined,
+  HomeOutlined,
   SettingOutlined,
+  ShopOutlined,
   TeamOutlined,
   UserOutlined,
-  EnvironmentOutlined,
-  BankOutlined,
-  CoffeeOutlined,
-  ShopOutlined,
 } from '@ant-design/icons';
-import { createBrowserRouter, Outlet } from 'react-router';
+import { createBrowserRouter, Navigate, Outlet } from 'react-router';
+import { useMemo } from 'react';
 import Header from '@/components/Header';
 import {
   ThemedLayout,
@@ -21,26 +22,27 @@ import {
   ThemedTitle,
   type LayoutThemedTitleProps,
 } from '@/components/Layout';
+import { useAuthStore } from '@/stores/authStore';
 import { AuthProvider } from './components/AuthProvider';
 import Layout from './components/Layout/Layout';
 import { ResourceContextProvider } from './contexts/resource';
+import Accommodation from './pages/Accommodation';
+import AlgorithmConfig from './pages/AlgorithmConfig';
+import Attractions from './pages/Attractions';
+import CharteredCar from './pages/CharteredCar';
+import CheckinPoints from './pages/CheckinPoints';
+import DictType from './pages/DictType';
+import Dining from './pages/Dining';
 import Index from './pages/Index';
+import LocalDishes from './pages/LocalDishes';
 import Login from './pages/Login';
 import Notfound from './pages/Notfound';
-import Attractions from './pages/Attractions';
-import CheckinPoints from './pages/CheckinPoints';
-import LocalDishes from './pages/LocalDishes';
-import Accommodation from './pages/Accommodation';
-import Dining from './pages/Dining';
 import Photography from './pages/Photography';
-import CharteredCar from './pages/CharteredCar';
-import Users from './pages/Users';
-import Tourists from './pages/Tourists';
-import TouristPreferences from './pages/TouristPreferences';
 import Routes from './pages/Routes';
-import AlgorithmConfig from './pages/AlgorithmConfig';
 import Template from './pages/Template';
-import DictType from './pages/DictType';
+import TouristPreferences from './pages/TouristPreferences';
+import Tourists from './pages/Tourists';
+import Users from './pages/Users';
 import type { ResourceProps } from './types/resource';
 
 const resources: ResourceProps[] = [
@@ -177,6 +179,44 @@ const resources: ResourceProps[] = [
   },
 ];
 
+/** 仅 admin 可见的资源名（与后端 sys_role_menu 删除的菜单保持一致） */
+const ADMIN_ONLY_RESOURCES = ['users', 'algorithm-config', 'dict-type'];
+
+/**
+ * 当前登录用户是否 admin。
+ * /getInfo 的 roles 未返回前按可见处理，避免管理员侧菜单闪烁。
+ */
+const useIsAdmin = (): boolean => {
+  const roles = useAuthStore((state) => state.user?.roles) as string[] | undefined;
+  return !roles || roles.length === 0 || roles.includes('admin');
+};
+
+/** 按当前用户角色过滤侧边菜单资源后再渲染布局 */
+const AuthResourceProvider: React.FC = () => {
+  const isAdmin = useIsAdmin();
+  const visibleResources = useMemo(
+    () =>
+      isAdmin ? resources : resources.filter((item) => !ADMIN_ONLY_RESOURCES.includes(item.name)),
+    [isAdmin],
+  );
+  return (
+    <ResourceContextProvider resources={visibleResources}>
+      <ThemedLayout Header={Header} Title={renderTitle} Sider={renderSider}>
+        <Outlet />
+      </ThemedLayout>
+    </ResourceContextProvider>
+  );
+};
+
+/** 非 admin 直接访问受控路由时重定向回首页 */
+const RequireAdmin: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const isAdmin = useIsAdmin();
+  if (!isAdmin) {
+    return <Navigate to="/" replace />;
+  }
+  return <>{children}</>;
+};
+
 const renderTitle: React.FC<LayoutThemedTitleProps> = ({ collapsed }: { collapsed: boolean }) => (
   <ThemedTitle
     collapsed={collapsed}
@@ -193,13 +233,7 @@ const renderSider: React.FC<{
     collapsed: boolean;
   }) => React.ReactNode;
   meta?: Record<string, unknown>;
-}> = (props) => (
-  <ThemedSider
-    {...props}
-    render={({ items }) => items}
-    fixed
-  />
-);
+}> = (props) => <ThemedSider {...props} render={({ items }) => items} fixed />;
 
 const router = createBrowserRouter([
   {
@@ -214,84 +248,46 @@ const router = createBrowserRouter([
         element: <Login />,
       },
       {
-        element: (
-          <ResourceContextProvider resources={resources}>
-            <ThemedLayout Header={Header} Title={renderTitle} Sider={renderSider}>
-              <Outlet />
-            </ThemedLayout>
-          </ResourceContextProvider>
-        ),
+        element: <AuthResourceProvider />,
         children: [
           {
             path: '/',
-            element: (
-              
-                <Index />
-              
-            ),
+            element: <Index />,
           },
           {
             path: '/attractions',
-            element: (
-              
-                <Attractions />
-              
-            ),
+            element: <Attractions />,
           },
           {
             path: '/checkin',
-            element: (
-              
-                <CheckinPoints />
-              
-            ),
+            element: <CheckinPoints />,
           },
           {
             path: '/local-dishes',
-            element: (
-              
-                <LocalDishes />
-              
-            ),
+            element: <LocalDishes />,
           },
           {
             path: '/accommodation',
-            element: (
-              
-                <Accommodation />
-              
-            ),
+            element: <Accommodation />,
           },
           {
             path: '/dining',
-            element: (
-              
-                <Dining />
-              
-            ),
+            element: <Dining />,
           },
           {
             path: '/photography',
-            element: (
-              
-                <Photography />
-              
-            ),
+            element: <Photography />,
           },
           {
             path: '/chartered-car',
-            element: (
-              
-                <CharteredCar />
-              
-            ),
+            element: <CharteredCar />,
           },
           {
             path: '/users',
             element: (
-              
+              <RequireAdmin>
                 <Users />
-              
+              </RequireAdmin>
             ),
           },
           {
@@ -304,15 +300,15 @@ const router = createBrowserRouter([
           },
           {
             path: '/routes',
-            element: (
-              
-                <Routes />
-              
-            ),
+            element: <Routes />,
           },
           {
             path: '/algorithm-config',
-            element: <AlgorithmConfig />,
+            element: (
+              <RequireAdmin>
+                <AlgorithmConfig />
+              </RequireAdmin>
+            ),
           },
           {
             path: '/template',
@@ -320,15 +316,15 @@ const router = createBrowserRouter([
           },
           {
             path: '/dict-type',
-            element: <DictType />,
+            element: (
+              <RequireAdmin>
+                <DictType />
+              </RequireAdmin>
+            ),
           },
           {
             path: '*',
-            element: (
-              
-                <Notfound />
-              
-            ),
+            element: <Notfound />,
           },
         ],
       },

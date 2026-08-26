@@ -19,7 +19,7 @@ const AlgorithmConfig: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(algoApi.list20 as any);
+  const request = useTableRequest(algoApi.list23 as any);
 
   const openDrawer = (record?: any) => {
     setCurrentRecord(record || null);

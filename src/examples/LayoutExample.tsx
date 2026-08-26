@@ -9,8 +9,8 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import React, { useState } from 'react';
-import { ThemedHeader, ThemedLayout, ThemedSider, ThemedTitle } from '@/components/layout';
-import type { MenuItem } from '@/components/layout';
+import { ThemedHeader, ThemedLayout, ThemedSider, ThemedTitle } from '@/components/Layout';
+import type { MenuItem } from '@/components/Layout';
 
 /**
  * 菜单配置

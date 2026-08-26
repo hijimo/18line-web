@@ -30,13 +30,13 @@ const Template: React.FC = () => {
   const [form] = Form.useForm();
   const [generateForm] = Form.useForm();
 
-  const request = useTableRequest(templateApi.list18 as any);
+  const request = useTableRequest(templateApi.list21 as any);
 
   const openDrawer = async (record?: any) => {
     setCurrentRecord(record || null);
     if (record) {
       try {
-        const res = await templateApi.getInfo8({ templateId: record.templateId });
+        const res = await templateApi.getInfo10({ templateId: record.templateId });
         const detail = (res as any)?.data || record;
         form.setFieldsValue({
           ...detail,

@@ -32,7 +32,7 @@ const DictType: React.FC = () => {
   const [currentDataRecord, setCurrentDataRecord] = useState<any>(null);
   const [dataForm] = Form.useForm();
 
-  const request = useTableRequest(dictTypeApi.list26 as any);
+  const request = useTableRequest(dictTypeApi.list29 as any);
 
   // ========== 字典类型 CRUD ==========
 
@@ -82,7 +82,7 @@ const DictType: React.FC = () => {
     setTimeout(() => dataActionRef.current?.reload(), 100);
   };
 
-  const dataRequest = useTableRequest(dictDataApi.list27 as any, undefined, () => ({
+  const dataRequest = useTableRequest(dictDataApi.list30 as any, undefined, () => ({
     dictType: currentDictType,
   }));
 

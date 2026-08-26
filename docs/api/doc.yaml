@@ -763,7 +763,33 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
-  /wx/itinerary/{itineraryId}/photography/add:
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/photography/remove:
+    post:
+      tags:
+      - C端行程管理
+      summary: 删除日程跟拍
+      operationId: removeDayPhotography
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/photography/add:
     post:
       tags:
       - C端行程管理
@@ -776,6 +802,12 @@ paths:
         schema:
           type: integer
           format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
       requestBody:
         content:
           application/json:
@@ -822,6 +854,96 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/dining/remove:
+    post:
+      tags:
+      - C端行程管理
+      summary: 删除日程餐饮
+      operationId: removeDayDining
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: meal
+        in: query
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/car/remove:
+    post:
+      tags:
+      - C端行程管理
+      summary: 删除日程包车
+      operationId: removeDayCar
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/car/add:
+    post:
+      tags:
+      - C端行程管理
+      summary: 添加行程包车
+      operationId: addCar
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: integer
+              format: int64
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /wx/itinerary/{itineraryId}/day/{dayNumber}/attractions:
     post:
       tags:
@@ -841,12 +963,54 @@ paths:
         schema:
           type: integer
           format: int32
+      - name: replace
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
       requestBody:
         content:
           application/json:
             schema:
               type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/attraction:
+    post:
+      tags:
+      - C端行程管理
+      summary: 更新日程景点
+      operationId: updateDayAttractions_1
+      parameters:
+      - name: itineraryId
+        in: path
         required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      - name: replace
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: string
       responses:
         "200":
           description: OK
@@ -887,14 +1051,52 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
-  /wx/itinerary/{itineraryId}/car/add:
+  /wx/itinerary/{itineraryId}/day/{dayNumber}/accommodation/remove:
     post:
       tags:
       - C端行程管理
-      summary: 添加行程包车
-      operationId: addCar
+      summary: 删除日程住宿
+      operationId: removeDayAccommodation
       parameters:
       - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayNumber
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayId}/attraction/{attractionId}/unlock:
+    post:
+      tags:
+      - C端盲游模式
+      summary: 解锁景点
+      operationId: unlock
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: attractionId
         in: path
         required: true
         schema:
@@ -904,9 +1106,72 @@ paths:
         content:
           application/json:
             schema:
-              type: integer
-              format: int64
+              $ref: '#/components/schemas/UnlockRequest'
         required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayId}/attraction/{attractionId}/skip:
+    post:
+      tags:
+      - C端盲游模式
+      summary: 跳过景点
+      operationId: skip
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: attractionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/itinerary/{itineraryId}/day/{dayId}/attraction/{attractionId}/force-unlock:
+    post:
+      tags:
+      - C端盲游模式
+      summary: 强制解锁景点
+      operationId: forceUnlock
+      parameters:
+      - name: itineraryId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: dayId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: attractionId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
       responses:
         "200":
           description: OK
@@ -2505,6 +2770,32 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/weather/forecast:
+    get:
+      tags:
+      - C端天气查询
+      summary: 查询天气预报
+      operationId: forecast
+      parameters:
+      - name: city
+        in: query
+        required: true
+        schema:
+          type: string
+      - name: days
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+          default: 7
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /wx/template/{templateId}:
     get:
       tags:
@@ -2531,6 +2822,12 @@ paths:
       - C端行程模板
       summary: 查询行程模板列表
       operationId: list_10
+      parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
       responses:
         "200":
           description: OK
@@ -2632,6 +2929,61 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/photography/{photographyId}:
+    get:
+      tags:
+      - C端跟拍
+      summary: 查询跟拍详情（含图片）
+      operationId: getInfo_1
+      parameters:
+      - name: photographyId
+        in: path
+        description: 跟拍ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/photography/list:
+    get:
+      tags:
+      - C端跟拍
+      summary: 查询跟拍列表
+      operationId: list_11
+      parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
   /wx/oss/credential:
     get:
       tags:
@@ -2666,7 +3018,7 @@ paths:
       tags:
       - 微信小程序-地方特色菜
       summary: 获取地方特色菜详情
-      operationId: getInfo_1
+      operationId: getInfo_2
       parameters:
       - name: specialtyId
         in: path
@@ -2687,7 +3039,7 @@ paths:
       tags:
       - 微信小程序-地方特色菜
       summary: 按省市区查询地方特色菜列表
-      operationId: list_11
+      operationId: list_12
       parameters:
       - name: province
         in: query
@@ -2716,7 +3068,7 @@ paths:
       tags:
       - C端行程管理
       summary: 查询行程详情
-      operationId: getInfo_2
+      operationId: getInfo_3
       parameters:
       - name: itineraryId
         in: path
@@ -2736,9 +3088,58 @@ paths:
       tags:
       - C端行程管理
       summary: 查询行程列表
-      operationId: list_12
+      operationId: list_13
       parameters:
       - name: status
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/dish/list:
+    get:
+      tags:
+      - C端菜品
+      summary: 按餐厅ID查询菜品列表
+      operationId: list_14
+      parameters:
+      - name: diningId
+        in: query
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/dish/featured:
+    get:
+      tags:
+      - C端菜品
+      summary: 首页地道风物：按地区查询各餐厅特色菜（每餐厅≤3，共9）
+      operationId: featured
+      parameters:
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
         in: query
         required: false
         schema:
@@ -2755,7 +3156,7 @@ paths:
       tags:
       - C端餐饮
       summary: 查询餐饮详情（含图片）
-      operationId: getInfo_3
+      operationId: getInfo_4
       parameters:
       - name: diningId
         in: path
@@ -2776,9 +3177,29 @@ paths:
       tags:
       - C端餐饮
       summary: 查询餐饮列表
-      operationId: list_13
+      operationId: list_15
       parameters:
       - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: diningCategory
         in: query
         required: false
         schema:
@@ -2789,7 +3210,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/AjaxResult'
+                $ref: '#/components/schemas/TableDataInfo'
   /wx/dict/{dictType}:
     get:
       tags:
@@ -2823,12 +3244,77 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/checkin/{checkinId}:
+    get:
+      tags:
+      - C端打卡点
+      summary: 查询打卡点详情（含图片）
+      operationId: getInfo_5
+      parameters:
+      - name: checkinId
+        in: path
+        description: 打卡点ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/checkin/list:
+    get:
+      tags:
+      - C端打卡点
+      summary: 查询打卡点列表
+      operationId: list_16
+      parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: blindStatus
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: minClassicRating
+        in: query
+        required: false
+        schema:
+          type: number
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
   /wx/car/{carId}:
     get:
       tags:
       - C端包车
       summary: 查询包车详情（含图片）
-      operationId: getInfo_4
+      operationId: getInfo_6
       parameters:
       - name: carId
         in: path
@@ -2849,9 +3335,24 @@ paths:
       tags:
       - C端包车
       summary: 查询包车列表
-      operationId: list_14
+      operationId: list_17
       parameters:
       - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
         in: query
         required: false
         schema:
@@ -2862,7 +3363,7 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/AjaxResult'
+                $ref: '#/components/schemas/TableDataInfo'
   /wx/auth/getUserInfo:
     get:
       tags:
@@ -2881,7 +3382,7 @@ paths:
       tags:
       - C端景点
       summary: 查询景点详情（含图片）
-      operationId: getInfo_5
+      operationId: getInfo_7
       parameters:
       - name: attractionId
         in: path
@@ -2902,26 +3403,51 @@ paths:
       tags:
       - C端景点
       summary: 查询景点列表
-      operationId: list_15
+      operationId: list_18
       parameters:
       - name: keyword
         in: query
         required: false
         schema:
           type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: blindStatus
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: minClassicRating
+        in: query
+        required: false
+        schema:
+          type: number
       responses:
         "200":
           description: OK
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/AjaxResult'
+                $ref: '#/components/schemas/TableDataInfo'
   /wx/accommodation/{accommodationId}:
     get:
       tags:
       - C端住宿
       summary: 查询住宿详情（含经纬度和图片）
-      operationId: getInfo_6
+      operationId: getInfo_8
       parameters:
       - name: accommodationId
         in: path
@@ -2942,9 +3468,24 @@ paths:
       tags:
       - C端住宿
       summary: 查询住宿列表
-      operationId: list_16
+      operationId: list_19
       parameters:
       - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
         in: query
         required: false
         schema:
@@ -2955,13 +3496,13 @@ paths:
           content:
             '*/*':
               schema:
-                $ref: '#/components/schemas/AjaxResult'
+                $ref: '#/components/schemas/TableDataInfo'
   /travel18/tourist/{touristId}:
     get:
       tags:
       - 游客管理
       summary: 获取游客详情
-      operationId: getInfo_7
+      operationId: getInfo_9
       parameters:
       - name: touristId
         in: path
@@ -2981,7 +3522,7 @@ paths:
       tags:
       - 游客管理
       summary: 查询游客列表
-      operationId: list_17
+      operationId: list_20
       parameters:
       - name: tourist
         in: query
@@ -3000,7 +3541,7 @@ paths:
       tags:
       - 行程模板管理
       summary: 查询模板详情（含日程明细）
-      operationId: getInfo_8
+      operationId: getInfo_10
       parameters:
       - name: templateId
         in: path
@@ -3020,7 +3561,7 @@ paths:
       tags:
       - 行程模板管理
       summary: 分页查询行程模板列表
-      operationId: list_18
+      operationId: list_21
       parameters:
       - name: template
         in: query
@@ -3039,7 +3580,7 @@ paths:
       tags:
       - 资源附件管理
       summary: 获取资源详情
-      operationId: getInfo_9
+      operationId: getInfo_11
       parameters:
       - name: resourceId
         in: path
@@ -3087,7 +3628,7 @@ paths:
       tags:
       - 游客喜好管理
       summary: 获取游客喜好详情
-      operationId: getInfo_10
+      operationId: getInfo_12
       parameters:
       - name: preferenceId
         in: path
@@ -3107,7 +3648,7 @@ paths:
       tags:
       - 游客喜好管理
       summary: 查询游客喜好列表
-      operationId: list_19
+      operationId: list_22
       parameters:
       - name: preference
         in: query
@@ -3126,7 +3667,7 @@ paths:
       tags:
       - 跟拍管理
       summary: 获取跟拍详情
-      operationId: getInfo_11
+      operationId: getInfo_13
       parameters:
       - name: photographyId
         in: path
@@ -3176,7 +3717,7 @@ paths:
       tags:
       - 地方特色菜管理
       summary: 获取地方特色菜详情
-      operationId: getInfo_12
+      operationId: getInfo_14
       parameters:
       - name: specialtyId
         in: path
@@ -3197,7 +3738,7 @@ paths:
       tags:
       - 菜品管理
       summary: 获取菜品详情
-      operationId: getInfo_13
+      operationId: getInfo_15
       parameters:
       - name: dishId
         in: path
@@ -3218,7 +3759,7 @@ paths:
       tags:
       - 餐饮管理
       summary: 获取餐饮详情
-      operationId: getInfo_14
+      operationId: getInfo_16
       parameters:
       - name: diningId
         in: path
@@ -3260,7 +3801,7 @@ paths:
       tags:
       - 打卡点管理
       summary: 查询打卡点详情
-      operationId: getInfo_15
+      operationId: getInfo_17
       parameters:
       - name: checkinId
         in: path
@@ -3281,7 +3822,7 @@ paths:
       tags:
       - 包车管理
       summary: 获取包车详情
-      operationId: getInfo_16
+      operationId: getInfo_18
       parameters:
       - name: carId
         in: path
@@ -3302,7 +3843,7 @@ paths:
       tags:
       - 景点管理
       summary: 查询景点详情
-      operationId: getInfo_17
+      operationId: getInfo_19
       parameters:
       - name: attractionId
         in: path
@@ -3344,7 +3885,7 @@ paths:
       tags:
       - 算法配置管理
       summary: 查询配置详情
-      operationId: getInfo_18
+      operationId: getInfo_20
       parameters:
       - name: configId
         in: path
@@ -3365,7 +3906,7 @@ paths:
       tags:
       - 算法配置管理
       summary: 分页查询算法配置列表
-      operationId: list_20
+      operationId: list_23
       parameters:
       - name: config
         in: query
@@ -3456,7 +3997,7 @@ paths:
       tags:
       - 住宿管理
       summary: 获取住宿详情
-      operationId: getInfo_19
+      operationId: getInfo_21
       parameters:
       - name: accommodationId
         in: path
@@ -3526,7 +4067,7 @@ paths:
       tags:
       - 用户管理
       summary: 获取用户列表
-      operationId: list_21
+      operationId: list_24
       parameters:
       - name: user
         in: query
@@ -3584,7 +4125,7 @@ paths:
       tags:
       - 用户管理
       summary: 根据用户编号获取详细信息
-      operationId: getInfo_20
+      operationId: getInfo_22
       parameters: []
       responses:
         "200":
@@ -3598,7 +4139,7 @@ paths:
       tags:
       - 用户管理
       summary: 根据用户编号获取详细信息
-      operationId: getInfo_21
+      operationId: getInfo_23
       parameters:
       - name: userId
         in: path
@@ -3618,7 +4159,7 @@ paths:
       tags:
       - 角色管理
       summary: 根据角色编号获取详细信息
-      operationId: getInfo_22
+      operationId: getInfo_24
       parameters:
       - name: roleId
         in: path
@@ -3651,7 +4192,7 @@ paths:
       tags:
       - 角色管理
       summary: 获取角色列表
-      operationId: list_22
+      operationId: list_25
       parameters:
       - name: role
         in: query
@@ -3793,7 +4334,7 @@ paths:
     get:
       tags:
       - sys-post-controller
-      operationId: getInfo_23
+      operationId: getInfo_25
       parameters:
       - name: postId
         in: path
@@ -3824,7 +4365,7 @@ paths:
     get:
       tags:
       - sys-post-controller
-      operationId: list_23
+      operationId: list_26
       parameters:
       - name: post
         in: query
@@ -3843,7 +4384,7 @@ paths:
       tags:
       - 通知公告
       summary: 根据通知公告编号获取详细信息
-      operationId: getInfo_24
+      operationId: getInfo_26
       parameters:
       - name: noticeId
         in: path
@@ -3863,7 +4404,7 @@ paths:
       tags:
       - 通知公告
       summary: 获取通知公告列表
-      operationId: list_24
+      operationId: list_27
       parameters:
       - name: notice
         in: query
@@ -3895,7 +4436,7 @@ paths:
       tags:
       - 菜单管理
       summary: 根据菜单编号获取详细信息
-      operationId: getInfo_25
+      operationId: getInfo_27
       parameters:
       - name: menuId
         in: path
@@ -3973,7 +4514,7 @@ paths:
       tags:
       - 菜单管理
       summary: 获取菜单列表
-      operationId: list_25
+      operationId: list_28
       parameters:
       - name: menu
         in: query
@@ -3992,7 +4533,7 @@ paths:
       tags:
       - 字典类型
       summary: 查询字典类型详细
-      operationId: getInfo_26
+      operationId: getInfo_28
       parameters:
       - name: dictId
         in: path
@@ -4025,7 +4566,7 @@ paths:
       tags:
       - 字典类型
       summary: 获取字典类型列表
-      operationId: list_26
+      operationId: list_29
       parameters:
       - name: dictType
         in: query
@@ -4044,7 +4585,7 @@ paths:
       tags:
       - 字典数据
       summary: 查询字典数据详细
-      operationId: getInfo_27
+      operationId: getInfo_29
       parameters:
       - name: dictCode
         in: path
@@ -4083,7 +4624,7 @@ paths:
       tags:
       - 字典数据
       summary: 获取字典数据列表
-      operationId: list_27
+      operationId: list_30
       parameters:
       - name: dictData
         in: query
@@ -4101,7 +4642,7 @@ paths:
     get:
       tags:
       - sys-dept-controller
-      operationId: getInfo_28
+      operationId: getInfo_30
       parameters:
       - name: deptId
         in: path
@@ -4138,7 +4679,7 @@ paths:
     get:
       tags:
       - sys-dept-controller
-      operationId: list_28
+      operationId: list_31
       parameters:
       - name: dept
         in: query
@@ -4176,7 +4717,7 @@ paths:
       tags:
       - 参数配置
       summary: 根据参数编号获取详细信息
-      operationId: getInfo_29
+      operationId: getInfo_31
       parameters:
       - name: configId
         in: path
@@ -4196,7 +4737,7 @@ paths:
       tags:
       - 参数配置
       summary: 获取参数配置列表
-      operationId: list_29
+      operationId: list_32
       parameters:
       - name: config
         in: query
@@ -4233,7 +4774,7 @@ paths:
     get:
       tags:
       - server-controller
-      operationId: getInfo_30
+      operationId: getInfo_32
       responses:
         "200":
           description: OK
@@ -4245,7 +4786,7 @@ paths:
     get:
       tags:
       - sys-operlog-controller
-      operationId: list_30
+      operationId: list_33
       parameters:
       - name: operLog
         in: query
@@ -4263,7 +4804,7 @@ paths:
     get:
       tags:
       - sys-user-online-controller
-      operationId: list_31
+      operationId: list_34
       parameters:
       - name: ipaddr
         in: query
@@ -4286,7 +4827,7 @@ paths:
     get:
       tags:
       - sys-logininfor-controller
-      operationId: unlock
+      operationId: unlock_1
       parameters:
       - name: userName
         in: path
@@ -4304,7 +4845,7 @@ paths:
     get:
       tags:
       - sys-logininfor-controller
-      operationId: list_32
+      operationId: list_35
       parameters:
       - name: logininfor
         in: query
@@ -4322,7 +4863,7 @@ paths:
     get:
       tags:
       - cache-controller
-      operationId: getInfo_31
+      operationId: getInfo_33
       responses:
         "200":
           description: OK
@@ -4401,7 +4942,7 @@ paths:
       tags:
       - 登录
       summary: 获取用户信息
-      operationId: getInfo_32
+      operationId: getInfo_34
       responses:
         "200":
           description: OK
@@ -4966,9 +5507,9 @@ components:
     AjaxResult:
       type: object
       properties:
-        success:
-          type: boolean
         warn:
+          type: boolean
+        success:
           type: boolean
         error:
           type: boolean
@@ -5007,6 +5548,8 @@ components:
         nickname:
           type: string
         avatarUrl:
+          type: string
+        role:
           type: string
         gender:
           type: string
@@ -5236,6 +5779,8 @@ components:
         pwdUpdateDate:
           type: string
           format: date-time
+        regionCode:
+          type: string
         dept:
           $ref: '#/components/schemas/SysDept'
         roles:
@@ -5612,6 +6157,15 @@ components:
         dinnerId:
           type: integer
           format: int64
+    UnlockRequest:
+      type: object
+      properties:
+        latitude:
+          type: number
+        longitude:
+          type: number
+        accuracy:
+          type: number
     TravelAccommodation:
       required:
       - accommodationName
@@ -5737,6 +6291,8 @@ components:
           type: string
         openTime:
           type: string
+        bestViewingTime:
+          type: string
         familyFriendly:
           type: string
         waterActivity:
@@ -5811,6 +6367,12 @@ components:
         drivingYears:
           type: integer
           format: int32
+        province:
+          type: string
+        city:
+          type: string
+        district:
+          type: string
         status:
           type: string
         delFlag:
@@ -5851,6 +6413,10 @@ components:
           type: string
         diningTips:
           type: string
+        openTime:
+          type: string
+        closeTime:
+          type: string
         province:
           type: string
         city:
@@ -5866,6 +6432,8 @@ components:
         petFriendly:
           type: string
         diningNature:
+          type: string
+        diningCategory:
           type: string
         avgCost:
           type: number
@@ -5922,6 +6490,12 @@ components:
           type: string
         district:
           type: string
+        provinceName:
+          type: string
+        cityName:
+          type: string
+        districtName:
+          type: string
         startDate:
           type: string
           format: date-time
@@ -5953,6 +6527,17 @@ components:
             type: object
             additionalProperties:
               type: object
+        endDate:
+          type: string
+          format: date-time
+        preferences:
+          type: array
+          items:
+            type: string
+        blindMode:
+          type: string
+        destinationTimezone:
+          type: string
     TravelItineraryDay:
       type: object
       properties:
@@ -6060,6 +6645,12 @@ components:
           $ref: '#/components/schemas/TravelCar'
         touristCar:
           $ref: '#/components/schemas/TravelCar'
+        blindAttractions:
+          type: array
+          items:
+            type: object
+            additionalProperties:
+              type: object
         delFlag:
           type: string
     TravelLine:
@@ -6142,6 +6733,12 @@ components:
           type: integer
           format: int32
         equipment:
+          type: string
+        province:
+          type: string
+        city:
+          type: string
+        district:
           type: string
         status:
           type: string

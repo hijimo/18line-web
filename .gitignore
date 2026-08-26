@@ -9,3 +9,5 @@ chatbot-ui-main
 .env.production
 playwright-report/
 test-results/
+.idea
+.pnpm-store

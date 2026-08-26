@@ -19,7 +19,7 @@ const TouristPreferences: React.FC = () => {
   const [currentRecord, setCurrentRecord] = useState<any>(null);
   const [form] = Form.useForm();
 
-  const request = useTableRequest(preferenceApi.list19 as any);
+  const request = useTableRequest(preferenceApi.list22 as any);
   const staminaMap = useDictMap('travel_stamina');
   const travelLikeMap = useDictMap('travel_tourist_like');
   const foodLikeMap = useDictMap('travel_food_like');
