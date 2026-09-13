@@ -86,13 +86,13 @@ request.interceptors.response.use(
   (res) => {
     const { msg: msgStr, code } = (res.data as unknown as ResponseData) || {};
 
-    if (code === 401 || code === 403) {
-      // 认证失败或无权限，自动登出
+    if (code === 401) {
+      // 认证失败（token 无效/过期），自动登出
       const { logout } = useAuthStore.getState();
       logout();
 
       messageInstance.error({
-        content: code === 401 ? '登录已过期，请重新登录' : '无权限访问',
+        content: '登录已过期，请重新登录',
         duration: 3,
       });
 
@@ -100,6 +100,7 @@ request.interceptors.response.use(
       window.location.href = '/login';
       return Promise.reject(new Error(msgStr || '认证失败'));
     }
+    // 403 无权限属于业务错误，走下方通用分支：仅提示，不登出
     if (code !== 200) {
       // 创建业务错误
       const error = new Error(msgStr || '业务处理失败');
