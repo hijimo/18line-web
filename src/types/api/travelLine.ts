@@ -22,5 +22,10 @@ export interface TravelLine {
   district?: string;
   status?: string;
   delFlag?: string;
+  merchantId?: number;
+  authorUserId?: number;
+  rewardEnabled?: string;
+  androidShareRate?: number;
+  iosShareRate?: number;
   attachments?: TravelLineAttachmentsItem[];
 }

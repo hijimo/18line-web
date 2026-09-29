@@ -6,7 +6,11 @@ import { logError, parseError } from '@/utils/errorHandler';
 import { TOKEN_KEY, USER_INFO_KEY as USER_INFO } from '@/utils/userData';
 import type { ResponseData } from '@/types';
 
-console.log('import.meta.env.VITE_API_BASE_URL', import.meta.env);
+// ⚠️ 这里原来打印的是整个 import.meta.env。
+// Vite 对「整体引用 import.meta.env」会把**所有 VITE_* 变量**内联进产物，
+// 而 .env.production 里带着 OSS 的 AccessKeyId/AccessKeySecret（供上传插件用），
+// 于是生产 bundle 里出现了明文密钥，且产物是公网可下载的。
+// 需要调试 baseURL 时只打印这一个变量，绝不要打印整个 env 对象。
 const request = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
   // baseURL: '/api/v1/',

@@ -1,13 +1,18 @@
 import {
+  AccountBookOutlined,
   BankOutlined,
   BookOutlined,
   CalendarOutlined,
   CameraOutlined,
   CarOutlined,
   CoffeeOutlined,
+  DownloadOutlined,
   EnvironmentOutlined,
+  FileTextOutlined,
+  GiftOutlined,
   HeartOutlined,
   HomeOutlined,
+  PayCircleOutlined,
   SettingOutlined,
   ShopOutlined,
   TeamOutlined,
@@ -38,6 +43,13 @@ import LocalDishes from './pages/LocalDishes';
 import Login from './pages/Login';
 import Notfound from './pages/Notfound';
 import Photography from './pages/Photography';
+import RewardBill from './pages/RewardBill';
+import RewardConfig from './pages/RewardConfig';
+import RewardMerchant from './pages/RewardMerchant';
+import RewardNotifyLog from './pages/RewardNotifyLog';
+import RewardOrder from './pages/RewardOrder';
+import RewardSettlement from './pages/RewardSettlement';
+import RewardTier from './pages/RewardTier';
 import Routes from './pages/Routes';
 import Template from './pages/Template';
 import TouristPreferences from './pages/TouristPreferences';
@@ -170,6 +182,98 @@ const resources: ResourceProps[] = [
     },
   },
   {
+    // 打赏是资金相关模块：订单页能发起退款，结算页能对公转账。
+    // 后端用 travel18:reward:* / travel18:settle:* 权限守，前端再按 admin 收一层，
+    // 避免非财务角色看到菜单点进去全是 403。
+    name: 'reward',
+    meta: {
+      label: '打赏管理',
+      icon: <PayCircleOutlined />,
+    },
+  },
+  {
+    // 商户＝打赏资金的收款主体：下单时按「线路 > 商户 > 全局」三级解析分成率并写进订单快照，
+    // 月结批次按商户维度生成并对公转账。含统一社会信用代码与对公账号，属主体敏感信息，
+    // 因此与档位/订单/结算一样只给 admin，且后端绝不可通过 /wx/** 暴露。
+    name: 'reward-merchant',
+    list: '/reward-merchant',
+    meta: {
+      label: '打赏商户',
+      icon: <ShopOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
+    // 档位＝微信虚拟支付的「道具」，是打赏的资金入口参数来源：
+    // 下单金额、商家分成、平台佣金全部由档位 price_fen 推导，
+    // 且上传/发布会真实改变微信侧可售道具，故与订单/结算一样只给 admin。
+    name: 'reward-tier',
+    list: '/reward-tier',
+    meta: {
+      label: '打赏档位',
+      icon: <GiftOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
+    name: 'reward-order',
+    list: '/reward-order',
+    meta: {
+      label: '打赏订单',
+      icon: <AccountBookOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
+    name: 'reward-settlement',
+    list: '/reward-settlement',
+    meta: {
+      label: '打赏结算',
+      icon: <BankOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
+    // 推送日志是排障与对账的第一现场，但 raw_body 是解密后的推送明文，
+    // 含 openid、金额与微信侧订单号，故与其它三个打赏资源一样只放给 admin。
+    // 页面只读：没有「重放推送」入口（重放等于把记账再跑一遍）。
+    name: 'reward-notify-log',
+    list: '/reward-notify-log',
+    meta: {
+      label: '推送日志',
+      icon: <FileTextOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
+    // 账单下载会**出网调用微信**，且拿到的地址指向全量交易明细（含 openid、金额、
+    // 商户单号），敏感度不低于推送日志，故同样只放给 admin。
+    // 列表与详情刻意不返回真实下载地址（后端掩码），真实地址只在点「下载」那一刻
+    // 经 /reward/bill/url/{taskPk} 现取——因为日账单地址只有 28 分钟寿命，
+    // 渲染到点击之间就可能已经过期。
+    name: 'reward-bill',
+    list: '/reward-bill',
+    meta: {
+      label: '账单下载',
+      icon: <DownloadOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
+    // 打赏参数配置：三个上线闸门、分成率/佣金率/渠道费率、沙箱开关全在这里，
+    // 改错任意一个都是真实资金后果（打开总开关＝开始收真钱，分成率越线＝商家少拿钱）。
+    // 后端已用 travel18:reward:config:* 三档权限守，前端同样只放给 admin。
+    // 刻意不复用 RuoYi 原生「参数设置」：那张页能改整张 sys_config 且对值不做校验，
+    // 而本页只认后端登记的 23 个键，并且会显示「运行时真正生效的值」。
+    name: 'reward-config',
+    list: '/reward-config',
+    meta: {
+      label: '参数配置',
+      icon: <SettingOutlined />,
+      parent: 'reward',
+    },
+  },
+  {
     name: 'dict-type',
     list: '/dict-type',
     meta: {
@@ -180,7 +284,18 @@ const resources: ResourceProps[] = [
 ];
 
 /** 仅 admin 可见的资源名（与后端 sys_role_menu 删除的菜单保持一致） */
-const ADMIN_ONLY_RESOURCES = ['users', 'algorithm-config', 'dict-type'];
+const ADMIN_ONLY_RESOURCES = [
+  'users',
+  'algorithm-config',
+  'dict-type',
+  'reward-merchant',
+  'reward-tier',
+  'reward-order',
+  'reward-settlement',
+  'reward-notify-log',
+  'reward-bill',
+  'reward-config',
+];
 
 /**
  * 当前登录用户是否 admin。
@@ -313,6 +428,62 @@ const router = createBrowserRouter([
           {
             path: '/template',
             element: <Template />,
+          },
+          {
+            path: '/reward-merchant',
+            element: (
+              <RequireAdmin>
+                <RewardMerchant />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: '/reward-tier',
+            element: (
+              <RequireAdmin>
+                <RewardTier />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: '/reward-order',
+            element: (
+              <RequireAdmin>
+                <RewardOrder />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: '/reward-settlement',
+            element: (
+              <RequireAdmin>
+                <RewardSettlement />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: '/reward-notify-log',
+            element: (
+              <RequireAdmin>
+                <RewardNotifyLog />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: '/reward-bill',
+            element: (
+              <RequireAdmin>
+                <RewardBill />
+              </RequireAdmin>
+            ),
+          },
+          {
+            path: '/reward-config',
+            element: (
+              <RequireAdmin>
+                <RewardConfig />
+              </RequireAdmin>
+            ),
           },
           {
             path: '/dict-type',

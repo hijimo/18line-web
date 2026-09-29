@@ -46,7 +46,6 @@ export interface SysUser {
   loginIp?: string;
   loginDate?: Date;
   pwdUpdateDate?: Date;
-  regionCode?: string;
   dept?: SysDept;
   roles?: SysRole[];
   roleIds?: number[];

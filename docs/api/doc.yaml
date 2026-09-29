@@ -6,7 +6,7 @@ info:
     name: travel18
   version: 版本号:0.0.1
 servers:
-- url: http://8.136.229.208:8080/api
+- url: http://127.0.0.1:8080/api
   description: Generated server url
 security:
 - Authorization: []
@@ -105,6 +105,62 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier:
+    put:
+      tags:
+      - 打赏档位与道具
+      summary: 修改打赏档位
+      operationId: rewardTierEdit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRewardTier'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+    post:
+      tags:
+      - 打赏档位与道具
+      summary: 新增打赏档位
+      operationId: rewardTierAdd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelRewardTier'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/config:
+    put:
+      tags:
+      - 打赏参数配置
+      summary: 批量保存打赏参数（整批原子，关键参数必填改动理由）
+      operationId: rewardConfigUpdate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardConfigUpdateDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /travel18/preference:
     put:
       tags:
@@ -116,6 +172,43 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TravelTouristPreference'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/merchant:
+    put:
+      tags:
+      - 打赏商户管理
+      summary: 修改商户（审核字段不可由此接口修改）
+      operationId: merchantEdit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelMerchant'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+    post:
+      tags:
+      - 打赏商户管理
+      summary: 新增商户（待审核，不能直接建成可收款主体）
+      operationId: merchantAdd
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TravelMerchant'
         required: true
       responses:
         "200":
@@ -743,6 +836,97 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/reward/order:
+    post:
+      tags:
+      - C端线路打赏
+      summary: 创建打赏订单
+      operationId: rewardCreateOrder
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardOrderCreateDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/reward/notify:
+    get:
+      tags:
+      - 虚拟支付推送回调
+      summary: 推送地址接入校验
+      operationId: rewardNotifyVerify
+      parameters:
+      - name: signature
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: timestamp
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: nonce
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: echostr
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
+    post:
+      tags:
+      - 虚拟支付推送回调
+      summary: 虚拟支付消息推送
+      operationId: rewardNotifyPush
+      parameters:
+      - name: signature
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: timestamp
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: nonce
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: msg_signature
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: encrypt_type
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: string
   /wx/resource/add:
     post:
       tags:
@@ -1360,7 +1544,7 @@ paths:
       tags:
       - 微信小程序认证
       summary: 微信登录
-      operationId: login
+      operationId: wxLogin
       requestBody:
         content:
           application/json:
@@ -1485,6 +1669,362 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TravelTemplate'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier/{tierId}/upload:
+    post:
+      tags:
+      - 打赏档位与道具
+      summary: 提交道具上传任务（异步，需同步确认结果）
+      operationId: rewardTierUploadGoods
+      parameters:
+      - name: tierId
+        in: path
+        description: 档位ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier/{tierId}/publish:
+    post:
+      tags:
+      - 打赏档位与道具
+      summary: 提交道具发布任务（发布前核对微信侧价格）
+      operationId: rewardTierPublishGoods
+      parameters:
+      - name: tierId
+        in: path
+        description: 档位ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier/sync:
+    post:
+      tags:
+      - 打赏档位与道具
+      summary: 同步指定环境的道具状态（全量对账）
+      operationId: rewardTierSyncGoods
+      parameters:
+      - name: env
+        in: query
+        description: 支付环境：0 现网 / 1 沙箱
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier/sync/pending:
+    post:
+      tags:
+      - 打赏档位与道具
+      summary: 手工触发待同步档位的状态同步
+      operationId: rewardTierSyncPending
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/{batchId}/void:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 作废结算批次
+      operationId: settleBatchVoid
+      parameters:
+      - name: batchId
+        in: path
+        description: 批次ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: reason
+        in: query
+        description: 作废原因，必填
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/{batchId}/confirm:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 财务确认结算批次
+      operationId: settleBatchConfirm
+      parameters:
+      - name: batchId
+        in: path
+        description: 批次ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/{batchId}/complete:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 复核归档结算批次
+      operationId: settleBatchComplete
+      parameters:
+      - name: batchId
+        in: path
+        description: 批次ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/transfer:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 登记对公转账
+      operationId: settleBatchTransfer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettlementTransferDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/preview:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 生成批次前预览
+      operationId: settleBatchPreview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettlementBatchGenerateDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/monthly:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 手工触发月结批次生成
+      operationId: settleBatchMonthly
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/invoice:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 登记商家发票
+      operationId: settleBatchInvoice
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettlementInvoiceDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/generate:
+    post:
+      tags:
+      - 打赏商家结算
+      summary: 生成结算批次
+      operationId: settleBatchGenerate
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SettlementBatchGenerateDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/refund:
+    post:
+      tags:
+      - 打赏订单退款
+      summary: 发起打赏退款（启动微信退款任务）
+      operationId: rewardRefundApply
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardRefundApplyDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/refund/poll:
+    post:
+      tags:
+      - 打赏订单退款
+      summary: 手工触发退款终态轮询
+      operationId: rewardRefundPoll
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/refund/poll/one:
+    post:
+      tags:
+      - 打赏订单退款
+      summary: 手工轮询单笔退款终态
+      operationId: rewardRefundPollOne
+      parameters:
+      - name: outTradeNo
+        in: query
+        description: 业务订单号 out_trade_no
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/config/refresh-cache:
+    post:
+      tags:
+      - 打赏参数配置
+      summary: 刷新参数缓存（处置「缓存与库不一致」，会改变运行时实际生效值）
+      operationId: rewardConfigRefreshCache
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/config/preview:
+    post:
+      tags:
+      - 打赏参数配置
+      summary: 分账预览（按假设费率逐档试算，标出会被资损闸门拒掉的档位）
+      operationId: rewardConfigPreview
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardSharePreviewDTO'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/bill/refresh/{taskPk}:
+    post:
+      tags:
+      - 打赏账单下载
+      summary: 刷新账单任务结果（出网查询微信侧进度）
+      operationId: billRefresh
+      parameters:
+      - name: taskPk
+        in: path
+        description: 任务主键
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/bill/fetch:
+    post:
+      tags:
+      - 打赏账单下载
+      summary: 发起账单获取（出网调用微信，日账单/iOS月结/订单明细）
+      operationId: billFetch
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardBillRequestDTO'
         required: true
       responses:
         "200":
@@ -1652,6 +2192,25 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/TravelPhotography'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/merchant/audit:
+    post:
+      tags:
+      - 打赏商户管理
+      summary: 入驻审核（通过前校验开票能力/执照/对公账户）
+      operationId: merchantAudit
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MerchantAuditDTO'
         required: true
       responses:
         "200":
@@ -2714,7 +3273,7 @@ paths:
       tags:
       - 登录
       summary: 登录方法
-      operationId: login_1
+      operationId: login
       requestBody:
         content:
           application/json:
@@ -2826,6 +3385,65 @@ paths:
       - name: keyword
         in: query
         required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/reward/tiers:
+    get:
+      tags:
+      - C端线路打赏
+      summary: 查询打赏档位
+      operationId: rewardTiers
+      parameters:
+      - name: platform
+        in: query
+        description: 终端：android/ios/harmony/windows，取 wx.getSystemInfoSync().platform
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/reward/orders:
+    get:
+      tags:
+      - C端线路打赏
+      summary: 我的打赏记录
+      operationId: rewardMyOrders
+      parameters:
+      - name: lineId
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /wx/reward/order/{outTradeNo}:
+    get:
+      tags:
+      - C端线路打赏
+      summary: 查询单笔打赏订单状态
+      operationId: rewardOrderStatus
+      parameters:
+      - name: outTradeNo
+        in: path
+        required: true
         schema:
           type: string
       responses:
@@ -3063,6 +3681,61 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/line/{lineId}:
+    get:
+      tags:
+      - C端线路
+      summary: 查询线路详情
+      operationId: wxLineDetail
+      parameters:
+      - name: lineId
+        in: path
+        description: 线路ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /wx/line/list:
+    get:
+      tags:
+      - C端线路
+      summary: 查询线路列表
+      operationId: wxLineList
+      parameters:
+      - name: keyword
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: province
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: city
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: district
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
   /wx/itinerary/{itineraryId}:
     get:
       tags:
@@ -3575,6 +4248,335 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/tier/{tierId}:
+    get:
+      tags:
+      - 打赏档位与道具
+      summary: 查询打赏档位详情
+      operationId: rewardTierDetail
+      parameters:
+      - name: tierId
+        in: path
+        description: 档位ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier/list:
+    get:
+      tags:
+      - 打赏档位与道具
+      summary: 查询打赏档位列表
+      operationId: rewardTierList
+      parameters:
+      - name: tier
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/TravelRewardTier'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/settlement/{batchId}:
+    get:
+      tags:
+      - 打赏商家结算
+      summary: 结算批次详情
+      operationId: settleBatchDetail
+      parameters:
+      - name: batchId
+        in: path
+        description: 批次ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/settlement/{batchId}/payables:
+    get:
+      tags:
+      - 打赏商家结算
+      summary: 批次内应付流水明细
+      operationId: settleBatchPayables
+      parameters:
+      - name: batchId
+        in: path
+        description: 批次ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/settlement/list:
+    get:
+      tags:
+      - 打赏商家结算
+      summary: 结算批次列表
+      operationId: settleBatchList
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/TravelSettlementBatch'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/refund/preview:
+    get:
+      tags:
+      - 打赏订单退款
+      summary: 退款前预览（实时向微信查询可退余额）
+      operationId: rewardRefundPreview
+      parameters:
+      - name: outTradeNo
+        in: query
+        description: 业务订单号 out_trade_no
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/order/{orderId}:
+    get:
+      tags:
+      - 打赏订单查询
+      summary: 打赏订单详情
+      operationId: rewardOrderDetail
+      parameters:
+      - name: orderId
+        in: path
+        description: 订单主键 order_id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/order/{orderId}/payable:
+    get:
+      tags:
+      - 打赏订单查询
+      summary: 订单对应的商家应付流水
+      operationId: rewardOrderPayable
+      parameters:
+      - name: orderId
+        in: path
+        description: 订单主键 order_id
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/order/list:
+    get:
+      tags:
+      - 打赏订单查询
+      summary: 打赏订单列表
+      operationId: rewardOrderList
+      parameters:
+      - name: query
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/TravelRewardOrder'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/notify/{logId}:
+    get:
+      tags:
+      - 打赏推送日志
+      summary: 查询推送日志详情（含报文全文）
+      operationId: notifyLogDetail
+      parameters:
+      - name: logId
+        in: path
+        description: 日志ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/notify/list:
+    get:
+      tags:
+      - 打赏推送日志
+      summary: 查询推送日志列表（不含报文全文）
+      operationId: notifyLogList
+      parameters:
+      - name: notifyLog
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/TravelRewardNotifyLog'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/config/list:
+    get:
+      tags:
+      - 打赏参数配置
+      summary: 查询打赏参数列表（含库值与运行时生效值）
+      operationId: rewardConfigList
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/config/check:
+    get:
+      tags:
+      - 打赏参数配置
+      summary: 打赏参数自检（只读：越界/费率上限/环境一致性/缓存一致性/超限覆盖）
+      operationId: rewardConfigCheck
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/bill/{taskPk}:
+    get:
+      tags:
+      - 打赏账单下载
+      summary: 查询账单下载任务详情（不含真实下载地址）
+      operationId: billDetail
+      parameters:
+      - name: taskPk
+        in: path
+        description: 任务主键
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/bill/url/{taskPk}:
+    get:
+      tags:
+      - 打赏账单下载
+      summary: 获取账单真实下载地址（校验是否已过期）
+      operationId: billDownloadUrl
+      parameters:
+      - name: taskPk
+        in: path
+        description: 任务主键
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/bill/list:
+    get:
+      tags:
+      - 打赏账单下载
+      summary: 查询账单下载任务列表（不含真实下载地址）
+      operationId: billList
+      parameters:
+      - name: billTask
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/TravelRewardBillTask'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
+  /travel18/reward/bill/batch/{batchNo}:
+    get:
+      tags:
+      - 打赏账单下载
+      summary: 查询同批发起的全部账单（iOS月结按月展开）
+      operationId: billBatch
+      parameters:
+      - name: batchNo
+        in: path
+        description: 发起批次号
+        required: true
+        schema:
+          type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /travel18/resource/{resourceId}:
     get:
       tags:
@@ -3712,6 +4714,46 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /travel18/merchant/{merchantId}:
+    get:
+      tags:
+      - 打赏商户管理
+      summary: 查询商户详情
+      operationId: merchantDetail
+      parameters:
+      - name: merchantId
+        in: path
+        description: 商户ID
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/merchant/list:
+    get:
+      tags:
+      - 打赏商户管理
+      summary: 查询商户列表
+      operationId: merchantList
+      parameters:
+      - name: merchant
+        in: query
+        required: true
+        schema:
+          $ref: '#/components/schemas/TravelMerchant'
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/TableDataInfo'
   /travel18/localSpecialty/{specialtyId}:
     get:
       tags:
@@ -5017,6 +6059,29 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /travel18/reward/tier/{tierIds}:
+    delete:
+      tags:
+      - 打赏档位与道具
+      summary: 删除打赏档位
+      operationId: rewardTierRemove
+      parameters:
+      - name: tierIds
+        in: path
+        description: 档位ID串
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /travel18/preference/{preferenceIds}:
     delete:
       tags:
@@ -5029,6 +6094,29 @@ paths:
         required: true
         schema:
           type: string
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
+  /travel18/merchant/{merchantIds}:
+    delete:
+      tags:
+      - 打赏商户管理
+      summary: 删除商户（软删除，有未结算流水时拒绝）
+      operationId: merchantRemove
+      parameters:
+      - name: merchantIds
+        in: path
+        description: 商户ID串
+        required: true
+        schema:
+          type: array
+          items:
+            type: integer
+            format: int64
       responses:
         "200":
           description: OK
@@ -5568,6 +6656,176 @@ components:
         loginDate:
           type: string
           format: date-time
+    TravelRewardTier:
+      required:
+      - priceFen
+      - tierCode
+      - tierName
+      - wxProductId
+      type: object
+      properties:
+        createBy:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        updateBy:
+          type: string
+        updateTime:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+        tierId:
+          type: integer
+          format: int64
+        tierCode:
+          type: string
+        tierName:
+          type: string
+        wxProductId:
+          type: string
+        priceFen:
+          type: integer
+          format: int64
+        env:
+          type: string
+        isTest:
+          type: string
+        allowPlatforms:
+          type: string
+        itemUrl:
+          type: string
+        uploadStatus:
+          type: string
+        publishStatus:
+          type: string
+        publishTime:
+          type: string
+          format: date-time
+        effectiveTime:
+          type: string
+          format: date-time
+        sortOrder:
+          type: integer
+          format: int32
+        status:
+          type: string
+        delFlag:
+          type: string
+        goodsMsg:
+          type: string
+        goodsSyncTime:
+          type: string
+          format: date-time
+    Item:
+      required:
+      - configKey
+      type: object
+      properties:
+        configKey:
+          maxLength: 100
+          minLength: 0
+          type: string
+        configValue:
+          maxLength: 500
+          minLength: 0
+          type: string
+    RewardConfigUpdateDTO:
+      required:
+      - items
+      type: object
+      properties:
+        items:
+          maxItems: 64
+          minItems: 0
+          type: array
+          items:
+            $ref: '#/components/schemas/Item'
+        reason:
+          maxLength: 500
+          minLength: 0
+          type: string
+    TravelMerchant:
+      required:
+      - creditCode
+      - merchantName
+      type: object
+      properties:
+        createBy:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        updateBy:
+          type: string
+        updateTime:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+        merchantId:
+          type: integer
+          format: int64
+        merchantName:
+          type: string
+        creditCode:
+          type: string
+        legalPerson:
+          type: string
+        licenseUrl:
+          type: string
+        travelAgencyLicenseNo:
+          type: string
+        travelAgencyLicenseUrl:
+          type: string
+        contactName:
+          type: string
+        contactPhone:
+          type: string
+        bankAccountName:
+          type: string
+        bankAccountNo:
+          type: string
+        bankName:
+          type: string
+        invoiceCapability:
+          type: string
+        agreementUrl:
+          type: string
+        androidShareRate:
+          type: number
+        iosShareRate:
+          type: number
+        commissionRate:
+          type: number
+        auditStatus:
+          type: string
+        auditBy:
+          type: string
+        auditTime:
+          type: string
+          format: date-time
+        auditRemark:
+          type: string
+        cooperationStartDate:
+          type: string
+          format: date-time
+        cooperationEndDate:
+          type: string
+          format: date-time
+        status:
+          type: string
+        delFlag:
+          type: string
     UserEntity:
       type: object
       properties:
@@ -5779,8 +7037,6 @@ components:
         pwdUpdateDate:
           type: string
           format: date-time
-        regionCode:
-          type: string
         dept:
           $ref: '#/components/schemas/SysDept'
         roles:
@@ -6086,6 +7342,22 @@ components:
           minLength: 0
           type: string
         configType:
+          type: string
+    RewardOrderCreateDTO:
+      required:
+      - lineId
+      - platform
+      - tierCode
+      type: object
+      properties:
+        lineId:
+          type: integer
+          format: int64
+        tierCode:
+          type: string
+        platform:
+          type: string
+        sdkVersion:
           type: string
     TravelResource:
       required:
@@ -6689,6 +7961,18 @@ components:
           type: string
         delFlag:
           type: string
+        merchantId:
+          type: integer
+          format: int64
+        authorUserId:
+          type: integer
+          format: int64
+        rewardEnabled:
+          type: string
+        androidShareRate:
+          type: number
+        iosShareRate:
+          type: number
         attachments:
           type: array
           items:
@@ -6896,6 +8180,155 @@ components:
           type: string
         foodLikes:
           type: string
+    SettlementTransferDTO:
+      required:
+      - batchId
+      - transferAmountFen
+      - transferNo
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+        transferNo:
+          maxLength: 64
+          minLength: 0
+          type: string
+        transferAmountFen:
+          type: integer
+          format: int64
+        transferTime:
+          type: string
+          format: date-time
+        transferVoucher:
+          maxLength: 500
+          minLength: 0
+          type: string
+    SettlementBatchGenerateDTO:
+      required:
+      - merchantId
+      - periodEnd
+      - periodStart
+      - terminalGroup
+      type: object
+      properties:
+        merchantId:
+          type: integer
+          format: int64
+        terminalGroup:
+          pattern: android|ios
+          type: string
+        periodStart:
+          type: string
+          format: date-time
+        periodEnd:
+          type: string
+          format: date-time
+        remark:
+          maxLength: 200
+          minLength: 0
+          type: string
+    SettlementInvoiceDTO:
+      required:
+      - batchId
+      - invoiceAmountFen
+      - invoiceNo
+      type: object
+      properties:
+        batchId:
+          type: integer
+          format: int64
+        invoiceNo:
+          maxLength: 64
+          minLength: 0
+          type: string
+        invoiceAmountFen:
+          type: integer
+          format: int64
+        invoiceTime:
+          type: string
+          format: date-time
+        invoiceUrl:
+          maxLength: 500
+          minLength: 0
+          type: string
+    RewardRefundApplyDTO:
+      required:
+      - outTradeNo
+      - refundReason
+      type: object
+      properties:
+        outTradeNo:
+          maxLength: 64
+          minLength: 0
+          type: string
+        refundFeeFen:
+          type: integer
+          format: int64
+        refundReason:
+          pattern: "[0-5]"
+          type: string
+        reqFrom:
+          pattern: "[1-3]"
+          type: string
+        remark:
+          maxLength: 200
+          minLength: 0
+          type: string
+    RewardSharePreviewDTO:
+      type: object
+      properties:
+        shareRateAndroid:
+          type: string
+        shareRateIos:
+          type: string
+        commissionRate:
+          type: string
+        channelFeeAndroid:
+          type: string
+        channelFeeIos:
+          type: string
+        env:
+          type: string
+    RewardBillRequestDTO:
+      required:
+      - billType
+      type: object
+      properties:
+        billType:
+          type: string
+        beginDs:
+          type: integer
+          format: int32
+        endDs:
+          type: integer
+          format: int32
+        startMonth:
+          type: string
+        endMonth:
+          type: string
+        orderType:
+          type: integer
+          format: int32
+        payChannel:
+          type: integer
+          format: int32
+        isProvided:
+          type: string
+        refundStatus:
+          type: integer
+          format: int32
+        orderInfo:
+          maxLength: 128
+          minLength: 0
+          type: string
+        env:
+          type: integer
+          format: int32
+        remark:
+          maxLength: 500
+          minLength: 0
+          type: string
     TableDataInfo:
       type: object
       properties:
@@ -6910,6 +8343,21 @@ components:
           type: integer
           format: int32
         msg:
+          type: string
+    MerchantAuditDTO:
+      required:
+      - merchantId
+      - pass
+      type: object
+      properties:
+        merchantId:
+          type: integer
+          format: int64
+        pass:
+          type: boolean
+        auditRemark:
+          maxLength: 500
+          minLength: 0
           type: string
     TravelLocalSpecialtyDish:
       required:
@@ -7325,6 +8773,365 @@ components:
           type: string
           description: 验证码唯一标识
       description: 用户登录对象
+    TravelSettlementBatch:
+      type: object
+      properties:
+        createBy:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        updateBy:
+          type: string
+        updateTime:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+        batchId:
+          type: integer
+          format: int64
+        batchNo:
+          type: string
+        merchantId:
+          type: integer
+          format: int64
+        terminalGroup:
+          type: string
+        periodStart:
+          type: string
+          format: date-time
+        periodEnd:
+          type: string
+          format: date-time
+        orderCount:
+          type: integer
+          format: int32
+        orderAmountFen:
+          type: integer
+          format: int64
+        totalFen:
+          type: integer
+          format: int64
+        paidFen:
+          type: integer
+          format: int64
+        batchStatus:
+          type: string
+        confirmBy:
+          type: string
+        confirmTime:
+          type: string
+          format: date-time
+        transferTime:
+          type: string
+          format: date-time
+        transferVoucher:
+          type: string
+        transferNo:
+          type: string
+        transferBy:
+          type: string
+        invoiceNo:
+          type: string
+        invoiceAmountFen:
+          type: integer
+          format: int64
+        invoiceTime:
+          type: string
+          format: date-time
+        invoiceUrl:
+          type: string
+        invoiceBy:
+          type: string
+        voidReason:
+          type: string
+        voidBy:
+          type: string
+        voidTime:
+          type: string
+          format: date-time
+        merchantName:
+          type: string
+    TravelRewardOrder:
+      required:
+      - orderNo
+      - outTradeNo
+      type: object
+      properties:
+        createBy:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        updateBy:
+          type: string
+        updateTime:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+        orderId:
+          type: integer
+          format: int64
+        orderNo:
+          type: string
+        outTradeNo:
+          type: string
+        userOpenid:
+          type: string
+        userId:
+          type: integer
+          format: int64
+        lineId:
+          type: integer
+          format: int64
+        merchantId:
+          type: integer
+          format: int64
+        authorUserId:
+          type: integer
+          format: int64
+        tierId:
+          type: integer
+          format: int64
+        wxProductId:
+          type: string
+        quantity:
+          type: integer
+          format: int32
+        origPriceFen:
+          type: integer
+          format: int64
+        actualPriceFen:
+          type: integer
+          format: int64
+        channelFeeRate:
+          type: number
+        channelFeeFen:
+          type: integer
+          format: int64
+        platformNetFen:
+          type: integer
+          format: int64
+        commissionRate:
+          type: number
+        commissionFen:
+          type: integer
+          format: int64
+        shareRate:
+          type: number
+        shareFen:
+          type: integer
+          format: int64
+        env:
+          type: string
+        platform:
+          type: string
+        payChannel:
+          type: string
+        attach:
+          type: string
+        mchOrderNo:
+          type: string
+        transactionId:
+          type: string
+        wxOrderId:
+          type: string
+        wxOrderStatus:
+          type: integer
+          format: int32
+        wxOrderType:
+          type: integer
+          format: int32
+        paidTime:
+          type: string
+          format: date-time
+        provideTime:
+          type: string
+          format: date-time
+        settState:
+          type: integer
+          format: int32
+        settTime:
+          type: string
+          format: date-time
+        platformFeeFen:
+          type: integer
+          format: int64
+        orderStatus:
+          type: string
+        notifyCount:
+          type: integer
+          format: int32
+        lastNotifyTime:
+          type: string
+          format: date-time
+        refundFeeFen:
+          type: integer
+          format: int64
+        refundTime:
+          type: string
+          format: date-time
+        wxRefundId:
+          type: string
+        mchRefundId:
+          type: string
+        refundReason:
+          type: string
+        refundReqFrom:
+          type: string
+        refundLeftFeeFen:
+          type: integer
+          format: int64
+        refundApplyTime:
+          type: string
+          format: date-time
+        refundApplyBy:
+          type: string
+        refundPollCount:
+          type: integer
+          format: int32
+        refundLastError:
+          type: string
+        iosRefundQueryCount:
+          type: integer
+          format: int32
+        iosRefundResult:
+          type: string
+        iosRefundEvidence:
+          type: string
+        payableId:
+          type: integer
+          format: int64
+        settleBatchId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          format: int32
+        status:
+          type: string
+        delFlag:
+          type: string
+    TravelRewardNotifyLog:
+      type: object
+      properties:
+        createBy:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        updateBy:
+          type: string
+        updateTime:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+        logId:
+          type: integer
+          format: int64
+        eventType:
+          type: string
+        outTradeNo:
+          type: string
+        openid:
+          type: string
+        msgFormat:
+          type: string
+        rawBody:
+          type: string
+        verifyResult:
+          type: string
+        processResult:
+          type: string
+        errMsg:
+          type: string
+        responseBody:
+          type: string
+    TravelRewardBillTask:
+      type: object
+      properties:
+        createBy:
+          type: string
+        createTime:
+          type: string
+          format: date-time
+        updateBy:
+          type: string
+        updateTime:
+          type: string
+          format: date-time
+        remark:
+          type: string
+        params:
+          type: object
+          additionalProperties:
+            type: object
+        taskPk:
+          type: integer
+          format: int64
+        batchNo:
+          type: string
+        billType:
+          type: string
+        billMonth:
+          type: string
+        beginDs:
+          type: integer
+          format: int32
+        endDs:
+          type: integer
+          format: int32
+        startMonth:
+          type: string
+        endMonth:
+          type: string
+        orderType:
+          type: integer
+          format: int32
+        payChannel:
+          type: integer
+          format: int32
+        isProvided:
+          type: string
+        refundStatus:
+          type: integer
+          format: int32
+        orderInfo:
+          type: string
+        env:
+          type: integer
+          format: int32
+        wxTaskId:
+          type: string
+        status:
+          type: string
+        downloadUrl:
+          type: string
+        expireAt:
+          type: string
+          format: date-time
+        errCode:
+          type: integer
+          format: int32
+        errMsg:
+          type: string
+        urlUsable:
+          type: boolean
     TravelAlgorithmConfigHistory:
       type: object
       properties:

@@ -18,7 +18,7 @@ import { orvalMutator } from '../../../utils/orval-mutator';
 /**
  * @summary 登录方法
  */
-const login1 = (
+const login = (
     loginBody: LoginBody,
  ) => {
       return orvalMutator<AjaxResult>(
@@ -50,7 +50,7 @@ const getInfo34 = (
     },
       );
     }
-  return {login1,getRouters,getInfo34}};
-export type Login1Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['login1']>>>
+  return {login,getRouters,getInfo34}};
+export type LoginResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['login']>>>
 export type GetRoutersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getRouters']>>>
 export type GetInfo34Result = NonNullable<Awaited<ReturnType<ReturnType<typeof get>['getInfo34']>>>
