@@ -72,6 +72,36 @@ export const REFUNDABLE_ORDER_STATUS: string[] = [
   RewardOrderStatusEnum.REFUND_FAILED,
 ];
 
+/**
+ * 允许发起主动退款的订单状态 —— **达人鼓励单专用**，比上面那份多一个「已支付待发货(1)」。
+ *
+ * <p>为什么要单列一份、而不是直接往 `REFUNDABLE_ORDER_STATUS` 里加 '1'：
+ * 加进去会同时改掉「打赏订单」页（线路打赏）的行为，那是本次改动明确要求不碰的回归面。
+ *
+ * <p>为什么达人单必须放开 '1'：
+ * 1. **后端本来就允许**。`RewardRefundServiceImpl` 的预览闸门放行 `PAID('1')` / `PROVIDED('2')` /
+ *    `REFUND_FAILED('6')` 三态，发起闸门放行 `PAID('1')` / `PROVIDED('2')`。前端把 '1' 挡掉，
+ *    等于前端比后端更严 —— 拦住的不是风险，是运营唯一能自救的入口。
+ * 2. **'1' 确实会持久停留，不是理论状态**。支付回调先 `markPaid` 置 '1'、再 `markProvided` 置 '2'，
+ *    两步之间存在早退路径（费率配置错误拒绝记账、`markProvided` 影响行数为 0 时 `retryLater`）。
+ *    `RewardAccountingServiceImpl` 里甚至明写「已支付但还没记账：不能直接跳过，继续往下走记账，
+ *    否则钱收了商家拿不到」—— 这句话本身就承认订单会卡在 '1'。
+ * 3. **达人单没有第二个入口兜底**。旧「打赏订单」页 SQL 硬编码 `expert_route_id IS NULL`
+ *    （`TravelRewardOrderMapper.xml:90`），达人单永远不出现在那一页。
+ *    线路打赏单卡在 '1' 时至少还有旧页可查，达人单则是**两个后台页面都没有退款按钮**，
+ *    运营只能人工改库或直连接口 —— 这正是「能收钱、无处可退」的死单。
+ *
+ * <p>方向是 fail-safe 的：弹窗内能否提交以后端 `refundable` 为准
+ * （`RewardRefundModal` 的 `canSubmitRefund = !!preview?.refundable && !previewUnknown`），
+ * 后端又强制可退金额取微信 `query_order` 的 `left_fee`、查不到即拒、超额即拒。
+ * 所以放开 '1' 不会带来越退/错退，只是让本来就该能退的单退得出去。
+ */
+export const EXPERT_REFUNDABLE_ORDER_STATUS: string[] = [
+  RewardOrderStatusEnum.PAID,
+  RewardOrderStatusEnum.PROVIDED,
+  RewardOrderStatusEnum.REFUND_FAILED,
+];
+
 // ==================================================================
 // 支付环境与终端 —— travel_reward_order.env / .platform
 // ==================================================================

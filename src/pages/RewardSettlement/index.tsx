@@ -545,7 +545,20 @@ const RewardSettlement: React.FC = () => {
   const payableColumns = [
     { title: '流水号', dataIndex: 'payableNo', width: 170 },
     { title: '业务订单号', dataIndex: 'outTradeNo', width: 190 },
-    { title: '线路ID', dataIndex: 'lineId', width: 90 },
+    {
+      /**
+       * ⚠️ 不能只叫「线路ID」：达人鼓励单的 `line_id` 恒为 NULL，锚点在 `expert_route_id`
+       *   （`travel_merchant_payable` 两列都有）。原来写死 lineId，达人单在这一列就是空白，
+       *   财务会以为「这笔流水没有业务归属」，实际是列取错了字段。
+       * 两者互斥（一笔单要么挂商家线路、要么挂达人路线），所以用 ?? 兜底不会混淆来源；
+       * 都为空时显式 '--'，不留空白。
+       */
+      title: '业务ID',
+      dataIndex: 'lineId',
+      width: 110,
+      render: (_: unknown, r?: { lineId?: number | null; expertRouteId?: number | null }) =>
+        r?.expertRouteId ?? r?.lineId ?? '--',
+    },
     {
       title: '订单金额',
       dataIndex: 'orderAmountFen',

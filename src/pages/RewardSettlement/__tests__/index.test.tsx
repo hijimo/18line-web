@@ -683,6 +683,42 @@ describe('打赏结算页 · 明细抽屉与手工月结', () => {
     expect(within(drawer).queryByText('作废人')).not.toBeInTheDocument();
   });
 
+  /**
+   * 达人鼓励流水与商家线路流水**同表**（travel_merchant_payable），但归属列不同：
+   * 商家线路单挂 `line_id`，达人鼓励单的 `line_id` **恒为 NULL**、挂 `expert_route_id`。
+   * 原来这一列写死 `lineId` 且叫「线路ID」，达人流水就是空白 —— 财务会判定「这笔钱没有业务归属」。
+   */
+  it('达人鼓励流水 line_id 为 NULL：业务ID 取 expert_route_id，不留空白', async () => {
+    server.use(
+      http.get('*/travel18/reward/settlement/:batchId/payables', () =>
+        page([
+          { ...payables[0], payableId: 11, payableNo: 'P710011', lineId: null, expertRouteId: 9 },
+          {
+            ...payables[1],
+            payableId: 12,
+            payableNo: 'P710012',
+            lineId: 88,
+            expertRouteId: null,
+          },
+        ]),
+      ),
+    );
+    const user = userEvent.setup();
+    setup();
+    const row = await rowOf('SB260901000003');
+    await user.click(within(row).getByText('明细'));
+
+    const drawer = await drawerBody();
+    expect(await within(drawer).findByText('P710011')).toBeInTheDocument();
+    // 列头必须叫「业务ID」：叫「线路ID」等于宣称达人单没有业务归属
+    // 用 *AllBy*：antd Table 带 scroll 时会额外渲染一个 measure-cell 副本，同一个表头会出现两次
+    expect(within(drawer).getAllByText('业务ID').length).toBeGreaterThan(0);
+    expect(within(drawer).queryAllByText('线路ID')).toHaveLength(0);
+    // 达人流水显示 expertRouteId(9)，商家线路流水显示 lineId(88)，两者不能都空
+    expect(within(drawer).getByText('9')).toBeInTheDocument();
+    expect(within(drawer).getByText('88')).toBeInTheDocument();
+  });
+
   it('已作废批次的明细里显示作废人/时间/原因（资金批次必须可追溯）', async () => {
     const user = userEvent.setup();
     setup();
