@@ -9,6 +9,7 @@ import { StatusEnum, StatusLabel } from '@/enums';
 import { get as getRouteApi } from '@/services/api/线路管理/线路管理';
 import UploadList from '@/components/Upload';
 import RegionSelect from '@/components/RegionSelect';
+import customRequest from '@/utils/request';
 
 const routeApi = getRouteApi();
 
@@ -52,7 +53,10 @@ const Routes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await routeApi.editSave3({ lineId: record.lineId, status: newStatus } as any);
+      await customRequest('/travel18/line/changeStatus', {
+        method: 'POST',
+        data: { lineId: record.lineId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

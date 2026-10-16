@@ -10,6 +10,7 @@ import { get as getDishApi } from '@/services/api/菜品管理/菜品管理';
 import UploadList from '@/components/Upload';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
+import customRequest from '@/utils/request';
 
 const dishApi = getDishApi();
 
@@ -59,7 +60,10 @@ const Dishes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await dishApi.editSave4({ dishId: record.dishId, status: newStatus } as any);
+      await customRequest('/travel18/dish/changeStatus', {
+        method: 'POST',
+        data: { dishId: record.dishId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

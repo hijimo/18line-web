@@ -14,6 +14,7 @@ import AccommodationSelect from '@/components/DataSelect/AccommodationSelect';
 import DiningSelect from '@/components/DataSelect/DiningSelect';
 import PhotographySelect from '@/components/DataSelect/PhotographySelect';
 import CarSelect from '@/components/DataSelect/CarSelect';
+import customRequest from '@/utils/request';
 
 
 const templateApi = getTemplateApi();
@@ -88,7 +89,10 @@ const Template: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await templateApi.edit13({ templateId: record.templateId, status: newStatus } as any);
+      await customRequest('/travel18/template/changeStatus', {
+        method: 'POST',
+        data: { templateId: record.templateId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

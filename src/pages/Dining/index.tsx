@@ -15,6 +15,7 @@ import RegionSelect from '@/components/RegionSelect';
 import CoordinateInput from '@/components/CoordinateInput';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
+import customRequest from '@/utils/request';
 
 const diningApi = getDiningApi();
 const dishApi = getDishApi();
@@ -77,7 +78,10 @@ const DishesPanel: React.FC<{ diningId: number }> = ({ diningId }) => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await dishApi.editSave4({ dishId: record.dishId, status: newStatus } as any);
+      await customRequest('/travel18/dish/changeStatus', {
+        method: 'POST',
+        data: { dishId: record.dishId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {
@@ -242,7 +246,10 @@ const Dining: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await diningApi.editSave5({ diningId: record.diningId, status: newStatus } as any);
+      await customRequest('/travel18/dining/changeStatus', {
+        method: 'POST',
+        data: { diningId: record.diningId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

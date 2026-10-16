@@ -11,6 +11,7 @@ import { get as getStayApi } from '@/services/api/住宿管理/住宿管理';
 import UploadList from '@/components/Upload';
 import RegionFormItem from '@/components/RegionFormItem';
 import CoordinateInput from '@/components/CoordinateInput';
+import customRequest from '@/utils/request';
 
 const stayApi = getStayApi();
 
@@ -80,7 +81,10 @@ const Accommodation: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await stayApi.editSave9({ accommodationId: record.accommodationId, status: newStatus } as any);
+      await customRequest('/travel18/accommodation/changeStatus', {
+        method: 'POST',
+        data: { accommodationId: record.accommodationId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

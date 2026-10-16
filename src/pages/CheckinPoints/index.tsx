@@ -14,6 +14,7 @@ import RegionSelect from '@/components/RegionSelect';
 import CoordinateInput from '@/components/CoordinateInput';
 import DictSelect from '@/components/DataSelect/DictSelect';
 import { useDictMap } from '@/hooks/useDictMap';
+import customRequest from '@/utils/request';
 
 const checkinApi = getCheckinApi();
 const attractionApi = getAttractionApi();
@@ -72,7 +73,10 @@ const CheckinPoints: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await checkinApi.editSave6({ checkinId: record.checkinId, status: newStatus } as any);
+      await customRequest('/travel18/checkin/changeStatus', {
+        method: 'POST',
+        data: { checkinId: record.checkinId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

@@ -9,6 +9,7 @@ import { SpecialStarOptions, StatusEnum, StatusLabel } from '@/enums';
 import { get as getSpecialtyApi } from '@/services/api/地方特色菜管理/地方特色菜管理';
 import UploadList from '@/components/Upload';
 import RegionFormItem from '@/components/RegionFormItem';
+import customRequest from '@/utils/request';
 
 const specialtyApi = getSpecialtyApi();
 
@@ -52,7 +53,10 @@ const LocalDishes: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await specialtyApi.editSave2({ specialtyId: record.specialtyId, status: newStatus } as any);
+      await customRequest('/travel18/localSpecialty/changeStatus', {
+        method: 'POST',
+        data: { specialtyId: record.specialtyId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

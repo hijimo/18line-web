@@ -10,6 +10,7 @@ import { toAttachments } from '@/types/common';
 import { get as getCarApi } from '@/services/api/包车管理/包车管理';
 import UploadList from '@/components/Upload';
 import RegionFormItem from '@/components/RegionFormItem';
+import customRequest from '@/utils/request';
 
 const carApi = getCarApi();
 
@@ -80,7 +81,10 @@ const CharteredCar: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await carApi.editSave7({ carId: record.carId, status: newStatus } as any);
+      await customRequest('/travel18/car/changeStatus', {
+        method: 'POST',
+        data: { carId: record.carId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

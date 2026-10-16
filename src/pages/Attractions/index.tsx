@@ -35,6 +35,7 @@ import {
   WaterActivityOptions,
 } from '@/enums';
 import { get as getAttractionApi } from '@/services/api/景点管理/景点管理';
+import customRequest from '@/utils/request';
 
 const attractionApi = getAttractionApi();
 
@@ -114,10 +115,10 @@ const Attractions: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await attractionApi.editSave8({
-        attractionId: record.attractionId,
-        status: newStatus,
-      } as any);
+      await customRequest('/travel18/attraction/changeStatus', {
+        method: 'POST',
+        data: { attractionId: record.attractionId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

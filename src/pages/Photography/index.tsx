@@ -10,6 +10,7 @@ import { toAttachments } from '@/types/common';
 import { get as getPhotographyApi } from '@/services/api/跟拍管理/跟拍管理';
 import UploadList from '@/components/Upload';
 import RegionFormItem from '@/components/RegionFormItem';
+import customRequest from '@/utils/request';
 
 const photographyApi = getPhotographyApi();
 
@@ -77,7 +78,10 @@ const Photography: React.FC = () => {
   const handleToggleStatus = async (record: any) => {
     const newStatus = record.status === StatusEnum.NORMAL ? StatusEnum.DISABLED : StatusEnum.NORMAL;
     try {
-      await photographyApi.editSave1({ photographyId: record.photographyId, status: newStatus } as any);
+      await customRequest('/travel18/photography/changeStatus', {
+        method: 'POST',
+        data: { photographyId: record.photographyId, status: newStatus },
+      });
       message.success(`${StatusLabel[newStatus]}成功`);
       actionRef.current?.reload();
     } catch {

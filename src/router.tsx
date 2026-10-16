@@ -387,6 +387,8 @@ const ADMIN_ONLY_RESOURCES = [
   'reward-notify-log',
   'reward-bill',
   'reward-config',
+  'tourists',
+  'tourist-preferences',
 ];
 
 /**
