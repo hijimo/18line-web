@@ -187,6 +187,7 @@ export * from './rewardOrderDetailPathParameters';
 export * from './rewardOrderListParams';
 export * from './rewardOrderPayablePathParameters';
 export * from './rewardOrderStatusPathParameters';
+export * from './rewardPayErrorDTO';
 export * from './rewardRefundApplyDTO';
 export * from './rewardRefundPollOneParams';
 export * from './rewardRefundPreviewParams';

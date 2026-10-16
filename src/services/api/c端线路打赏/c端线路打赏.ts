@@ -10,6 +10,7 @@ import type {
   RewardMyOrdersParams,
   RewardOrderCreateDTO,
   RewardOrderStatusPathParameters,
+  RewardPayErrorDTO,
   RewardTiersParams,
   TableDataInfo
 } from '../../../types/api';
@@ -20,6 +21,19 @@ import { orvalMutator } from '../../../utils/orval-mutator';
 
   export const getC = () => {
 /**
+ * @summary 上报虚拟支付失败（联调可观测性，只写日志）
+ */
+const rewardPayError = (
+    rewardPayErrorDTO: RewardPayErrorDTO,
+ ) => {
+      return orvalMutator<AjaxResult>(
+      {url: `/wx/reward/pay-error`, method: 'POST',
+      headers: {'Content-Type': 'application/json', },
+      data: rewardPayErrorDTO
+    },
+      );
+    }
+  /**
  * @summary 创建打赏订单
  */
 const rewardCreateOrder = (
@@ -67,7 +81,8 @@ const rewardOrderStatus = (
     },
       );
     }
-  return {rewardCreateOrder,rewardTiers,rewardMyOrders,rewardOrderStatus}};
+  return {rewardPayError,rewardCreateOrder,rewardTiers,rewardMyOrders,rewardOrderStatus}};
+export type RewardPayErrorResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['rewardPayError']>>>
 export type RewardCreateOrderResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['rewardCreateOrder']>>>
 export type RewardTiersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['rewardTiers']>>>
 export type RewardMyOrdersResult = NonNullable<Awaited<ReturnType<ReturnType<typeof getC>['rewardMyOrders']>>>
