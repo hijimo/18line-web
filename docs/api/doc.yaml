@@ -3403,7 +3403,7 @@ paths:
       parameters:
       - name: platform
         in: query
-        description: 终端：android/ios/harmony/windows，取 wx.getSystemInfoSync().platform
+        description: 终端：android/ios/ohos/ohos_pc/windows，原样取 wx.getSystemInfoSync().platform（鸿蒙为 ohos）
         required: true
         schema:
           type: string

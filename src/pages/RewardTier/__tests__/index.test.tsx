@@ -43,7 +43,7 @@ const tiers = [
     priceFen: 100,
     env: '0',
     isTest: '0',
-    allowPlatforms: 'android,ios,harmony,windows',
+    allowPlatforms: 'android,ios,ohos,ohos_pc,windows',
     itemUrl: 'https://cdn.example.com/rw-1.png',
     uploadStatus: '0',
     publishStatus: '0',
@@ -445,8 +445,12 @@ describe('打赏档位页 · 编辑锁与金额换算', () => {
     expect(addBody.tierCode).toBe('T099');
     expect(addBody.wxProductId).toBe('rw-99');
     expect(addBody.env).toBe('0');
-    // 多选终端以逗号分隔入库，与后端 allow_platforms 存储格式一致
-    expect(addBody.allowPlatforms).toBe('android,ios,harmony,windows');
+    // 多选终端以逗号分隔入库，与后端 allow_platforms 存储格式一致。
+    // 这里刻意写死字面量而不是引用 DEFAULT_ALLOW_PLATFORMS：默认值一旦被人改动，
+    // 本断言必须失败并迫使改动者去核对后端白名单与档位种子数据。
+    // 鸿蒙必须是 ohos / ohos_pc —— 微信 platform 官方合法值里没有 harmony，
+    // 写错会让鸿蒙真机拿不到任何档位，前台只显示「打赏暂未开放」且服务端零日志。
+    expect(addBody.allowPlatforms).toBe('android,ios,ohos,ohos_pc,windows');
   });
 });
 

@@ -117,10 +117,20 @@ export const RewardEnvColor: Record<string, string> = {
   [RewardEnvEnum.SANDBOX]: 'orange',
 };
 
+/**
+ * 订单 platform 字段（travel_reward_order.platform）的中文标签。
+ *
+ * 取值来自 wx.getSystemInfoSync().platform 的**微信官方合法值**：
+ * ios / android / ohos（鸿蒙手机）/ ohos_pc（鸿蒙 PC）/ windows / mac / devtools。
+ * 鸿蒙是 `ohos`，微信从不返回 `harmony`（历史误写已修正，见后端 RewardConstants.PLATFORM_OHOS）。
+ * mac 与 devtools 后端会拒单（4003）故不会入库，此处仅保留 devtools 供历史数据展示；
+ * 未收录的值在页面侧会回退成原始字符串，不会显示成空白。
+ */
 export const RewardPlatformLabel = {
   android: '安卓',
   ios: 'iOS',
-  harmony: '鸿蒙',
+  ohos: '鸿蒙',
+  ohos_pc: '鸿蒙PC',
   windows: 'Windows',
   devtools: '开发者工具',
 } as const;
@@ -416,18 +426,29 @@ export const codePointLength = (value?: string | null): number => Array.from(val
 /** 道具发布到生效的官方延迟（约 10 分钟），仅用于倒计时展示 */
 export const GOODS_EFFECTIVE_DELAY_MS = 10 * 60 * 1000;
 
-/** 档位可下单终端。allow_platforms 逗号分隔存储，默认四个全开 */
+/**
+ * 档位可下单终端。allow_platforms 逗号分隔存储，默认五个全开。
+ *
+ * ⚠️ 值必须与微信 `wx.getSystemInfoSync().platform` 官方合法值逐字一致，
+ * 且必须与后端 `RewardOrderServiceImpl.SUPPORTED_PLATFORMS`、
+ * 前端小程序 `virtual-payment.ts` 的 `SUPPORTED_PLATFORMS` 三方同步。
+ * 鸿蒙是 `ohos` / `ohos_pc`，**不是 `harmony`** —— 写错会让鸿蒙真机拿不到任何档位，
+ * 前台只显示「打赏暂未开放」，且服务端不留日志。
+ * 不含 `mac`（官方设备路由表未列 macOS 微信）与 `devtools`（工具内无法真实支付）。
+ */
 export const TierPlatformEnum = {
   ANDROID: 'android',
   IOS: 'ios',
-  HARMONY: 'harmony',
+  OHOS: 'ohos',
+  OHOS_PC: 'ohos_pc',
   WINDOWS: 'windows',
 } as const;
 
 export const TierPlatformLabel = {
   [TierPlatformEnum.ANDROID]: '安卓',
   [TierPlatformEnum.IOS]: 'iOS',
-  [TierPlatformEnum.HARMONY]: '鸿蒙',
+  [TierPlatformEnum.OHOS]: '鸿蒙',
+  [TierPlatformEnum.OHOS_PC]: '鸿蒙PC',
   [TierPlatformEnum.WINDOWS]: 'Windows',
 } as const;
 

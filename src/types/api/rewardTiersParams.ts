@@ -8,7 +8,7 @@
 
 export type RewardTiersParams = {
 /**
- * 终端：android/ios/harmony/windows，取 wx.getSystemInfoSync().platform
+ * 终端：android/ios/ohos/ohos_pc/windows，原样取 wx.getSystemInfoSync().platform（鸿蒙为 ohos）
  */
 platform: string;
 };
