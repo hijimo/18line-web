@@ -836,6 +836,25 @@ paths:
             '*/*':
               schema:
                 $ref: '#/components/schemas/AjaxResult'
+  /wx/reward/pay-error:
+    post:
+      tags:
+      - C端线路打赏
+      summary: 上报虚拟支付失败（联调可观测性，只写日志）
+      operationId: rewardPayError
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RewardPayErrorDTO'
+        required: true
+      responses:
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/AjaxResult'
   /wx/reward/order:
     post:
       tags:
@@ -7342,6 +7361,36 @@ components:
           minLength: 0
           type: string
         configType:
+          type: string
+    RewardPayErrorDTO:
+      type: object
+      properties:
+        outTradeNo:
+          maxLength: 32
+          minLength: 0
+          type: string
+        errCode:
+          type: integer
+          format: int32
+        errMsg:
+          maxLength: 500
+          minLength: 0
+          type: string
+        platform:
+          maxLength: 16
+          minLength: 0
+          type: string
+        tierCode:
+          maxLength: 32
+          minLength: 0
+          type: string
+        sdkVersion:
+          maxLength: 32
+          minLength: 0
+          type: string
+        stage:
+          maxLength: 32
+          minLength: 0
           type: string
     RewardOrderCreateDTO:
       required:
