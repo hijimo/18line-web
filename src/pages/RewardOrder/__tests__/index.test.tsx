@@ -15,6 +15,7 @@ import { render } from '@/test-utils';
 import { message, Modal } from 'antd';
 import { http, HttpResponse } from 'msw';
 import React from 'react';
+import { IOS_REFUND_DOC_URL } from '@/components/RewardRefundModal/iosRefundGuide';
 // 复用 setupTests 里已 listen 的全局 server。
 // 不要在测试文件里再 setupServer：msw 2.14 下两个 server 同时监听，
 // 同一个请求会被处理两次，「一次点击只能出网一次」的断言会假失败。
@@ -91,6 +92,21 @@ const handlers = [
 ];
 
 beforeEach(() => server.use(...handlers));
+
+/**
+ * 清掉上一个用例遗留的静态弹窗节点。
+ *
+ * `Modal.info` 是静态方法，DOM 挂在 body 下的独立容器里，不受 RTL cleanup 管理；
+ * `Modal.destroyAll()` 又要等 rc-motion 的动画结束事件才摘节点，而 jsdom 不派发，
+ * 于是节点会串到下一个用例（现象：`findByText('iOS 订单不能在后台退款')` 命中 2 个、
+ * `findByText(outTradeNo)` 命中的是残留弹窗里的单号，`closest('tr')` 拿到 null）。
+ *
+ * 放在 beforeEach 而不是 afterEach：此时上一个用例的 React 树已被 RTL 卸载完，
+ * 还留在 body 里的一定是静态弹窗，直接摘掉不会让 React 卸载 portal 时找不到节点。
+ */
+beforeEach(() => {
+  document.querySelectorAll('.ant-modal-root').forEach((n) => n.remove());
+});
 afterEach(() => {
   refundRequestCount = 0;
   // antd 的 message / Modal.error 挂在 body 上，不受 RTL cleanup 管理，
@@ -384,5 +400,97 @@ describe('打赏订单页 · 详情抽屉', () => {
     expect(within(payableSection).getByText('已入批次')).toBeInTheDocument();
     expect(within(payableSection).getByText('3.90 元')).toBeInTheDocument();
     expect(within(payableSection).getByText('990001')).toBeInTheDocument();
+  });
+});
+
+// ==================================================================
+// iOS（Apple 支付）单：点「退款」只给引导
+// ==================================================================
+
+/**
+ * 2026-10-19 生产事故的定点回归：管理员对一笔 iOS 现网单（rw_5 / 5 元）连点 3 次退款，
+ * 每次都被微信以 690000020「OS订单不支持开发者发起退款」拒绝，而界面文案是「可修正后重试」。
+ *
+ * 这里锁的不是「弹窗显示正确」，而是**根本不该进弹窗**：
+ * - 进弹窗就会先看到金额表单与「确认退款」按钮（哪怕禁用），视觉上仍是「这里能退，只是现在不行」；
+ * - 预览会打一次微信 query_order，而查单与退款、道具接口**共用**频率配额，
+ *   为一笔注定退不了的单烧配额会连带拖慢查单补偿与道具同步任务。
+ */
+describe('打赏订单页 · iOS 单点退款只给引导（不出网、不进弹窗）', () => {
+  /** 与事故单同形态：platform=ios、env=0（现网）、状态可退('2') */
+  const iosOrder = {
+    ...ordersOfEveryStatus[2],
+    orderId: 101,
+    outTradeNo: 'R261019221457IOS01',
+    platform: 'ios',
+    env: '0',
+  };
+
+  let previewCount = 0;
+
+  beforeEach(() => {
+    previewCount = 0;
+    server.use(
+      http.get('*/travel18/reward/order/list', () => page([iosOrder])),
+      http.get('*/travel18/reward/refund/preview', () => {
+        previewCount += 1;
+        return ok({
+          ...refundablePreview,
+          outTradeNo: 'R261019221457IOS01',
+          platform: 'ios',
+          refundable: false,
+          reason: 'iOS 单不支持后台退款',
+        });
+      }),
+    );
+  });
+
+  it('点「退款」→ 只弹引导：App Store 路径 + 微信官方原文链接 + 本单单号', async () => {
+    const user = userEvent.setup();
+    setup();
+    const row = (await screen.findByText('R261019221457IOS01')).closest('tr') as HTMLElement;
+    await user.click(within(row).getByText('退款'));
+
+    // antd 5.29 的 Modal.info 会把标题同时渲染进 `.ant-modal-title` 与
+    // `.ant-modal-confirm-title`（同一层弹窗，不是弹了两次），所以用 selector 锁定，
+    // 再从标题回溯容器，避免 `document.querySelector('.ant-modal')` 命中残留节点。
+    const title = await screen.findByText('iOS 订单不能在后台退款', {
+      selector: '.ant-modal-confirm-title',
+    });
+    const modal = title.closest('.ant-modal') as HTMLElement;
+    // 用户侧逐级路径：客服要能照着念给用户听
+    expect(within(modal).getByText(/报告问题/)).toBeInTheDocument();
+    // 官方原文链接必须可点、且指向微信开放文档（不是截图、不是博客）
+    const doc = within(modal).getByRole('link', { name: /虚拟支付：企业、个体户/ });
+    expect(doc).toHaveAttribute('href', IOS_REFUND_DOC_URL);
+    expect(doc).toHaveAttribute('target', '_blank');
+    // 带上本单单号，客服不用再回列表里对
+    expect(within(modal).getByText('R261019221457IOS01')).toBeInTheDocument();
+  });
+
+  it('不进退款弹窗、不出网：预览与退款请求都必须为 0 次', async () => {
+    const user = userEvent.setup();
+    setup();
+    const row = (await screen.findByText('R261019221457IOS01')).closest('tr') as HTMLElement;
+    await user.click(within(row).getByText('退款'));
+    await screen.findByText('iOS 订单不能在后台退款', { selector: '.ant-modal-confirm-title' });
+
+    // 「发起退款 ·」是退款弹窗独有的标题前缀，引导弹窗不会命中
+    expect(screen.queryAllByText(/^发起退款 ·/)).toHaveLength(0);
+    expect(screen.queryByRole('button', { name: /确认退款/ })).not.toBeInTheDocument();
+    expect(previewCount).toBe(0);
+    expect(refundRequestCount).toBe(0);
+  });
+
+  it('安卓单不受影响：点退款仍进弹窗并拉一次预览（回归）', async () => {
+    server.use(http.get('*/travel18/reward/order/list', () => page(ordersOfEveryStatus)));
+    const user = userEvent.setup();
+    setup();
+    await screen.findByText('R260928120002TEST');
+    await user.click(screen.getAllByText('退款')[0]);
+
+    expect(await screen.findByText(/^发起退款 ·/)).toBeInTheDocument();
+    expect(screen.queryAllByText('iOS 订单不能在后台退款')).toHaveLength(0);
+    await waitFor(() => expect(previewCount).toBe(1));
   });
 });

@@ -92,9 +92,15 @@ export const REFUNDABLE_ORDER_STATUS: string[] = [
  *    运营只能人工改库或直连接口 —— 这正是「能收钱、无处可退」的死单。
  *
  * <p>方向是 fail-safe 的：弹窗内能否提交以后端 `refundable` 为准
- * （`RewardRefundModal` 的 `canSubmitRefund = !!preview?.refundable && !previewUnknown`），
+ * （`RewardRefundModal` 的
+ * `canSubmitRefund = !!preview?.refundable && !previewUnknown && !iosUnsupported`），
  * 后端又强制可退金额取微信 `query_order` 的 `left_fee`、查不到即拒、超额即拒。
  * 所以放开 '1' 不会带来越退/错退，只是让本来就该能退的单退得出去。
+ *
+ * <p>注意 `iosUnsupported` 这一项与状态无关：iOS（Apple 支付）单**任何状态**都不能由开发者
+ * 发起退款（官方《虚拟支付：企业、个体户》§2.4「iOS 退款问询推送」#背景：
+ * 「Apple 支付不支持开发者主动向用户发起退款，用户可在 App Store 申请退款」），
+ * 只能引导用户去 App Store 申请，详见 `components/RewardRefundModal/iosRefundGuide.tsx`。
  */
 export const EXPERT_REFUNDABLE_ORDER_STATUS: string[] = [
   RewardOrderStatusEnum.PAID,
@@ -299,6 +305,14 @@ export const RewardErrorCode = {
   UNKNOWN_OUTCOME: 4016,
   REJECTED: 4017,
   PARAM_INVALID: 4018,
+  /**
+   * iOS（Apple 支付）单：开发者不能发起退款，只能引导用户去 App Store 申请。
+   *
+   * 与 4017（REJECTED）刻意分开 —— 4017 的语义是「微信拒绝但改一改还能退」，
+   * 本码是「这条路根本不通」。混用会让操作者反复点重试，
+   * 2026-10-19 的生产事故就是这么来的。
+   */
+  IOS_UNSUPPORTED: 4019,
 } as const;
 
 /** 分转元展示。金额一律以「分」在前后端传递，只在渲染层转换 */

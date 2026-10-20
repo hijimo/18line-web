@@ -47,6 +47,7 @@ import CommonTable from '@/components/CommonTable';
 import DarenUserSelect from '@/components/DataSelect/DarenUserSelect';
 import RewardRefundModal from '@/components/RewardRefundModal';
 import type { RewardRefundTarget } from '@/components/RewardRefundModal';
+import { isIosPlatform, showIosRefundGuide } from '@/components/RewardRefundModal/iosRefundGuide';
 import { useExpertPermission } from '@/hooks/usePermission';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { DATE_FORMAT_FULL_TIME } from '@/variables';
@@ -190,6 +191,17 @@ const ExpertRewardOrderPage: React.FC = () => {
     if (!record.outTradeNo) {
       // 退款的唯一定位键就是 outTradeNo；为空时宁可拦住也不要发一个必然失败的请求
       message.error('该记录缺少业务订单号，无法发起退款');
+      return;
+    }
+    /**
+     * iOS（Apple 支付）单：**只弹引导**，不进退款弹窗。理由与「打赏订单」页完全一致，
+     * 判定与文案都取自共用模块 `RewardRefundModal/iosRefundGuide`，两页不允许各写一份。
+     *
+     * ⚠️ 达人单同样会有 iOS 单（打赏终端由下单时的微信客户端决定，与来源无关），
+     * 所以这道拦截两个页面都要有，缺一个就留一个「点了必然失败」的入口。
+     */
+    if (isIosPlatform(record.platform)) {
+      showIosRefundGuide(record.outTradeNo);
       return;
     }
     setRefundTarget({ outTradeNo: record.outTradeNo, sourceLabel: '达人鼓励' });

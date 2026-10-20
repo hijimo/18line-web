@@ -23,6 +23,7 @@ import React from 'react';
 import { server } from '../../../../mocks/server';
 import { useAuthStore } from '@/stores/authStore';
 import { render } from '@/test-utils';
+import { IOS_REFUND_DOC_URL } from '@/components/RewardRefundModal/iosRefundGuide';
 import ExpertRewardOrderPage from '../index';
 
 const page = (rows: unknown[], total = rows.length) =>
@@ -168,6 +169,11 @@ beforeEach(() => {
   refundApplyCount = 0;
   lastPreviewOutTradeNo = null;
   lastPollOutTradeNo = null;
+  // Modal.info 是静态方法，DOM 挂在 body 下的独立容器里，不受 RTL cleanup 管理；
+  // Modal.destroyAll() 又要等 rc-motion 的动画结束事件才摘节点，而 jsdom 不派发，
+  // 残留会让下一个用例的 findByText 命中旧弹窗（标题命中 2 个、closest('tr') 拿到 null）。
+  // 放在 beforeEach：此时上个用例的 React 树已被 RTL 卸载，残留必是静态弹窗，摘掉是安全的。
+  document.querySelectorAll('.ant-modal-root').forEach((n) => n.remove());
 });
 
 afterEach(() => {
@@ -370,7 +376,7 @@ describe('达人鼓励订单 · 退款入口（本页必须有，旧页查不到
     expect(lastPreviewOutTradeNo).toBeNull();
     // ⚠️ 必须锚定弹窗标题的完整前缀：上面那句 message.error 的文案里也含「发起退款」四个字，
     //    用宽松的 /发起退款/ 会被 toast 命中而假绿（弹窗其实没开 = 断言失去意义）
-    expect(screen.queryByText(/^发起退款 ·/)).not.toBeInTheDocument();
+    expect(screen.queryAllByText(/^发起退款 ·/)).toHaveLength(0);
     expect(document.querySelector('.ant-modal-title')).toBeNull();
   });
 
@@ -447,5 +453,57 @@ describe('达人鼓励订单 · 退款入口的角色 gate', () => {
     await waitFor(() =>
       expect(within(drawer).getByText(/当前账号无退款权限/)).toBeInTheDocument(),
     );
+  });
+});
+
+// ==================================================================
+// iOS（Apple 支付）单：点「退款」只给引导
+// ==================================================================
+
+/**
+ * 达人单同样会有 iOS 单 —— 打赏终端由下单时的微信客户端决定，与「线路打赏 / 达人鼓励」
+ * 这个来源维度无关。所以两个页面都要有这道拦截，缺一个就留一个「点了必然失败」的入口，
+ * 而达人单在旧「打赏订单」页根本查不到（SQL 硬过滤 expert_route_id IS NULL），
+ * 漏在这里就等于完全没拦。
+ *
+ * 判定与文案都取自共用模块 `RewardRefundModal/iosRefundGuide`，
+ * 与「打赏订单」页共用同一份，不允许各写一遍（写两遍必漂移）。
+ */
+describe('达人鼓励订单 · iOS 单点退款只给引导（与打赏订单页共用同一份文案）', () => {
+  const iosExpertOrder = {
+    ...normalOrder,
+    orderId: 7,
+    outTradeNo: 'OUT2026101900IOS07',
+    orderStatus: '2',
+    platform: 'ios',
+    env: '0',
+  };
+
+  beforeEach(() => {
+    server.use(http.get('*/travel18/expertRewardOrder/list', () => page([iosExpertOrder])));
+  });
+
+  it('点「退款」→ 只弹引导，不进退款弹窗、不出网', async () => {
+    const user = userEvent.setup();
+    render(<ExpertRewardOrderPage />);
+    const row = (await screen.findByText('OUT2026101900IOS07')).closest('tr') as HTMLElement;
+    await user.click(within(row).getByText('退款'));
+
+    // antd 5.29 的 Modal.info 会把标题同时渲染进 `.ant-modal-title` 与
+    // `.ant-modal-confirm-title`（同一层弹窗），用 selector 锁定后再回溯容器。
+    const title = await screen.findByText('iOS 订单不能在后台退款', {
+      selector: '.ant-modal-confirm-title',
+    });
+    const modal = title.closest('.ant-modal') as HTMLElement;
+    expect(within(modal).getByText(/报告问题/)).toBeInTheDocument();
+    expect(within(modal).getByRole('link', { name: /虚拟支付：企业、个体户/ })).toHaveAttribute(
+      'href',
+      IOS_REFUND_DOC_URL,
+    );
+    // 引导弹窗不是退款弹窗：没有标题前缀、没有预览请求、没有退款请求
+    expect(screen.queryByText(/^发起退款 ·/)).not.toBeInTheDocument();
+    expect(screen.queryByRole('button', { name: /确认退款/ })).not.toBeInTheDocument();
+    expect(lastPreviewOutTradeNo).toBeNull();
+    expect(refundApplyCount).toBe(0);
   });
 });

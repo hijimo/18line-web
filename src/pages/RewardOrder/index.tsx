@@ -13,6 +13,7 @@ import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
 import RewardRefundModal, { RewardRefundTarget } from '@/components/RewardRefundModal';
 import LineSelect from '@/components/DataSelect/LineSelect';
+import { isIosPlatform, showIosRefundGuide } from '@/components/RewardRefundModal/iosRefundGuide';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { DATE_FORMAT_FULL_TIME } from '@/variables';
 import { key, option } from '@/configurify/columns/baseColumns';
@@ -110,6 +111,18 @@ const RewardOrder: React.FC = () => {
    * `sourceLabel` 只是标题上的来源标识，避免运营在两页之间搞混这笔单是谁的。
    */
   const openRefund = (record: any) => {
+    /**
+     * iOS（Apple 支付）单：**只弹引导**，不进退款弹窗。
+     *
+     * 后端已经有入口拦截（platform=ios 直接拒、不出网），这里再拦一层不是为了功能，
+     * 而是为了操作者看到的东西：进弹窗会先看到金额表单和「确认退款」按钮（虽然禁用），
+     * 再看到一段长原因，视觉上仍是「这里可以退，只是现在不行」。
+     * 直接给引导 + 官方原文链接，才是「这条路不通，去用户侧办」的正确表达。
+     */
+    if (isIosPlatform(record.platform)) {
+      showIosRefundGuide(record.outTradeNo);
+      return;
+    }
     setRefundTarget({ outTradeNo: record.outTradeNo, sourceLabel: '线路打赏' });
     setRefundOpen(true);
   };

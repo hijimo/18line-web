@@ -52,6 +52,7 @@ import React, { useEffect, useState } from 'react';
 import { DATE_FORMAT_FULL_TIME } from '@/variables';
 import { fenToYuan, RefundReasonOptions, RewardErrorCode, RewardOrderStatusLabel } from '@/enums';
 import { get as getRewardRefundApi } from '@/services/api/打赏订单退款/打赏订单退款';
+import { IosRefundGuide, isIosPlatform, showIosRefundGuide } from './iosRefundGuide';
 
 const rewardRefundApi = getRewardRefundApi();
 
@@ -221,6 +222,18 @@ const RewardRefundModal: React.FC<RewardRefundModalProps> = ({
         case RewardErrorCode.QUERY_FAILED:
           message.error('查询微信侧可退余额失败，无法确认退款金额，请稍后重试');
           break;
+        case RewardErrorCode.IOS_UNSUPPORTED:
+          /**
+           * 兜底：iOS 单正常走不到提交这一步。真走到这里说明 `platform` 是历史脏数据
+           * （空串 / devtools / 人工改库）而后端按微信返回的 690000020 认出了它是 Apple 单。
+           *
+           * 不要把后端那段长文案塞进 `message.error`：toast 三秒就消失，
+           * 几百字的指引没人读得完，读完也点不了链接。改成常驻弹窗 + 可点链接。
+           * 不调 `onSuccess`：订单状态没有任何变化，刷新列表只会让人以为发生了什么。
+           */
+          showIosRefundGuide(target.outTradeNo);
+          onClose();
+          break;
         default:
           message.error(vo.message || '退款失败');
       }
@@ -233,7 +246,16 @@ const RewardRefundModal: React.FC<RewardRefundModalProps> = ({
 
   // 预览结论：leftFeeFen 为 null 表示「没查到」，不是 0，必须据此禁用退款按钮
   const previewUnknown = preview && !preview.querySucceeded;
-  const canSubmitRefund = !!preview?.refundable && !previewUnknown;
+  /**
+   * iOS（Apple 支付）单的兜底判定。
+   *
+   * 正常情况下 iOS 单在列表页点「退款」时就被 `showIosRefundGuide` 拦下，根本进不到这里。
+   * 保留这一层是因为弹窗还可能被别的入口打开，而后端预览对 iOS 单返回的是
+   * `refundable=false` + 一大段原因文字 —— 直接渲染出来是「不可退 + 长文本」，
+   * 而不是「去用户侧办 + 官方链接」。这里换成同一份引导组件，保证两条路径说法一致。
+   */
+  const iosUnsupported = isIosPlatform(preview?.platform);
+  const canSubmitRefund = !!preview?.refundable && !previewUnknown && !iosUnsupported;
 
   return (
     <Modal
@@ -254,6 +276,8 @@ const RewardRefundModal: React.FC<RewardRefundModalProps> = ({
             message="无法获取可退余额"
             description="未能从微信侧查到 left_fee，禁止用本地金额猜测退款金额。请稍后重试。"
           />
+        ) : iosUnsupported ? (
+          <IosRefundGuide outTradeNo={target?.outTradeNo} />
         ) : (
           <>
             {previewUnknown && (
