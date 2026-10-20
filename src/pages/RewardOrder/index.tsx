@@ -1,24 +1,20 @@
-import {
-  Descriptions,
-  Drawer,
-  message,
-  Popconfirm,
-  Space,
-  Spin,
-  Tag,
-  Typography,
-} from 'antd';
+import { Descriptions, Drawer, message, Popconfirm, Space, Spin, Tag, Typography } from 'antd';
 import dayjs from 'dayjs';
+// 本项目用的是 react-router v7（未安装 react-router-dom），Link 从 'react-router' 导入
+import { Link } from 'react-router';
 import React, { useRef, useState } from 'react';
 import CommonTable from '@/components/CommonTable';
-import RewardRefundModal, { RewardRefundTarget } from '@/components/RewardRefundModal';
 import LineSelect from '@/components/DataSelect/LineSelect';
+import type { RewardRefundTarget } from '@/components/RewardRefundModal';
+import RewardRefundModal from '@/components/RewardRefundModal';
 import { isIosPlatform, showIosRefundGuide } from '@/components/RewardRefundModal/iosRefundGuide';
 import { useTableRequest } from '@/hooks/useTableRequest';
 import { DATE_FORMAT_FULL_TIME } from '@/variables';
 import { key, option } from '@/configurify/columns/baseColumns';
 import {
   fenToYuan,
+  IosRefundResultColor,
+  IosRefundResultLabel,
   PayableStatusColor,
   PayableStatusLabel,
   REFUNDABLE_ORDER_STATUS,
@@ -47,6 +43,19 @@ const PLATFORM_OPTIONS = Object.entries(RewardPlatformLabel).map(([value, label]
 const ENV_OPTIONS = Object.entries(RewardEnvLabel).map(([value, label]) => ({ label, value }));
 
 const fmtTime = (v?: string | Date | null) => (v ? dayjs(v).format(DATE_FORMAT_FULL_TIME) : '--');
+
+/**
+ * 「已退金额」只认终态『已退款(5)』。
+ *
+ * <p>`refund_fee_fen` 是发起退款时 `claimRefund` 抢占写入的，失败后 `releaseRefundClaim`
+ * **刻意保留**它（微信 268490014 要求同参重试，金额是重试参数之一）。所以它非 0
+ * 只说明「尝试过退这么多」，不代表钱退了。现网 orderId 33 就是这个坑：
+ * 连点 3 次退款全被拒（690000020），列表却一直显示「5.00 元」，财务当成已退款。
+ *
+ * <p>修法只在展示层加门槛，**不清库**——清掉就丢了同参重试的线索。
+ */
+const isRefundedFinal = (orderStatus?: string | null) =>
+  orderStatus === RewardOrderStatusEnum.REFUNDED;
 
 /** 金额（分）展示。资金数字必须带单位，避免财务把「分」当「元」 */
 const Money: React.FC<{ fen?: number | null; suffix?: string }> = ({ fen, suffix = '元' }) => (
@@ -127,7 +136,6 @@ const RewardOrder: React.FC = () => {
     setRefundOpen(true);
   };
 
-
   /** 手工轮询单笔退款终态，用于订单卡在「退款中」时排障 */
   const pollOne = async (record: any) => {
     try {
@@ -191,7 +199,9 @@ const RewardOrder: React.FC = () => {
       width: 110,
       search: false,
       align: 'right',
-      render: (_: any, r: any) => (r.refundFeeFen ? <Money fen={r.refundFeeFen} /> : '--'),
+      // 只有终态「已退款」才显示金额，其余状态一律 '--'（残留的 refund_fee_fen 见 isRefundedFinal 注释）
+      render: (_: any, r: any) =>
+        isRefundedFinal(r.orderStatus) && r.refundFeeFen ? <Money fen={r.refundFeeFen} /> : '--',
     },
     {
       title: '终端',
@@ -366,19 +376,41 @@ const RewardOrder: React.FC = () => {
               {fmtTime(detailOrder?.lastNotifyTime)}
             </Descriptions.Item>
             <Descriptions.Item label="iOS 问询次数">
+              {/* 只能当「至少 N 次」看：官方称重复问询 3 次，现网实测两笔各只到 2 次 */}
               {detailOrder?.iosRefundQueryCount ?? 0}
             </Descriptions.Item>
             <Descriptions.Item label="iOS 问询应答">
-              {detailOrder?.iosRefundResult ?? '--'}
+              {detailOrder?.iosRefundResult ? (
+                <Tag color={IosRefundResultColor[detailOrder.iosRefundResult]}>
+                  {IosRefundResultLabel[detailOrder.iosRefundResult] ?? detailOrder.iosRefundResult}
+                </Tag>
+              ) : (
+                // null = 我方从未应答（未被问询，或 3 秒内没答上、由微信代答「不确定」）
+                '--'
+              )}
+            </Descriptions.Item>
+            <Descriptions.Item label="iOS 退款理由（用户在 App Store 填写）" span={2}>
+              {detailOrder?.iosRefundReason ?? '--'}
             </Descriptions.Item>
             <Descriptions.Item label="iOS 应答凭据" span={2}>
               {detailOrder?.iosRefundEvidence ?? '--'}
+            </Descriptions.Item>
+            <Descriptions.Item label="应答策略" span={2}>
+              <Typography.Text type="secondary">
+                由系统按运营预置策略在 3 秒内自动应答，协议只有「同意 / 拒绝」两档，
+                没有人工复核环节；本笔的应答结果与凭据即上两行。
+              </Typography.Text>{' '}
+              <Link to="/reward-config">调整应答策略</Link>
             </Descriptions.Item>
           </Descriptions>
 
           <Descriptions title="退款" column={2} size="small" bordered style={{ marginTop: 24 }}>
             <Descriptions.Item label="已退金额">
-              <Money fen={detailOrder?.refundFeeFen} />
+              {isRefundedFinal(detailOrder?.orderStatus) ? (
+                <Money fen={detailOrder?.refundFeeFen} />
+              ) : (
+                '--'
+              )}
             </Descriptions.Item>
             <Descriptions.Item label="退款时间">
               {fmtTime(detailOrder?.refundTime)}
@@ -406,6 +438,22 @@ const RewardOrder: React.FC = () => {
             <Descriptions.Item label="最后错误" span={2}>
               {detailOrder?.refundLastError ?? '--'}
             </Descriptions.Item>
+            {/*
+              未成功但抢占过金额时，把 refund_fee_fen 的真实含义说出来。
+              既不让财务误读成「已退」，也不丢掉「上次尝试退多少」这条同参重试线索。
+            */}
+            {!isRefundedFinal(detailOrder?.orderStatus) && detailOrder?.refundFeeFen ? (
+              <Descriptions.Item label="上次尝试退款" span={2}>
+                <Money
+                  fen={detailOrder?.refundFeeFen}
+                  suffix={
+                    detailOrder?.orderStatus === RewardOrderStatusEnum.REFUNDING
+                      ? '元（退款中，金额以终态为准）'
+                      : '元（未成功，金额与退款单号已保留以便同参重试）'
+                  }
+                />
+              </Descriptions.Item>
+            ) : null}
           </Descriptions>
 
           <Descriptions

@@ -17,13 +17,13 @@
 
 import { screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { render } from '@/test-utils';
 import { message, Modal } from 'antd';
 import { http, HttpResponse } from 'msw';
 import React from 'react';
-import { server } from '../../../../mocks/server';
-import { useAuthStore } from '@/stores/authStore';
-import { render } from '@/test-utils';
 import { IOS_REFUND_DOC_URL } from '@/components/RewardRefundModal/iosRefundGuide';
+import { useAuthStore } from '@/stores/authStore';
+import { server } from '../../../../mocks/server';
 import ExpertRewardOrderPage from '../index';
 
 const page = (rows: unknown[], total = rows.length) =>
@@ -73,9 +73,19 @@ const brokenOrder = {
 };
 
 /** 退款失败(6)：官方允许同退款单号同参重试，所以也要开放退款入口 */
-const refundFailedOrder = { ...normalOrder, orderId: 3, outTradeNo: 'OUT2026101200003', orderStatus: '6' };
+const refundFailedOrder = {
+  ...normalOrder,
+  orderId: 3,
+  outTradeNo: 'OUT2026101200003',
+  orderStatus: '6',
+};
 /** 退款中(4)：只有排障入口「查退款结果」，没有退款入口 */
-const refundingOrder = { ...normalOrder, orderId: 4, outTradeNo: 'OUT2026101200004', orderStatus: '4' };
+const refundingOrder = {
+  ...normalOrder,
+  orderId: 4,
+  outTradeNo: 'OUT2026101200004',
+  orderStatus: '4',
+};
 /** 状态可退但 outTradeNo 为空：退款的唯一定位键缺失，必须拦住而不是发一个必然失败的请求 */
 const noOutTradeNoOrder = { ...normalOrder, orderId: 5, outTradeNo: null, orderStatus: '2' };
 /**
@@ -149,9 +159,7 @@ const handlers = [
     ok(rows.find((o) => o.orderId === Number(params.orderId))),
   ),
   // DarenUserSelect（达人筛选控件）会拉这两个
-  http.get('*/system/role/list', () =>
-    page([{ roleId: 101, roleKey: 'daren', roleName: '达人' }]),
-  ),
+  http.get('*/system/role/list', () => page([{ roleId: 101, roleKey: 'daren', roleName: '达人' }])),
   http.get('*/system/role/authUser/allocatedList', () =>
     page([{ userId: 77, userName: 'daren1', nickName: '达人甲' }]),
   ),
@@ -247,11 +255,14 @@ describe('达人鼓励订单 · 角色 gate', () => {
   });
 
   it('daren 即使后端误发 :export 权限串也看不到导出按钮（fail-closed）', async () => {
-    setRole(['daren'], [
-      'travel18:expertRewardOrder:list',
-      'travel18:expertRewardOrder:query',
-      'travel18:expertRewardOrder:export',
-    ]);
+    setRole(
+      ['daren'],
+      [
+        'travel18:expertRewardOrder:list',
+        'travel18:expertRewardOrder:query',
+        'travel18:expertRewardOrder:export',
+      ],
+    );
     render(<ExpertRewardOrderPage />);
     await screen.findByText('OUT2026101200001');
     expect(screen.queryByText('导出当前筛选')).not.toBeInTheDocument();
@@ -305,9 +316,7 @@ describe('达人鼓励订单 · 退款入口（本页必须有，旧页查不到
     await user.click(within(row).getByText('详情'));
 
     const drawer = await screen.findByRole('dialog');
-    await waitFor(() =>
-      expect(drawer.textContent).toContain('退款请在左侧列表的行操作里发起'),
-    );
+    await waitFor(() => expect(drawer.textContent).toContain('退款请在左侧列表的行操作里发起'));
     expect(drawer.textContent).not.toContain('当前订单状态不可退款');
   });
 
@@ -363,9 +372,7 @@ describe('达人鼓励订单 · 退款入口（本页必须有，旧页查不到
     // 列索引从表头动态取，不硬编码数字 —— 第 0 列是序号列（key），硬写 [1] 会在
     // 有人增删列时静默指到别的列上，那又变回「松断言」。
     const headerCells = Array.from(document.querySelectorAll('.ant-table-thead th'));
-    const outTradeNoCol = headerCells.findIndex((th) =>
-      th.textContent?.includes('业务订单号'),
-    );
+    const outTradeNoCol = headerCells.findIndex((th) => th.textContent?.includes('业务订单号'));
     expect(outTradeNoCol).toBeGreaterThan(-1);
     const dirtyCells = dirty.querySelectorAll('td');
     expect(dirtyCells[outTradeNoCol]?.textContent?.trim()).toBe('--');
@@ -397,7 +404,9 @@ describe('达人鼓励订单 · 退款入口（本页必须有，旧页查不到
     const row = await rowOf('OUT2026101200001');
     await user.click(within(row).getByText('详情'));
 
-    const drawer = (await screen.findByText('达人鼓励订单详情')).closest('.ant-drawer') as HTMLElement;
+    const drawer = (await screen.findByText('达人鼓励订单详情')).closest(
+      '.ant-drawer',
+    ) as HTMLElement;
     await waitFor(() =>
       expect(within(drawer).getByText(/退款请在左侧列表的行操作里发起/)).toBeInTheDocument(),
     );
@@ -406,10 +415,7 @@ describe('达人鼓励订单 · 退款入口（本页必须有，旧页查不到
 });
 
 describe('达人鼓励订单 · 退款入口的角色 gate', () => {
-  const ADMIN_REFUND_PERMS = [
-    'travel18:expertRewardOrder:list',
-    'travel18:reward:refund',
-  ];
+  const ADMIN_REFUND_PERMS = ['travel18:expertRewardOrder:list', 'travel18:reward:refund'];
 
   it('admin 有 travel18:reward:refund 时看得到退款入口', async () => {
     setRole(['admin'], ADMIN_REFUND_PERMS);
@@ -431,11 +437,14 @@ describe('达人鼓励订单 · 退款入口的角色 gate', () => {
   });
 
   it('daren 即使后端误发 refund 权限串也看不到退款入口（fail-closed）', async () => {
-    setRole(['daren'], [
-      'travel18:expertRewardOrder:list',
-      'travel18:expertRewardOrder:query',
-      'travel18:reward:refund',
-    ]);
+    setRole(
+      ['daren'],
+      [
+        'travel18:expertRewardOrder:list',
+        'travel18:expertRewardOrder:query',
+        'travel18:reward:refund',
+      ],
+    );
     render(<ExpertRewardOrderPage />);
     await screen.findByText('OUT2026101200001');
     expect(screen.queryByText('退款')).not.toBeInTheDocument();
@@ -449,10 +458,10 @@ describe('达人鼓励订单 · 退款入口的角色 gate', () => {
     const row = (await screen.findByText('OUT2026101200001')).closest('tr') as HTMLElement;
     await user.click(within(row).getByText('详情'));
 
-    const drawer = (await screen.findByText('达人鼓励订单详情')).closest('.ant-drawer') as HTMLElement;
-    await waitFor(() =>
-      expect(within(drawer).getByText(/当前账号无退款权限/)).toBeInTheDocument(),
-    );
+    const drawer = (await screen.findByText('达人鼓励订单详情')).closest(
+      '.ant-drawer',
+    ) as HTMLElement;
+    await waitFor(() => expect(within(drawer).getByText(/当前账号无退款权限/)).toBeInTheDocument());
   });
 });
 
@@ -505,5 +514,119 @@ describe('达人鼓励订单 · iOS 单点退款只给引导（与打赏订单�
     expect(screen.queryByRole('button', { name: /确认退款/ })).not.toBeInTheDocument();
     expect(lastPreviewOutTradeNo).toBeNull();
     expect(refundApplyCount).toBe(0);
+  });
+});
+
+// ==================================================================
+// iOS 退款问询字段 + 「已退金额」口径（2026-10-20《iOS 退款问询应答策略可配置方案》P2）
+// ==================================================================
+
+/**
+ * iOS 达人单：终端由下单时的微信客户端决定，与「线路打赏 / 达人鼓励」这个来源维度无关，
+ * 所以达人单同样会被 Apple 退款问询命中，本页必须能看到问询结果。
+ * 形态取自现网 orderId 33：退款未成功，但 `refund_fee_fen` 因抢占而残留 500。
+ */
+const iosExpertOrder = (over: Record<string, unknown> = {}) => ({
+  ...normalOrder,
+  orderId: 33,
+  outTradeNo: 'R261019221457FDXM9B',
+  orderNo: 'RO2026101933',
+  platform: 'ios',
+  env: '0',
+  actualPriceFen: 800,
+  orderStatus: '2',
+  refundFeeFen: 500,
+  ...over,
+});
+
+const useIosExpertOrder = (over: Record<string, unknown> = {}) => {
+  const row = iosExpertOrder(over);
+  server.use(
+    http.get('*/travel18/expertRewardOrder/list', () => page([row])),
+    http.get('*/travel18/expertRewardOrder/:orderId', () => ok(row)),
+  );
+  return row;
+};
+
+/**
+ * 取抽屉里某个 Descriptions 条目的**内容单元格**。
+ * antd5 的 bordered Descriptions 把标签放在 `th.ant-descriptions-item-label`、
+ * 值放在同排的 `td.ant-descriptions-item-content`，两者不是父子关系，
+ * 所以不能 `closest('.ant-descriptions-item')`（拿到 null）。本抽屉 column={1}，一排只有一对。
+ */
+const descContent = (drawer: HTMLElement, label: string) => {
+  const row = within(drawer).getByText(label).closest('tr') as HTMLElement;
+  return row.querySelector('.ant-descriptions-item-content') as HTMLElement;
+};
+
+const openDetail = async (user: ReturnType<typeof userEvent.setup>) => {
+  await screen.findByText('R261019221457FDXM9B');
+  await user.click(screen.getAllByText('详情')[0]);
+  await screen.findByText('达人鼓励订单详情');
+  return document.querySelector('.ant-drawer-body') as HTMLElement;
+};
+
+describe('达人鼓励订单 · 「已退金额」只认终态已退款(5)', () => {
+  it('退款未成功时抽屉显示 --，不得把残留的 refundFeeFen 读成已退款', async () => {
+    useIosExpertOrder();
+    const user = userEvent.setup();
+    render(<ExpertRewardOrderPage />);
+    const drawer = await openDetail(user);
+
+    const item = descContent(drawer, '已退金额');
+    expect(within(item).getByText('--')).toBeInTheDocument();
+    expect(within(item).queryByText('5.00 元')).toBeNull();
+  });
+
+  it('状态为已退款(5)时照常显示金额（不能把真退款也显示成 --）', async () => {
+    useIosExpertOrder({ orderStatus: '5' });
+    const user = userEvent.setup();
+    render(<ExpertRewardOrderPage />);
+    const drawer = await openDetail(user);
+
+    const item = descContent(drawer, '已退金额');
+    expect(within(item).getByText('5.00 元')).toBeInTheDocument();
+  });
+});
+
+describe('达人鼓励订单 · iOS 退款问询（后端刻意不下发凭据与用户理由）', () => {
+  it('问询次数与应答结果可见，裸值 1 翻译成「拒绝退款」', async () => {
+    useIosExpertOrder({ iosRefundQueryCount: 2, iosRefundResult: '1' });
+    const user = userEvent.setup();
+    render(<ExpertRewardOrderPage />);
+    const drawer = await openDetail(user);
+
+    expect(within(drawer).getByText('iOS 问询次数')).toBeInTheDocument();
+    expect(within(drawer).getByText('iOS 问询应答')).toBeInTheDocument();
+    expect(within(drawer).getByText('拒绝退款')).toBeInTheDocument();
+  });
+
+  it('从未被问询（null）时显示 --，不得显示成「同意退款」', async () => {
+    useIosExpertOrder({ iosRefundQueryCount: 0, iosRefundResult: null });
+    const user = userEvent.setup();
+    render(<ExpertRewardOrderPage />);
+    const drawer = await openDetail(user);
+
+    await within(drawer).findByText('iOS 问询应答');
+    expect(within(drawer).queryByText('同意退款')).toBeNull();
+    expect(within(drawer).queryByText('拒绝退款')).toBeNull();
+  });
+
+  it('本页不出现应答凭据（VO 裁剪红线：daren 角色可见，凭据只在「打赏订单」页给 admin）', async () => {
+    useIosExpertOrder({
+      iosRefundQueryCount: 2,
+      iosRefundResult: '1',
+      // 后端不会下发这两个字段；即使被误下发，页面也不该渲染出来
+      iosRefundEvidence: '用户已完成对线路作者的自愿打赏，虚拟服务已即时履约完毕，无退款依据',
+      iosRefundReason: '误购',
+    });
+    const user = userEvent.setup();
+    render(<ExpertRewardOrderPage />);
+    const drawer = await openDetail(user);
+
+    await within(drawer).findByText('iOS 问询应答');
+    expect(within(drawer).queryByText(/应答凭据/)).toBeNull();
+    expect(within(drawer).queryByText(/无退款依据/)).toBeNull();
+    expect(within(drawer).queryByText('误购')).toBeNull();
   });
 });

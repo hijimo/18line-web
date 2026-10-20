@@ -53,8 +53,10 @@ import { useTableRequest } from '@/hooks/useTableRequest';
 import { DATE_FORMAT_FULL_TIME } from '@/variables';
 import { key, option } from '@/configurify/columns/baseColumns';
 import {
-  fenToYuan,
   EXPERT_REFUNDABLE_ORDER_STATUS,
+  fenToYuan,
+  IosRefundResultColor,
+  IosRefundResultLabel,
   RewardEnvColor,
   RewardEnvLabel,
   RewardOrderStatusColor,
@@ -462,8 +464,17 @@ const ExpertRewardOrderPage: React.FC = () => {
               <Money fen={detail?.commissionFen} />
               （费率 {detail?.commissionRate ?? '--'}%）
             </Descriptions.Item>
+            {/*
+              「已退金额」只认终态『已退款(5)』：`refund_fee_fen` 是发起退款时抢占写入的，
+              失败后后端**刻意保留**它（微信 268490014 要求同参重试），所以非 0 ≠ 已退款。
+              与「打赏订单」页同一口径，避免两页对同一笔单给出不同的钱数。
+            */}
             <Descriptions.Item label="已退金额">
-              <Money fen={detail?.refundFeeFen} />
+              {detail?.orderStatus === RewardOrderStatusEnum.REFUNDED ? (
+                <Money fen={detail?.refundFeeFen} />
+              ) : (
+                '--'
+              )}
             </Descriptions.Item>
             <Descriptions.Item label="订单状态">
               {detail?.orderStatus
@@ -471,6 +482,24 @@ const ExpertRewardOrderPage: React.FC = () => {
                     detail.orderStatus as keyof typeof RewardOrderStatusLabel
                   ] ?? detail.orderStatus)
                 : '--'}
+            </Descriptions.Item>
+            {/*
+              iOS 单同样会出现在达人单里（终端由下单时的微信客户端决定，与「线路打赏 / 达人鼓励」
+              这个来源维度无关），所以问询字段两页都要有。
+              ⚠️ 后端刻意不下发应答凭据与用户退款理由（本页对 daren 角色开放，VO 裁剪红线），
+              要看完整凭据请走「打赏订单」页详情（需 travel18:rewardOrder:query）。
+            */}
+            <Descriptions.Item label="iOS 问询次数">
+              {detail?.iosRefundQueryCount ?? 0}
+            </Descriptions.Item>
+            <Descriptions.Item label="iOS 问询应答">
+              {detail?.iosRefundResult ? (
+                <Tag color={IosRefundResultColor[detail.iosRefundResult]}>
+                  {IosRefundResultLabel[detail.iosRefundResult] ?? detail.iosRefundResult}
+                </Tag>
+              ) : (
+                '--'
+              )}
             </Descriptions.Item>
             <Descriptions.Item label="支付时间">{fmtTime(detail?.paidTime)}</Descriptions.Item>
             <Descriptions.Item label="创建时间">{fmtTime(detail?.createTime)}</Descriptions.Item>

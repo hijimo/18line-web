@@ -494,3 +494,148 @@ describe('打赏订单页 · iOS 单点退款只给引导（不出网、不进�
     await waitFor(() => expect(previewCount).toBe(1));
   });
 });
+
+// ==================================================================
+// 「已退金额」口径 + iOS 退款问询字段（2026-10-20《iOS 退款问询应答策略可配置方案》P0/P2）
+// ==================================================================
+
+/**
+ * 现网 orderId 33 的形态：三次退款全被 690000020「OS订单不支持开发者发起退款」拒掉，
+ * `refund_fee_fen` 却因 `claimRefund` 抢占而留在 500（`releaseRefundClaim` 刻意保留它，
+ * 因为微信 268490014 要求同参重试）。页面此前直接显示「5.00 元」，财务读成已退款。
+ *
+ * <p>实付金额故意用 800（8.00 元），这样「行内是否出现 5.00 元」就只可能来自已退金额列。
+ */
+const iosOrderOf = (over: Record<string, unknown> = {}) => ({
+  orderId: 33,
+  orderNo: 'N33',
+  outTradeNo: 'R261019221457FDXM9B',
+  userOpenid: 'openid_33',
+  lineId: 88,
+  merchantId: 12,
+  authorUserId: 77,
+  tierId: 2,
+  wxProductId: 'rw_5',
+  origPriceFen: 800,
+  actualPriceFen: 800,
+  shareRate: 78,
+  shareFen: 624,
+  channelFeeRate: 12,
+  commissionRate: 10,
+  env: '0',
+  platform: 'ios',
+  orderStatus: '2',
+  refundFeeFen: 500,
+  paidTime: '2026-10-19 22:14:57',
+  createTime: '2026-10-19 22:14:57',
+  ...over,
+});
+
+const useSingleOrder = (detail: Record<string, unknown>) => {
+  server.use(
+    http.get('*/travel18/reward/order/list', () => page([detail])),
+    http.get('*/travel18/reward/order/:orderId', () => ok(detail)),
+    http.get('*/travel18/reward/order/:orderId/payable', () => ok(null)),
+  );
+};
+
+describe('打赏订单页 · 「已退金额」只认终态已退款(5)', () => {
+  it('退款未成功但 refundFeeFen 有残留值时列表显示 --，绝不显示 5.00 元', async () => {
+    useSingleOrder(iosOrderOf());
+    setup();
+    const row = (await screen.findByText('R261019221457FDXM9B')).closest('tr') as HTMLElement;
+    expect(within(row).queryByText('5.00 元')).toBeNull();
+    expect(within(row).getAllByText('--').length).toBeGreaterThan(0);
+  });
+
+  it('状态为已退款(5)时照常显示金额（不能把真退款也显示成 --）', async () => {
+    useSingleOrder(iosOrderOf({ orderStatus: '5', refundTime: '2026-10-20 10:00:00' }));
+    setup();
+    const row = (await screen.findByText('R261019221457FDXM9B')).closest('tr') as HTMLElement;
+    expect(within(row).getByText('5.00 元')).toBeInTheDocument();
+  });
+
+  it('抽屉把残留值说成「上次尝试退款…（未成功）」，并保留最后错误与退款单号', async () => {
+    useSingleOrder(
+      iosOrderOf({
+        mchRefundId: 'RF261019230326PI7J9I',
+        refundLastError: '微信拒绝: errCode=690000020, OS订单不支持开发者发起退款',
+      }),
+    );
+    const user = userEvent.setup();
+    setup();
+    await screen.findByText('R261019221457FDXM9B');
+    await user.click(screen.getAllByText('详情')[0]);
+
+    expect(await screen.findByText('上次尝试退款')).toBeInTheDocument();
+    const drawer = document.querySelector('.ant-drawer-body') as HTMLElement;
+    expect(
+      within(drawer).getByText(/未成功，金额与退款单号已保留以便同参重试/),
+    ).toBeInTheDocument();
+    expect(within(drawer).getByText(/690000020/)).toBeInTheDocument();
+    expect(within(drawer).getByText('RF261019230326PI7J9I')).toBeInTheDocument();
+  });
+
+  it('退款中(4)不说「未成功」，而是「退款中，金额以终态为准」', async () => {
+    useSingleOrder(iosOrderOf({ orderStatus: '4' }));
+    const user = userEvent.setup();
+    setup();
+    await screen.findByText('R261019221457FDXM9B');
+    await user.click(screen.getAllByText('详情')[0]);
+
+    const drawer = document.querySelector('.ant-drawer-body') as HTMLElement;
+    expect(await within(drawer).findByText(/退款中，金额以终态为准/)).toBeInTheDocument();
+    expect(within(drawer).queryByText(/未成功/)).toBeNull();
+  });
+});
+
+describe('打赏订单页 · iOS 退款问询应答（协议只有两档，无人工复核）', () => {
+  it('裸值 1 必须翻译成「拒绝退款」，并展示用户填写的退款理由与应答凭据', async () => {
+    useSingleOrder(
+      iosOrderOf({
+        iosRefundQueryCount: 2,
+        iosRefundResult: '1',
+        iosRefundEvidence: '用户已完成对线路作者的自愿打赏，虚拟服务已即时履约完毕，无退款依据',
+        iosRefundReason: '误购',
+      }),
+    );
+    const user = userEvent.setup();
+    setup();
+    await screen.findByText('R261019221457FDXM9B');
+    await user.click(screen.getAllByText('详情')[0]);
+
+    const drawer = document.querySelector('.ant-drawer-body') as HTMLElement;
+    expect(await within(drawer).findByText('拒绝退款')).toBeInTheDocument();
+    // 页面里任何地方都不该再出现裸的问询结果值
+    expect(within(drawer).queryByText('iOS 问询应答1')).toBeNull();
+    expect(within(drawer).getByText('误购')).toBeInTheDocument();
+    expect(within(drawer).getByText(/无退款依据/)).toBeInTheDocument();
+    expect(within(drawer).getByText('2')).toBeInTheDocument();
+  });
+
+  it('从未被问询（null）时显示 --，不得显示成「同意退款」', async () => {
+    useSingleOrder(iosOrderOf({ iosRefundQueryCount: 0, iosRefundResult: null }));
+    const user = userEvent.setup();
+    setup();
+    await screen.findByText('R261019221457FDXM9B');
+    await user.click(screen.getAllByText('详情')[0]);
+
+    const drawer = document.querySelector('.ant-drawer-body') as HTMLElement;
+    await within(drawer).findByText('iOS 问询应答');
+    expect(within(drawer).queryByText('同意退款')).toBeNull();
+    expect(within(drawer).queryByText('拒绝退款')).toBeNull();
+  });
+
+  it('给出「调整应答策略」入口，指向参数配置页，并说明没有人工复核环节', async () => {
+    useSingleOrder(iosOrderOf({ iosRefundQueryCount: 2, iosRefundResult: '1' }));
+    const user = userEvent.setup();
+    setup();
+    await screen.findByText('R261019221457FDXM9B');
+    await user.click(screen.getAllByText('详情')[0]);
+
+    const link = await screen.findByRole('link', { name: '调整应答策略' });
+    expect(link).toHaveAttribute('href', '/reward-config');
+    const drawer = document.querySelector('.ant-drawer-body') as HTMLElement;
+    expect(within(drawer).getByText(/没有人工复核环节/)).toBeInTheDocument();
+  });
+});

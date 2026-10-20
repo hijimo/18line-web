@@ -213,6 +213,16 @@ export type ExpertRewardOrder = {
   platform?: string | null;
   orderStatus?: string | null;
   refundFeeFen?: number | null;
+  /**
+   * iOS 退款问询累计次数（安卓/鸿蒙单恒为 0）。
+   * 只能当「至少 N 次」看：官方称重复问询 3 次，2026-10-20 现网实测两笔各只到 2 次。
+   */
+  iosRefundQueryCount?: number | null;
+  /**
+   * iOS 退款问询最近一次应答：0 同意退款 / 1 拒绝退款 / null 从未被问询。
+   * 后端刻意不下发 evidence 与用户退款理由（本页对 daren 角色开放，见 ExpertRewardOrderVO 注释）。
+   */
+  iosRefundResult?: string | null;
   paidTime?: string | null;
   createTime?: string | null;
 };

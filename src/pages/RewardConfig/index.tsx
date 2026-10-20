@@ -418,7 +418,7 @@ const RewardConfig: React.FC = () => {
           '参数值不合法：不能为空，且必须是规范写法（不接受前导零、科学计数法与全角数字）',
         );
       } else if (e?.code === ConfigErrorCode.KEY_NOT_ALLOWED) {
-        message.error('该参数不在打赏白名单内，本页只能改打赏相关的 23 个参数');
+        message.error('该参数不在打赏白名单内，本页只能改打赏相关的 27 个参数');
       } else if (e?.code === ConfigErrorCode.DUPLICATE_KEY) {
         message.error('同一批里出现了重复参数，请刷新后重试');
       } else if (e?.message) {

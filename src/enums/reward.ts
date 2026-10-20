@@ -109,6 +109,39 @@ export const EXPERT_REFUNDABLE_ORDER_STATUS: string[] = [
 ];
 
 // ==================================================================
+// iOS 退款问询应答 —— travel_reward_order.ios_refund_result
+// ==================================================================
+
+/**
+ * 用户在 App Store 申请退款后，Apple 经微信下发「退款问询」，我方必须在 **3 秒内同步应答**，
+ * 且协议只给了两档（`IosRefundQueryResponse.result_code`）：0 放过（建议退款）/ 1 拦截（拒绝退款）。
+ *
+ * ⚠️ **没有第三档**：协议里不存在「待定 / 转人工 / 需复核」。所以后台看到的这个值是
+ * 系统按运营事先配好的策略自动给出的，**没有人参与当次那一答**。
+ * 策略在「打赏参数配置」页（`/reward-config`）的「退款」分组里调。
+ *
+ * ⚠️ 唯一另一种可能是「沉默」：连续 3 次未在 3 秒内应答，微信代答「不确定」、决定权全交 Apple。
+ * 那种情况下 `ios_refund_result` 为 **null**（我方从未应答），页面显示 `--`，不要显示成 0。
+ */
+export const IosRefundResultEnum = {
+  /** 放过，建议退款 */
+  ALLOW: '0',
+  /** 拦截，拒绝退款 */
+  BLOCK: '1',
+} as const;
+
+export const IosRefundResultLabel: Record<string, string> = {
+  [IosRefundResultEnum.ALLOW]: '同意退款',
+  [IosRefundResultEnum.BLOCK]: '拒绝退款',
+};
+
+/** 颜色语义：拒绝=红（用户拿不到钱，最容易被投诉）、同意=绿 */
+export const IosRefundResultColor: Record<string, string> = {
+  [IosRefundResultEnum.ALLOW]: 'success',
+  [IosRefundResultEnum.BLOCK]: 'error',
+};
+
+// ==================================================================
 // 支付环境与终端 —— travel_reward_order.env / .platform
 // ==================================================================
 
@@ -1137,7 +1170,7 @@ export const CFG_REASON_MAX_LEN = 500;
  * 再在兜底分支里把 `e.message`（拦截器没动过它）原文补出来。
  */
 export const ConfigErrorCode = {
-  /** 参数键不在 23 个白名单里：页面正常操作不会触发，触发即说明前端被改坏或有人直连接口 */
+  /** 参数键不在 27 个白名单里：页面正常操作不会触发，触发即说明前端被改坏或有人直连接口 */
   KEY_NOT_ALLOWED: 4090,
   /** 值解析不出来 / 越界 / 空值 / 非规范字面量（如 `1e2`、`0200`、全角数字） */
   VALUE_INVALID: 4091,
