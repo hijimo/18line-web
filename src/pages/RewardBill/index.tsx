@@ -48,6 +48,7 @@ import {
   RewardEnvEnum,
   RewardEnvLabel,
 } from '@/enums';
+import { showErrorOnce } from '@/utils/errorHandler';
 import { get as getBillApi } from '@/services/api/打赏账单下载/打赏账单下载';
 
 const billApi = getBillApi();
@@ -211,12 +212,10 @@ const RewardBill: React.FC = () => {
         message.info('该账期已有正在生成的任务，请在列表里对它点「刷新结果」');
       } else if (e?.code === BillErrorCode.RATE_LIMIT) {
         message.info('已触发微信频率限制，请间隔一两分钟后再试，不要连续点击');
-      } else if (e?.message) {
-        // ⚠️ 不能依赖「拦截器已经弹了后端原文」——它没有。
-        // utils/errorHandler 的 parseError 把任何 code>=500 的对象一律判成「服务器错误」，
-        // 而本项目业务码是 4080~4087，于是后端精心写的「日期跨度不能超过 31 天」
-        // 在弹窗里被替换成了「服务器错误，请稍后重试」。这里把原文补回来。
-        message.error(e.message);
+      } else {
+        // 原文由拦截器统一弹出（缺陷 49 已修：业务码 4080~4087 不再被改写成
+        // 「服务器错误」）；这里只兜非请求错误，showErrorOnce 内部判重
+        showErrorOnce(e);
       }
     } finally {
       setSubmitting(false);
@@ -251,8 +250,8 @@ const RewardBill: React.FC = () => {
         // 库里那条任务记录没了（被清理/主键错）。原地重试永远还是 4084，
         // 唯一的出路是重新发起一次，所以文案必须指向那个动作
         message.error('该下载任务记录已不存在，请重新发起一次获取');
-      } else if (e?.message) {
-        message.error(e.message);
+      } else {
+        showErrorOnce(e);
       }
     } finally {
       setBusyPk(null);
@@ -281,9 +280,9 @@ const RewardBill: React.FC = () => {
         message.info('账单还没生成好，请先点「刷新结果」');
       } else if (e?.code === BillErrorCode.TASK_NOT_FOUND) {
         message.error('该下载任务记录已不存在，请重新发起一次获取');
-      } else if (e?.message) {
-        // 同 submitFetch：拦截器会把 4080~4087 的原文改写成「服务器错误」
-        message.error(e.message);
+      } else {
+        // 同 submitFetch：原文交给拦截器，这里只兜非请求错误
+        showErrorOnce(e);
       }
     } finally {
       setBusyPk(null);

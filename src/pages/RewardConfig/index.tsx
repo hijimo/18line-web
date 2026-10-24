@@ -50,6 +50,7 @@ import {
   RewardEnvEnum,
   RewardEnvLabel,
 } from '@/enums';
+import { showErrorOnce } from '@/utils/errorHandler';
 import { get as getConfigApi } from '@/services/api/打赏参数配置/打赏参数配置';
 
 const configApi = getConfigApi();
@@ -272,8 +273,9 @@ const RewardConfig: React.FC = () => {
         message.error(res?.msg || '加载打赏参数失败');
       }
     } catch (e: any) {
-      // 4090~4096 都 ≥500，拦截器会把原文改写成「服务器错误」（缺陷 49），这里补回来
-      message.error(e?.message || '加载打赏参数失败');
+      // 拦截器已负责弹后端原文（缺陷 49 已修）；这里只兜「非请求错误」，
+      // 用 showErrorOnce 避免同一句话弹两次
+      showErrorOnce(e, '加载打赏参数失败');
     } finally {
       setLoading(false);
     }
@@ -289,7 +291,7 @@ const RewardConfig: React.FC = () => {
         message.error(res?.msg || '参数自检失败');
       }
     } catch (e: any) {
-      message.error(e?.message || '参数自检失败');
+      showErrorOnce(e, '参数自检失败');
     } finally {
       setCheckLoading(false);
     }
@@ -421,9 +423,9 @@ const RewardConfig: React.FC = () => {
         message.error('该参数不在打赏白名单内，本页只能改打赏相关的 27 个参数');
       } else if (e?.code === ConfigErrorCode.DUPLICATE_KEY) {
         message.error('同一批里出现了重复参数，请刷新后重试');
-      } else if (e?.message) {
-        // 兜底：把后端原文补出来（拦截器弹的那句是「服务器错误」）
-        message.error(e.message);
+      } else {
+        // 兜底：原文由拦截器弹，这里只补非请求错误（showErrorOnce 内部判重）
+        showErrorOnce(e);
       }
     } finally {
       setSaving(false);
@@ -445,7 +447,7 @@ const RewardConfig: React.FC = () => {
         message.error(res?.msg || '刷新参数缓存失败');
       }
     } catch (e: any) {
-      message.error(e?.message || '刷新参数缓存失败');
+      showErrorOnce(e, '刷新参数缓存失败');
     } finally {
       setRefreshingCache(false);
     }
@@ -493,7 +495,7 @@ const RewardConfig: React.FC = () => {
         message.error(res?.msg || '试算失败');
       }
     } catch (e: any) {
-      message.error(e?.message || '试算失败');
+      showErrorOnce(e, '试算失败');
     } finally {
       setPreviewLoading(false);
     }

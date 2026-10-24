@@ -1,8 +1,14 @@
-import { messageInstance } from '@/utils/antdStatic';
 import axios, { type AxiosError, type AxiosRequestConfig } from 'axios';
 import cookies from 'js-cookie';
 import { useAuthStore } from '@/stores/authStore';
-import { logError, parseError } from '@/utils/errorHandler';
+import { messageInstance } from '@/utils/antdStatic';
+import {
+  logError,
+  markErrorNotified,
+  parseError,
+  showError,
+  type ErrorInfo,
+} from '@/utils/errorHandler';
 import { TOKEN_KEY, USER_INFO_KEY as USER_INFO } from '@/utils/userData';
 import type { ResponseData } from '@/types';
 
@@ -21,7 +27,24 @@ const request = axios.create({
 const noNotifyList: string[] = [];
 
 /**
+ * 各类型在「后端一个字都没给」时的兜底文案。
+ * 只在 parseError 取不到任何原文时才会用到 —— 有原文一律显示原文。
+ */
+const FALLBACK_TEXT: Record<ErrorInfo['type'], string> = {
+  network: '网络连接失败，请检查网络连接',
+  api: '服务器响应异常',
+  auth: '身份验证失败，请重新登录',
+  microapp: '应用加载失败，请稍后重试',
+  unknown: '请求失败，请稍后重试',
+};
+
+/**
  * 统一的错误处理函数
+ *
+ * ⚠️ 文案只有 `parseError` 一个来源。历史上这里按 type 各写一套，其中 api 分支
+ * 还去读 `response.data.message`（后端字段其实叫 `msg`，且业务错误是拦截器自己
+ * `new Error()` 造的、根本没有 response），于是后端原文在两处被连续丢掉，
+ * 运营只看到「服务器错误，请稍后重试」（缺陷 49）。
  */
 const errorHandler = (error: AxiosError | Error, context?: string): void => {
   const errorInfo = parseError(error);
@@ -37,29 +60,15 @@ const errorHandler = (error: AxiosError | Error, context?: string): void => {
     return;
   }
 
-  // 根据错误类型显示不同的提示
-  switch (errorInfo.type) {
-    case 'network':
-      messageInstance.error({
-        content: '网络连接失败，请检查网络连接',
-        duration: 4,
-      });
-      break;
-    case 'api': {
-      const axiosErr = error as AxiosError;
-      const messageStr = (axiosErr.response?.data as any)?.message;
-      messageInstance.error({
-        content: messageStr || errorInfo.message || '服务器响应异常',
-        duration: 4,
-      });
-      break;
-    }
-    default:
-      messageInstance.error({
-        content: errorInfo.message || '请求失败，请稍后重试',
-        duration: 4,
-      });
-      break;
+  // showError 内部对未注册的 antd 静态实例做了空值保护：
+  // 弹窗失败绝不能反过来抛异常，否则会把真正的业务 Error 顶替成 TypeError。
+  const shown = showError(errorInfo.message || FALLBACK_TEXT[errorInfo.type]);
+
+  // 只有**真的弹出去了**才标记「拦截器已提示」，页面 catch 里的 showErrorOnce
+  // 才会跳过。没弹成功就不打标记，把机会留给页面兜底 —— 否则这条错误会变成
+  // 谁都看不见的静默失败。
+  if (shown) {
+    markErrorNotified(error);
   }
 };
 
@@ -95,7 +104,7 @@ request.interceptors.response.use(
       const { logout } = useAuthStore.getState();
       logout();
 
-      messageInstance.error({
+      messageInstance?.error?.({
         content: '登录已过期，请重新登录',
         duration: 3,
       });
